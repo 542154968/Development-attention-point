@@ -45,7 +45,7 @@
          * @param { * } -- num： 任意值
          */
         returnNum ( num ) {
-            isNaN( num ) && num = 0;
+            isNaN( num ) && ( num = 0 );
             return Number( num );
         }
     };
