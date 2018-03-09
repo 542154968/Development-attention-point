@@ -15,3 +15,4 @@
 15. https://tinypng.com/ 在线图片压缩
 16. https://tool.lu/css/ css js 在线打包压缩
 17. http://underscorejs.org/docs/underscore.html **underscore.js 源码解读**
+18. http://www.cnblogs.com/libin-1/p/6893712.html  VUE双向绑定原理及实现博文
