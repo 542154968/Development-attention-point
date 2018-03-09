@@ -61,7 +61,7 @@ function shuffle(array) {
     return _array;
 }
 ```
-# 深拷贝
+# 深拷贝 - extend 的实现
 ```javascript
 var extend = (function() {
 	var isObjFunc = function(name) {
@@ -104,6 +104,26 @@ var extend = (function() {
 链接：https://www.jianshu.com/p/04b1d88dabf2
 來源：简书
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+# 深拷贝
+```javascript
+function cloneObject (obj) {
+    var newObj = {}
+    //如果不是引用类型，直接返回
+    if ( obj instanceof Object ) {
+      return obj
+    }
+    //如果是引用类型，遍历属性
+    else{
+         for (var attr in obj) {
+         //如果某个属性还是引用类型，递归调用
+          newObj[attr] = cloneObject(obj[attr])
+        }
+    }
+   
+    return newObj
+  }
 ```
 
 # 浅拷贝
