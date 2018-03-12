@@ -17,3 +17,4 @@
 17. http://underscorejs.org/docs/underscore.html **underscore.js 源码解读**
 18. http://www.cnblogs.com/libin-1/p/6893712.html  VUE双向绑定原理及实现博文
 19. https://uedsky.com/2016-06/mobile-modal-scroll/ 移动端手机穿透解决方案
+20. https://www.jianshu.com/p/22f82cc60285 VUE2.0 diff算法 为啥设置key
