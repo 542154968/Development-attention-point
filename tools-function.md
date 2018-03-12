@@ -254,35 +254,4 @@ new Date(2018, 03, 1) // 序列化后的结果  "2018-04-01 00:00:00"
 new Date('2018/03/1') // 序列化后的结果  "2018-03-01 00:00:00"
 ```
 
-# substring、 substr、 slice
-```javascript
-	substr(start [, length])
-	substring(start [, end])
-	slice(start [, end])
-```
 
- - substring 有个神奇的地方 就是 start， end ，两个参数  谁小 谁就是 start
- ```javascript
-	var str = 'My name is: Jerry . My age is: 12 . : :666 .';
-	str.substring( 0, 5 )
-	"My na"
-	var str = 'My name is: Jerry . My age is: 12 . : :666 .';
-	str.substring( 5, 0 )
-	"My na"
- ```
- - substr 和 slice 如果遇到负数 会 和 length 相加 
- ```javascript
-	var str = 'My name is: Jerry . My age is: 12 . : :666 .';
-	str.slice( 0, 5 )
-	"My na"
-	var str = 'My name is: Jerry . My age is: 12 . : :666 .';
-	str.slice( 0, -5 )
-	"My name is: Jerry . My age is: 12 . : :"
-	str.length
-	44
-	str.slice(0, 39)
-	"My name is: Jerry . My age is: 12 . : :"
- ```
-- 从定义上看： substring和slice是同类的，参数都是字符串的某个｛开始｝位置到某个｛结束｝位置（但｛结束｝位置的字符不包括在结果中）；而substr则是字符串的某个｛开始｝位置起，数length个长度的字符才结束。－－ 共性：从start开始，如果没有第2个参数，都是直到字符串末尾
-- substring和slice的区别则是，slice可以接受“负数”，表示从字符串尾部开始计数； 而substring则把负数或其它无效的数，当作0。
-- substr的start也可接受负数，也表示从字符串尾部计数，这点和slice相同；但substr的length则不能小于1，否则返回空字符串。
