@@ -117,3 +117,10 @@
 - 最好弄清楚w3c规范
 - 公司规范也要遵守
 - 如果有好的建议要及时提出来
+
+**12. 没事可以多逛逛社区**
+- !(segmentfault——思否)[https://segmentfault.com/]
+- !(掘金)[https://juejin.im/timeline]
+- !(知乎)[https://www.zhihu.com/signup?next=%2F]
+- !(简书)[https://www.jianshu.com/]
+- 很多很多 找几个自己比较喜欢的经常看 对自己了解技术动态、知识点检测、学习很有帮助 共勉
