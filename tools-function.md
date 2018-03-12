@@ -266,3 +266,26 @@ repeat( '123', 3 )
 
 // 将数组的间隔转换成字符串  
 ```
+
+# 零宽断言
+```javascript
+'My name is: Jerry . My age is: 12 . : :666 .'.match(/(?<=:\s?)([^\s:]+)/g)
+
+// 输出 (3) ["Jerry", "12", "666"]
+```
+
+# 数组去重 并统计每项有多少重复值
+```javascript
+// 数组去重并统计每一项有几个
+var arr = ["a","b","c","c","ab","d","ab","d","c"],
+	newArr = [],
+	obj = {};
+for ( var i = 0, l = arr.length; i < l; i++ ){
+    if( newArr.indexOf( arr ) <= -1 ){
+        newArr.push( arr );
+        obj[arr] = 1
+    }else {
+        obj[arr] = obj[arr] + 1;
+    }    
+}
+```
