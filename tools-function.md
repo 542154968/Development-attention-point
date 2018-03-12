@@ -256,13 +256,13 @@ new Date('2018/03/1') // 序列化后的结果  "2018-03-01 00:00:00"
 
 # 循环一段数字N次
 ```javascript
-	function repeat( str, num ){
-		return new Array( num + 1 ).join( str );
-	}
-	
-	// 举个栗子
-	repeat( '123', 3 )
-	"123123123"
-	
-	// 将数组的间隔转换成字符串  
+function repeat( str, num ){
+	return new Array( num + 1 ).join( str );
+}
+
+// 举个栗子
+repeat( '123', 3 )
+"123123123"
+
+// 将数组的间隔转换成字符串  
 ```
