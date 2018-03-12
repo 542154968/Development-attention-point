@@ -67,9 +67,9 @@
 > 如果项目中使用的有webpack等打包工具 可以避免这个问题 如果没有使用 就要注意了
 
 - 静态资源存在缓存的问题。一个场景就是页面`index.html`中增加了一个公共方法`addNum`，公共方法写在`common.js`中。当用户访问这个页面时，`common.js`并没有得到更新，`addNum is not defined`报错了。我们目前使用的方案就是后端在文件后面添加版本号`common.js?v=xxxxx`，这个版本号可以让后端通过获取文件修改时间来添加，这样就起到了版本控制的效果，最好的方式其实是`common.dde65x.js`这种。v版本的方式有的浏览器还是会无视，但是大部分都没问题。 
-- 图片压缩。 图片压缩的话webpack有插件。我们可以使用 ![Tiny](https://tinypng.com/) 这个在线压缩的网站来压缩我们的图片。
-- css压缩、整理、美化 ![CSS在线压缩/整理/格式化工具](https://tool.lu/css/), 很多编译器的插件都有这个功能啦，就不做太多介绍。
-- js压缩、整理、混淆 ![JS在线压缩/整理/格式化工具](https://tool.lu/js/), 很多编译器的插件都有这个功能啦，就不做太多介绍。
+- 图片压缩。 图片压缩的话webpack有插件。我们可以使用 [Tiny](https://tinypng.com/) 这个在线压缩的网站来压缩我们的图片。
+- css压缩、整理、美化 [CSS在线压缩/整理/格式化工具](https://tool.lu/css/), 很多编译器的插件都有这个功能啦，就不做太多介绍。
+- js压缩、整理、混淆 [JS在线压缩/整理/格式化工具](https://tool.lu/js/), 很多编译器的插件都有这个功能啦，就不做太多介绍。
 
 **6. 需求**
 - 尽量需求明确后再开始写项目，避免返工。
@@ -119,8 +119,8 @@
 - 如果有好的建议要及时提出来
 
 **12. 没事可以多逛逛社区**
-- ![segmentfault——思否](https://segmentfault.com/)
-- ![掘金](https://juejin.im/timeline)
-- ![知乎](https://www.zhihu.com/signup?next=%2F)
-- ![简书](https://www.jianshu.com/)
+- [segmentfault——思否](https://segmentfault.com/)
+- [掘金](https://juejin.im/timeline)
+- [知乎](https://www.zhihu.com/signup?next=%2F)
+- [简书](https://www.jianshu.com/)
 - 很多很多 找几个自己比较喜欢的经常看 对自己了解技术动态、知识点检测、学习很有帮助 共勉
