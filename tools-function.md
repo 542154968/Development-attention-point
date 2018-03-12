@@ -229,7 +229,7 @@ const startTagOpen = new RegExp('^<' + qnameCapture)
 const startTagClose = /^\s*(\/?)>/ 
 const endTag = new RegExp('^<\\/' + qnameCapture + '[^>]*>') 
 const defaultTagRE = /\{\{((?:.|\n)+?)\}\}/g 
-const forAliasRE = /(.*?)\s+(?:in|of)\s+(.*)/...
+const forAliasRE = /(.*?)\s+(?:in|of)\s+(.*)/
 
 https://juejin.im
 掘金 — 一个帮助开发者成长的社区
