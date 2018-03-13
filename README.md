@@ -158,3 +158,29 @@
 - 从定义上看： substring和slice是同类的，参数都是字符串的某个｛开始｝位置到某个｛结束｝位置（但｛结束｝位置的字符不包括在结果中）；而substr则是字符串的某个｛开始｝位置起，数length个长度的字符才结束。－－ 共性：从start开始，如果没有第2个参数，都是直到字符串末尾
 - substring和slice的区别则是，slice可以接受“负数”，表示从字符串尾部开始计数； 而substring则把负数或其它无效的数，当作0。
 - substr的start也可接受负数，也表示从字符串尾部计数，这点和slice相同；但substr的length则不能小于1，否则返回空字符串。
+
+**14. 通过promise判断滚动事件是scrollTo触发的还是鼠标滚动触发的**
+```javascript
+	status = false;
+	function timeout( long ){
+		return new Promise( function( resolve, reject ){
+			window.scrollTo( 0, long )
+			setTimeout( resolve, 0 )
+		} )
+	};
+
+	$(document).click( function(){
+		status = true;
+		timeout( 200 ).then( function(){
+			status = false;
+		} )
+	} );
+
+	$(window).scroll( function(){
+		if( status == 'true' ){
+			console.log( '点击事件触发的' )
+		}else if( status == 'false' ){
+			console.log( '滚动事件触发的' )
+		}
+	} )
+```
