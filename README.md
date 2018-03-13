@@ -185,10 +185,14 @@
 	} )
 ```
 
-**15.函数的参数可以是个表达式（任意类型）**
+**15. 函数的参数可以是个表达式（任意类型）**
 ```javascript
 function timeout( a ){
 	console.log(a)
 };
 timeout( window.scrollTo(0, 200), 6 ) // undefined
 ```
+**16. window.status**
+- 全局定义status是不行的 它是个保留字 定义任何都是字符串 
+- status属性在IE，火狐，Chrome，和Safari默认配置是不能正常工作。要允许脚本来改变状态栏文本，用户必须把配置屏幕首选项设置为false dom.disable_window_status_change。
+
