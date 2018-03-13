@@ -184,3 +184,11 @@
 		}
 	} )
 ```
+
+**15.函数的参数可以是个表达式（任意类型）**
+```javascript
+function timeout( a ){
+	console.log(a)
+};
+timeout( window.scrollTo(0, 200), 6 ) // undefined
+```
