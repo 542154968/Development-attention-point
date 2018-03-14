@@ -207,16 +207,17 @@ timeout( window.scrollTo(0, 200), 6 ) // undefined
 	// undefined 和 6 
 	/**
 	 * 非严格模式
-	 * 首先 函数 a 定义在了全局 它里面的this就是指向了window，return 的this也是window
-	 * 当执行 x = a(5);的时候 函数返回了this 所以一开始this.x = 5，如果不返回this的话 这时的X是5的
+	 * 首先 函数 a 定义在全局环境执行 它里面的this就是指向了window，return 的this也是window
+	 * 当执行 x = a(5);的时候 this.x = 5，函数返回了this，this是window对象，又被重新赋值给了x， 此时x又是window对象。
+	 * 如果我们不返回this，就会是这个结果。
 	 * function a(xxx){
-			this.x=xxx
-		}
-		a(5) 
-		console.log(x) //5
-	 * 但是我们返回了this;而且 x = a(5); 这时x被重新赋值成为window对象。
+	       this.x=xxx
+	   }
+	   a(5) 
+	   console.log(x) //5
+	 * 但是我们返回了this;
 	 * 当执行 y = a(6); 这个时候 x 就是 6 了，而返回的this被赋值给了y。
-	 * 所以当打印x.x时， 就是6.window 当时是undefined
+	 * 所以当打印x.x时， 就是6.window 当然是undefined
 	 * 而y.x就是 window.x x是6 所以是 6
 	 */
 ```
