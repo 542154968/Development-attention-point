@@ -1,9 +1,5 @@
 # 工作中遇到的坑和思考
-
-**有不同意见欢迎指正交流**
-
-> **2018-03-05**
-
+## 有不同意见欢迎指正交流
 **1. ajax请求的结果要和后端约定好返回的数据格式。** 
 - 比如：成功与否code、提示信息msg、详细的返回数据data。如果每次格式不一致会导致出错。一个场景：后端在当前接口直接返回数据 `response = [1, 2, 3]` ，而后端验证登录过期后返回的数据格式是` response = { code: 2, msg: "登录过期", data: "" } `，这个时候如果你的异常处理没有做好，就可能会出错。
 
@@ -196,3 +192,31 @@ timeout( window.scrollTo(0, 200), 6 ) // undefined
 - 全局定义status是不行的 它是个保留字 定义任何都是字符串 
 - status属性在IE，火狐，Chrome，和Safari默认配置是不能正常工作。要允许脚本来改变状态栏文本，用户必须把配置屏幕首选项设置为false dom.disable_window_status_change。
 
+**17. 一个有趣的JS面试题目**
+```javascript
+	function a(xxx){
+		this.x=xxx
+		return this
+	}
+	x = a(5)
+	y = a(6); 
+	console.log(x.x);
+	console.log(y.x);
+	
+	// 输出什么 ？
+	// undefined 和 6 
+	/**
+	 * 非严格模式
+	 * 首先 函数 a 定义在了全局 它里面的this就是指向了window，return 的this也是window
+	 * 当执行 x = a(5);的时候 函数返回了this 所以一开始this.x = 5，如果不返回this的话 这时的X是5的
+	 * function a(xxx){
+			this.x=xxx
+		}
+		a(5) 
+		console.log(x) //5
+	 * 但是我们返回了this;而且 x = a(5); 这时x被重新赋值成为window对象。
+	 * 当执行 y = a(6); 这个时候 x 就是 6 了，而返回的this被赋值给了y。
+	 * 所以当打印x.x时， 就是6.window 当时是undefined
+	 * 而y.x就是 window.x x是6 所以是 6
+	 */
+```
