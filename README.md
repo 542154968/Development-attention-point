@@ -217,7 +217,7 @@ timeout( window.scrollTo(0, 200), 6 ) // undefined
 	   console.log(x) //5
 	 * 但是我们返回了this;
 	 * 当执行 y = a(6); 这个时候 x 就是 6 了，而返回的this被赋值给了y。
-	 * 所以当打印x.x时， 就是6.window 当然是undefined
+	 * 所以当打印x.x时， x是Number类型，基本类型，x.x 所以是undefined
 	 * 而y.x就是 window.x x是6 所以是 6
 	 */
 ```
