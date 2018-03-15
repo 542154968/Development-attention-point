@@ -238,3 +238,6 @@ start: {
 // 1 2 
 还有双重for循环的场景 有兴趣可以MDN看一下
 ```
+
+**20. setTimeout严格上来讲并不是全局函数**
+- `setTimeout`是`window`的一个方法，如果把`window`当做全局对象来看待的话，他就是全局函数。严格来讲，它不是。全局函数与内置对象的属性或方法不是一个概念。全局函数他不属于任何一个内置对象。JS中包含以下7个全局函数`escape()``eval()``isFinite()``isNaN()``parseFloat()``parseInt()``unescape()`
