@@ -221,3 +221,20 @@ timeout( window.scrollTo(0, 200), 6 ) // undefined
 	 * 而y.x就是 window.x x是6 所以是 6
 	 */
 ```
+
+**18. label for**
+- 给 label指定for 对应input或者别的form元素 即使label不包裹着for 也会触发该元素的聚焦 for把两个不包裹的元素关联了起来
+- 而label包裹上的元素不需要写for也可以聚焦
+
+**19. JS中的Label**
+- start 在ES5中并没有建立作用域
+```JAVASCRIPT
+start: {
+	console.log(1);	
+	console.log(2);
+	break start
+	console.log(3);
+}
+// 1 2 
+还有双重for循环的场景 有兴趣可以MDN看一下
+```
