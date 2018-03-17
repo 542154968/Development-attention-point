@@ -240,4 +240,25 @@ start: {
 ```
 
 **20. setTimeout严格上来讲并不是全局函数**
-- `setTimeout`是`window`的一个方法，如果把`window`当做全局对象来看待的话，他就是全局函数。严格来讲，它不是。全局函数与内置对象的属性或方法不是一个概念。全局函数他不属于任何一个内置对象。JS中包含以下7个全局函数`escape()``eval()``isFinite()``isNaN()``parseFloat()``parseInt()``unescape()`
+- `setTimeout`是`window`的一个方法，如果把`window`当做全局对象来看待的话，他就是全局函数。严格来讲，它不是。全局函数与内置对象的属性或方法不是一个概念。全局函数他不属于任何一个内置对象。JS中包含以下7个全局函数`escape()eval()isFinite()isNaN()parseFloat()parseInt()unescape()`
+
+**21. 一个朋友提的场景需求而引发的Array.sort()方法思考**
+```javascript
+// 比如一个数组 
+let arr = [1, 23, 4, 5, 6, 8, 9, 1,0 ,11, 5, 666, -1, -1, -1 ];
+// 需求是 按照升序排列 但是-1必须在最后
+
+arr.sort( (a, b)=>{
+	a < 0 && (a = Number.POSITIVE_INFINITY);
+	b < 0 && (b = Number.POSITIVE_INFINITY);
+	return a - b
+} )
+
+arr.sort( (a, b)=>{
+  a < 0 || b < 0 && ( a *= -1, b *=-1 );
+  return a - b
+} )
+
+// 位运算
+arr.sort( (a, b) => !~a || !~b ? b : a - b ) 
+```
