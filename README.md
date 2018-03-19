@@ -270,3 +270,31 @@ arr.sort( (a, b) => !~a || !~b ? b : a - b )
 **22. 如果你要处理多列或多行之间的计算或别的问题**
 - 如果是数据驱动很好处理
 - 如果是JQ 计算的时候最好给每列或每行要用到的起个class类名，根绝这个类名去查找计算。这样会避免列或行的增删带来的问题。比如你用eq去找的，但是增加了一列，减少了一列。或者你按着input的name名字去找，后端给你改了名字咋搞呢。
+
+**23. 一个iframe跨域的场景**
+- 今天遇到一个场景，父页面A、Iframe页面B和Iframe页面C，B页面提交后通过A页面关闭打开的Iframe
+- 父页面A用来操作关闭当前Iframe和刷新A页面中的列表
+- Iframe-B中需要上传图片，而上传图片的组件是公共Iframe-C
+- 但是Iframe-C的域名和A、B页面不同，产生了跨域问题
+- 尝试了`window.name`, `document.domain`等方法皆不奏效。
+- 后来，想到个笨方法
+```javascript
+/*
+ * 正常来讲 
+ *	$.ajax().done( ( response )=> { 
+ *		window.parent.modal.hide();
+ *		window.parent.IframeB.hide();
+ *	}) 
+ * 但是到这里由于Iframe-C的问题产生了跨域
+ * 于是换了个思路
+ * 请求成功后 给URL加一个hash然后刷新当前页面
+ * $.ajax().done( ( response )=> { 
+ *		window.location.hash = '?active=true';
+ *		window.location.reload();
+ *	}) 
+ * 然后在引起跨域的问题之前 (我是放在了<body>之后) 检查url的hash值
+ * var body = document.body || document.getElementsByClassName('body')[0];
+ * /\?active\=true/.test(window.location.href) && (  window.parent.modal.hide(), window.parent.IframeB.hide() )
+ * 这个时候会有一些闪动 你可以给body设置透明或者别的 等加载到JS把透明或别的去掉
+*/
+```
