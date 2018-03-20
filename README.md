@@ -329,7 +329,7 @@ arr.sort( (a, b) => !~a || !~b ? b : a - b )
 ```
 
 **25. isNaN( ) 会把被检测的内容先转成数字类型**
-> [MDN-isNaN](!https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/isNaN)
+> [MDN-isNaN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/isNaN)
 
 ```javascript
 var str = '';
