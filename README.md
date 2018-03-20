@@ -327,3 +327,16 @@ arr.sort( (a, b) => !~a || !~b ? b : a - b )
 	window.parent.uploadFileCallback( '数据1'， '数据2' )
 </script>
 ```
+
+**25. isNaN( ) 会把被检测的内容先转成数字类型（猜测）**
+```javascript
+var str = '';
+isNaN( str ); // false
+Number( str ); // 0
+
+var num = 0;
+isNaN( num ); // false
+
+// 猜测 isNaN() 底层会将字符串先转成数字类型 但是没找到底层方法  只是猜测
+isNaN( '666' ) // false
+```
