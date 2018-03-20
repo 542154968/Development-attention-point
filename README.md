@@ -404,3 +404,8 @@ spreadJSON ({}, m, '')
 
 {a: 1, b.c: 2, b.d: Array(2), e.f.g: "6"}
 ```
+**27. Blob对象**
+> [MDN-Blob](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob)
+
+- Blob 对象表示一个不可变、原始数据的类文件对象。Blob 表示的不一定是JavaScript原生格式的数据。文件接口基于Blob，继承了blob的功能并将其扩展使其支持用户系统上的文件。
+- 要从其他非blob对象和数据构造一个Blob，请使用 Blob() 构造函数。要创建包含另一个blob数据的子集blob，请使用 slice()方法。要获取用户文件系统上的文件对应的Blob对象，请参阅 文件文档。
