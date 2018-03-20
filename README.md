@@ -343,7 +343,10 @@ isNaN( num ); // false
 isNaN( '666' ) // false
 ```
 
-**26. 自己写的对象拍平方法 只能拍平两层**
+**26. 对象拍平方法**
+
+> 我自己写的只能拍平2层 最下面是大猫大牛写的
+
 - 三层的情况
 ```javascript
 var m = { "a": 1, "b": { "c": 2, "d": [3, 4] }, "e": { f: { g: "6" } } };
@@ -369,14 +372,35 @@ var obj = {};
 function planeHouse( m, child ){
     Object.keys(m).forEach( function( v, k ){
         if( Object.prototype.toString.call( m[v] ) === "[object Object]" ){
-		// 如果当前还是一个对象 递归调用 传入child  v是m[v]的子key  obj[b.c] obj[b.d]
-		planeHouse( m[v], v )
+			// 如果当前还是一个对象 递归调用 传入child  v是m[v]的子key  obj[b.c] obj[b.d]
+			planeHouse( m[v], v )
         }else{
-		child ? obj[child+'.'+v] = m[v]  : obj[v] = m[v]
+			child ? obj[child+'.'+v] = m[v]  : obj[v] = m[v]
         }
 
     } )
 }
 
 planeHouse( m ) // {a: 1, b.c: 2, b.d: Array(2)}
+```
+- 大猫大牛写的方法 支持多层
+```javascript
+var m = { "a": 1, "b": { "c": 2, "d": [3, 4] }, "e": { f: { g: "6" } } };
+function spreadJSON (result, json, parentKey) {
+      const keys = Object.keys(json);
+      keys.forEach(key => {
+        const value = json[key];
+        const concatKey = parentKey + (parentKey ? '.' : '') + key;
+        if (Object.prototype.toString.call(value) === '[object Object]'){ 
+			spreadJSON (result, value, concatKey)
+		}else {
+			result[concatKey] = value
+		};
+      })
+      return result;
+    }
+	
+spreadJSON ({}, m, '')
+
+{a: 1, b.c: 2, b.d: Array(2), e.f.g: "6"}
 ```
