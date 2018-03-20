@@ -342,3 +342,41 @@ isNaN( num ); // false
 //isNaN() 底层会将字符串先转成数字类型 
 isNaN( '666' ) // false
 ```
+
+**26. 自己写的对象拍平方法 只能拍平两层**
+- 三层的情况
+```javascript
+var m = { "a": 1, "b": { "c": 2, "d": [3, 4] }, "e": { f: { g: "6" } } };
+var obj = {};
+function planeHouse( m, child ){
+    Object.keys(m).forEach( function( v, k ){
+        if( Object.prototype.toString.call( m[v] ) === "[object Object]" ){
+		// 如果当前还是一个对象 递归调用 传入child  v是m[v]的子key  obj[b.c] obj[b.d]
+		planeHouse( m[v], v )
+        }else{
+		child ? obj[child+'.'+v] = m[v]  : obj[v] = m[v]
+        }
+
+    } )
+}
+
+planeHouse( m ) // {a: 1, b.c: 2, b.d: Array(2), f.g: "6"}
+```
+- 两层的情况
+```javascript
+var m = { "a": 1, "b": { "c": 2, "d": [3, 4] } };
+var obj = {};
+function planeHouse( m, child ){
+    Object.keys(m).forEach( function( v, k ){
+        if( Object.prototype.toString.call( m[v] ) === "[object Object]" ){
+		// 如果当前还是一个对象 递归调用 传入child  v是m[v]的子key  obj[b.c] obj[b.d]
+		planeHouse( m[v], v )
+        }else{
+		child ? obj[child+'.'+v] = m[v]  : obj[v] = m[v]
+        }
+
+    } )
+}
+
+planeHouse( m ) // {a: 1, b.c: 2, b.d: Array(2)}
+```
