@@ -298,3 +298,32 @@ arr.sort( (a, b) => !~a || !~b ? b : a - b )
  * 这个时候会有一些闪动 你可以给body设置透明或者别的 等加载到JS把透明或别的去掉
 */
 ```
+
+**24. IE8的异步上传文件方案**
+- 基本思路很简单，提交上传文件表单时，让浏览器转移到iframe处理响应信息，响应信息嵌入一段js代码，这段js代码调用当前页面的一个方法就可以实现回调，类似于xss攻击。这时就要用到form表单的target属性，我们这里只需要用到iframename的值，iframename指的是iframe的name属性，意思是转移到iframe处理响应信息。
+- 父页面
+```html
+<form action="excel/uploadExcel" target="testForm" method="POST" enctype="multipart/form-data">
+	<input type="file" name="file">
+	<input type="submit" value="submit">
+</form>
+<div id="titles"></div>
+<iframe name="testForm" style="display: none"></iframe>
+
+<script>
+	// 暴露一个全局方法供Iframe调用
+	function uploadFileCallback = function( data, errorMsg ){
+		if( errorMsg ){
+			alert( errorMsg );
+			return
+		}
+		document.getElementById('titles').innerHTML = data;
+	}
+</script>
+```
+- iframe页面
+```html
+<script>
+	window.parent.uploadFileCallback( '数据1'， '数据2' )
+</script>
+```
