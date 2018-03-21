@@ -1,0 +1,45 @@
+{
+  "name": "webpack-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch",
+    "dev": "webpack-dev-server --open",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "html-webpack-plugin": "^2.29.0",
+    "inline-source-map": "^0.6.2",
+    "lodash": "^4.17.4",
+    "webpack": "^3.2.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.1.2",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "clean-webpack-plugin": "^0.1.16",
+    "css-loader": "^0.28.4",
+    "cssnano": "^3.10.0",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^0.11.2",
+    "generate-asset-webpack-plugin": "^0.3.0",
+    "glob": "^7.1.2",
+    "html-loader": "^0.5.0",
+    "html-webpack-plugin": "^2.30.1",
+    "npm-install-webpack-plugin": "^4.0.4",
+    "postcss-import": "^10.0.0",
+    "postcss-loader": "^2.0.6",
+    "resolve-url-loader": "^2.2.1",
+    "style-loader": "^0.18.2",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
+    "uglifyjs-webpack-plugin": "^1.1.6",
+    "url-loader": "^0.5.9",
+    "webpack-dev-server": "^2.6.1"
+  }
+}

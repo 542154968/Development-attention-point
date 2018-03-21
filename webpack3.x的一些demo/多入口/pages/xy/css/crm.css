@@ -1,0 +1,433 @@
+/*crm*/
+		/*申报弹框的样式*/
+		.seeBox,.peopleBox{
+			margin-bottom: 15px;
+		}
+		.seeBox label,.peopleBox label{
+			width: 30%;
+			float: left;
+			line-height: 32px;
+			color: #a1a1a1;
+		}
+		.seeBox .right,.peopleBox .right {
+			width: 65%;
+			line-height: 32px;
+			float: left;
+		}
+		.peopleBox label{
+			color: #a1a1a1;
+			width: 15%;
+		}
+		.peopleBox .label31{
+			width: 31%;
+		}
+		.peopleBox .label30{
+			width: 30%;
+		}
+		/*一行三个的样式*/
+		.peopleBox-three .chosen-container{
+			width: 87px!important;
+			min-width: 87px!important;
+			float: left;
+			margin-right: 13px;
+		}
+		.peopleBox-three input{
+			float: left;
+			width: 282px;
+		}
+		.peopleBox button {
+			margin-left: 15px;
+		}
+		/*.chosen-container{
+			min-width: 190px;
+		}*/
+		/*table  dataTable*/
+		.table{
+			margin-bottom: 0px;
+			border-bottom: none;
+		}
+		/*客户的 a链接*/
+		.tr-a{
+			width: 33.3333333%;
+			text-align: center;
+			display: block;
+			float: left;
+			color: #3280fc;
+			transition: all 0.3s;
+		}
+		.tr-a:hover,  .dropdown.dropdown-hover.tr-a:hover .trA{
+			color: #eb6120;
+		}
+		.tr-a:focus{
+			color: #3280fc;
+			outline: none;
+		}
+		/*下拉菜单的样式更改*/
+		.headBox .dropdown-menu>li>a:focus, .headBox .dropdown-menu>li>a:hover{
+			background: #eb6120;
+		}
+		.dropdown-menu>li>a{
+			line-height: 24px;
+		}		
+		/*避免更多弹框的样式影响做出的修改*/
+		.xa-table td, td{
+			overflow:visible!important;
+		}
+		.dataTables_scrollBody{
+			overflow: visible!important;
+		}
+		/*客户的头部和模型样式*/
+		.headBox{
+			margin: 20px;
+			border: 1px solid #e6e6e6;
+		}
+		.headBox .top{
+			height: 42px;
+			line-height: 42px;
+		
+			background: #f7f7f7;
+			padding-left: 25px;
+			
+		}
+		.headBox .top .title{
+			font-weight: bold;
+			font-size: 16px;
+		}
+		.headBox .top button{
+			margin-right: 10px;
+		}
+		/*.headBox .top button{
+			padding: 0px;
+			height: 40px;
+			line-height: 40px;
+			border: none;
+			position: relative;
+			top: -2px;
+			padding: 0 15px;
+			background: #f7f7f7;
+		}
+		.headBox .top .title{
+			font-weight: bold;
+		}
+		.headBox .top button:hover {
+			background: #fff;
+			box-shadow: 0 0 0 transparent;
+		}
+		
+		.headBox .top  .dropdown-menu{
+			width: 83px;
+			min-width: 83px;
+			left: 0px;
+			top: 39px;
+			border-top: none;
+			border-color: #e6e6e6;
+			border-radius: 0px;
+		}
+		.headBox .top  .dropdown-menu li{
+			width: 82px;
+			min-width: 82px;
+		}
+		.headBox .top .dropdown-menu>li>a{
+			height: 42px;
+			line-height: 42px;
+			padding: 0px;
+			text-align: center;
+		}
+		.headBox .top .dropdown-menu>li>a:focus,.headBox .top  .dropdown-menu>li>a:hover{
+			background: #f1ac4f;
+		}
+		.headBox .btn.active,.headBox .btn:active,.headBox .btn:focus,.headBox .btn:hover,.headBox .open .dropdown-toggle.btn,.headBox .dropdown.open, .headBox .dropdown.open button{
+			background: #fff;
+			box-shadow: 0 0 0 transparent;
+			
+			border: none;
+		}*/
+		/*头部客户信息的样式*/
+		.headBox .contain-msg{
+			padding: 0px 24px 0px;
+			
+		}
+		.headBox .contain-msg .item {
+			height: 42px;
+			line-height: 42px;
+			float: left;
+			color: #999;
+			margin-left: 12px;
+		}
+		.headBox .contain-msg .item span {
+			color: #333;
+			margin-right: 50px;
+		}
+		/*头部导航的样式 包括按钮*/
+		.headBox .contain-nav {
+			border: 1px solid #e6e6e6;
+			height: 45px;
+			margin-bottom: 24px;
+			line-height: 45px;
+			position: relative;
+			border-left: none;
+			border-right: none;
+			background: #f0f0f0;
+		}
+		.headBox .contain-nav button.change{
+			border: 1px solid #EC6013;
+			position: absolute;
+			right: 25px;
+			top: 9px;
+		}
+		.headBox .contain-nav ul {
+			padding: 0px;
+			margin: 0px;
+			
+		}
+		.headBox .contain-nav li {
+			list-style: none;
+			float: left;
+		}
+		.headBox .contain-nav .item {
+			margin-left: 24px;
+			position: relative;
+			top: -2px;
+			font-weight: bold;
+			margin-right: 24px;
+		}
+		.headBox .contain-nav .item a {
+			text-decoration: none;
+			color: #333;
+			transition: all 0.3s;
+			
+		}
+		.headBox .contain-nav .item a:hover {
+			color: #ec6013;
+		}
+		.headBox .contain-nav .item.active  a{
+			color: #EC6013;
+		}
+		.headBox .contain-nav .item.active {
+			border-bottom: 2px solid #ec6013;
+			
+		}
+		/*详情盒子的样式 注意 边距都是24*/
+		.headBox .contain-detail{
+			padding: 0px 24px 24px;
+		}
+		.headBox .contain-detail .contain-detail-box{
+			border-bottom:  1px solid #E4E4E4;
+			padding-bottom: 24px;
+			margin-bottom: 24px;
+		}
+		.headBox .contain-detail .contain-detail-box .item .btn-hollow{
+			border: 1px solid #EC6013;
+			
+		}
+		.headBox .contain-detail .contain-detail-box .item .time{
+			line-height: 26px;
+			margin-right: 15px;
+		}
+		.headBox .contain-detail .contain-detail-box .item.bottom{
+			margin-top: 15px;
+		}
+		.headBox .contain-detail .item {
+			min-height: 42px;
+			padding-top: 10px;
+		}
+		.headBox .contain-detail .item strong,.headBox .contain-detail .item span{
+			
+			color: #666666;
+		}
+		.headBox .contain-detail .item span{
+			line-height: 20px;
+			display: block;
+			max-width: 500px;
+			float: left;
+		}
+		.headBox .contain-detail .item strong{
+			margin-right: 10px;
+			font-weight: normal;
+			text-align: right;
+			color: #999;
+			min-width: 90px;
+			width: 90px;
+			display: block;
+			float: left;
+		}
+		/*客户信息更多的样式*/
+		.headBox .contain-detail .item .itemMore{
+			max-width: 60%;
+		}
+		/*头部标题的样式*/
+		.headBox .contain-title {
+			margin-left: 24px;
+			padding-left: 10px;
+			font-weight: bold;
+			color: #333;
+			clear: both;
+			line-height: 42px;
+			height: 42px;
+			position: relative;
+		}
+
+		.headBox .contain-title:before{
+			content: '';
+			position: absolute;
+			height: 18px;
+			left: 0px;
+			top: 11px;
+			width: 5px;
+			background: #f1ac4f;
+		} 
+		/*编辑按钮的样式*/
+		.headBox .contain-title button {
+			margin-right: 10px;
+			margin-top: 8px;
+		}
+		/*客户修改记录的样式*/
+		.headBox .contain-change {
+			padding: 0 35px 0px;
+		}
+
+		.headBox .contain-change .item {
+			height: 42px;
+			line-height: 42px;
+			border-bottom: 1px dashed #e0e0e0;
+		}
+		
+		.headBox .contain-change .item div {
+			float:left;
+			margin-right: 100px;
+			min-width: 130px;
+			color: #999;
+		}
+		.headBox .contain-change .item .detail{
+			color: #666;
+		}
+		.headBox .btn.more {
+			margin-left: 24px;
+			margin-bottom: 24px;
+			border: 1px solid #ea5e13;
+		}
+		.headBox .contain .table{
+			padding: 24px;
+		}
+		/*.headBox .contain .table .form-horizontal{
+			width: 100%;
+			position: relative;
+			bottom: 24px;
+		}*/
+		/*.headBox .contain .table .form-horizontal input {
+			width: 180px;
+		}*/
+		.headBox .contain .table .form-horizontal input,.headBox .contain .table .form-horizontal .divide{
+			float: left;
+		}
+		.peopleBox label{
+			color: #a1a1a1;
+			width: 15%;
+			
+		}
+		.headBox .contain .table .form-horizontal .divide {
+			line-height: 30px;
+			padding: 0 10px;
+		}
+		.peopleBox .right{
+			width: 85%;
+		}
+		.peopleBox .chosen-container{
+			min-width:  187px ;
+		}
+		.peopleBox .right.right-input{
+			margin-left: 15%;
+			margin-top: 15px;
+		}
+		.peopleBox .right.smallInput{
+			width: 187px;
+		}
+		.peopleBox .right.middleInput{
+			width: 280px;
+		}
+		.peopleBox .addPeople{
+			margin-left: 0px;
+		}
+		.peopleBox-add {
+			width: 85%;
+			margin-left: 15%;
+			margin-bottom: 15px;
+			padding: 0px;
+			padding-right: 5px;
+		}
+		.peopleBox-add label{
+			text-align: center;
+			width: 9%;
+			float: left;
+			line-height: 30px;
+		}
+		.peopleBox-add input{
+			width: 20%;
+			float: left;
+		}
+		.peopleBox-add button {
+			margin-top: 3px;
+			float: right;
+		}
+		/*设置padding-top空*/
+		.nopadding-top{
+			padding-top: 0px!important;
+		}
+		/*显示一行多余的。。。显示*/
+		.oneLine{
+			display: block;
+			overflow: hidden!important;
+	    white-space: nowrap;
+	    text-overflow: ellipsis;
+	    
+		}
+		/*实心的黄色图标*/
+		.btn.btn-hollow.yellow{  
+			background: #f1ac4f;
+			color: #fff;
+			border-color: #F1AC4F;
+		}
+		.btn.btn-hollow.yellow:hover{
+			background: #f1ac4f!important;
+			color: #fff!important;
+			border-color: #F1AC4F!important;
+		}
+		/*空心的黄色图标*/
+		.btn.btn-hollow.yellow-hollow{
+			border-color: #F1AC4F!important;
+			color: #F1AC4F!important;
+		}
+		.btn.btn-hollow.yellow-hollow:hover{
+			border-color: #F1AC4F!important;
+			color: #fff!important;
+			background: #F1AC4F!important;
+		}
+		/*查看更多*/
+		.modal .moreVisit{
+			float: left;
+			width: 100%;
+			height: 30px;
+			line-height: 30px;
+		  
+		  background-color: #fff;
+		  padding: 0;
+		}
+		.modal .moreVisit span{
+			
+		}
+		.headBox .moreVisit{
+			padding: 0 24px;
+		}
+		
+		.headBox .moreVisit span, .modal .moreVisit span{
+			display: block;
+			width: 100%;
+			padding:0 24px;
+			height: 30px;
+			line-height: 30px;
+			color: #a7a7a7;
+			text-align: center;
+			cursor: pointer;
+			background: #f3f3f3;
+		}
+		

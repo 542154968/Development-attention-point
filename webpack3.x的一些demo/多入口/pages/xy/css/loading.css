@@ -1,0 +1,222 @@
+button,input{
+				outline: none;
+			}
+			body{
+				background: url(../images/background.png)no-repeat;
+				background-position: center center;
+				background-repeat: no-repeat;
+				background-attachment: fixed;
+				background-size: cover;
+			}
+			.logo{
+				width: 435px;
+				margin: 10% auto 0px;
+			}
+			@media only screen and (min-width: 600px) and (max-width: 1200px) {
+				.logo{
+					margin: 15% auto 0px;
+				}
+			}
+			@media only screen and (min-width: 200px) and (max-width: 600px) {
+				.logo{
+					margin: 20% auto 0px;
+				}
+			}
+			.logo img {
+				margin: 0px auto 25px;
+				display: block;
+			}
+			.login{
+				width:435px;
+				height: 380px;
+				margin: 0px auto 0px;
+				padding: 30px 40px;
+				position: relative;
+				background: #fff;
+				border-radius: 5px;
+				box-shadow:  0 0 5px #ccc;
+			}
+			.login.max{
+				padding: 45px 40px;
+			}
+			.login .title{
+				color: #eb6120;
+				text-align: center;
+				font-size: 20px;
+				font-weight: bold;
+				margin-bottom: 45px;
+			}
+			.login .title.min{
+				margin-bottom: 30px;
+			}
+			.form {
+				width: 355px;
+			}
+			.form input{
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				height: 50px;
+				line-height: 50px;
+				padding:0 5px;
+				transition: all 0.3s;
+				font-size: 16px;
+			}
+			.form input.left{
+				float: left;
+				width: 68%;
+			}
+			.form input.right{
+				float: right;
+				width: 30%;
+				margin-left: 2%;
+			}
+			.form input:first-child{
+				margin-bottom: 20px;
+			}
+			.form .get{
+				background: #fff;
+				color: #EB6120;
+				border-color: #EB6120;
+				transition: all 0.3s;
+				font-size: 14px;
+			}
+			.form .get:hover {
+				background: #EB6120;
+				color: #fff;
+			}
+			.form .load{
+				background: #eb6120;
+				color: #fff;
+				border-color: #EB6120;
+				margin-top: 30px;
+				font-size: 16px;
+				font-weight: bold;
+			}
+			.form input:hover, .form input:focus{
+				border-color:  #EB6120;
+				box-shadow:  0 0 5px #eb6120;
+			}
+			.form .forget {
+				margin-top: 25px;
+				text-align: center;
+				font-size: 14px;
+			}
+			.form .forget a{
+				color: #999999;
+				transition:  all 0.3s;
+				text-decoration: none;
+				outline: none;
+			}
+			.form .forget a:hover {
+				color: #EB6120;
+			}
+			.form .QRImg{
+				display: block;
+				width: 160px;
+				margin: 40px auto;
+			}
+			.form .ding{
+				width: 100%;
+				color: #666;
+				text-align: center;
+				font-size: 16px;
+			}
+			.form .ding strong{
+				color: #EB6120;
+				font-weight : normal;
+				
+			}
+			.form .ding span {
+				padding-left: 5px;
+			}
+			#phoneLogin{
+				display: none;
+			}
+			.change {
+				position: absolute;
+				right: 10px;
+				top: 10px;
+				
+				
+			}
+			.change img {
+				cursor: pointer;
+				height: 30px;
+				transition: all 0.3s;
+			}
+			.change img:hover {
+				transform: scale(1.05);
+			}
+			
+			.change .text {
+				position: absolute;
+				left: -120px;
+				top: 0px;
+				width: 110px;
+				height: 30px;
+				line-height: 30px;
+				background: #fefcef;
+				border: 1px solid #f2d899;
+				color: #eb9a36;
+				text-align: center;
+				font-size: 14px;
+			}
+			.change .text:before{
+				content: "";
+				position: absolute;
+				top: 8px;
+				right: -9px;
+				width: 0;
+			    height: 0;
+			    border-top: 7px solid transparent;
+			    border-left: 8px solid #f2d899;
+			    border-bottom: 7px solid transparent;
+			}
+			.change .text:after{
+				content: "";
+				position: absolute;
+				top: 8px;
+				right: -7px;
+				width: 0;
+			    height: 0;
+			    border-top: 7px solid transparent;
+			    border-left: 8px solid #fefcef;
+			    border-bottom: 7px solid transparent;
+			}
+			.QRBox{
+				position: relative;
+				width: 160px;
+				margin: 0 auto;
+				height: auto;
+			}
+			.QRBox .done{
+				position: absolute;
+				display: none;
+				text-align: center;
+			}
+			.QRBox.active{
+				
+				
+			}
+			.QRBox.active .done{
+				padding: 10px;
+				display: block;
+				width: 100%;
+				height: 100%;
+				background: rgba(255, 255, 255, 0.9);
+			} 
+			.QRBox .done p:first-child {
+				margin-top: 25px;
+				margin-bottom: 15px;
+				font-size: 15px;
+			}
+			.QRBox .done .refresh{
+				color: #2d82d0 ;
+				transition: all 0.3s;
+				cursor: pointer;
+			}
+			.QRBox .done .refresh:hover {
+				color: #EB6120;	
+			}
+			

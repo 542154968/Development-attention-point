@@ -1,0 +1,37 @@
+
+			
+{
+	"data": [
+		{
+			"program":"尚泽大都会",
+			"status": "代理",
+			"city":"合肥",
+			"programPeople": "项目负责人2",
+			"people":"张三",
+			"time":"2016-06-06 15:22:22",
+			"id": "1"
+		},
+		{
+			"program":"尚泽大都会",
+			"status": "代理",
+			"programPeople": "项目负责人1",
+			"city":"合肥",
+			"people":"张三",
+			"time":"2016-06-06 15:22:22",
+			"id": "1"
+		},
+		{
+			"program":"尚泽大都会",
+			"status": "代理",
+			"programPeople": "项目负责人3",
+			"city":"合肥",
+			"people":"张三",
+			"time":"2016-06-06 15:22:22",
+			"id": "1"
+		}
+	],
+	 "draw": 0,
+    "recordsTotal": "6290",
+    "recordsFiltered": "6290"
+}
+

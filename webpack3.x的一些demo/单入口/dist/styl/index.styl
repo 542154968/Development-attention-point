@@ -1,0 +1,232 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+a{
+	text-decoration: none
+}
+a:hover{
+	color: #fff !important;
+	text-decoration: none
+}
+body
+	font-family: "Helvetica Neue",Helvetica,Tahoma,Arial,'Microsoft Yahei','PingFang SC','Hiragino Sans GB','WenQuanYi Micro Hei',sans-serif
+.full-contain
+	width: 100%
+	min-width: 1200px
+	margin: 0 auto
+	background: #fafafa
+.contain
+	width: 1200px
+	margin: 0 auto	
+.nav
+	height: 95px
+	.logo
+		width: 250px
+		float: left
+		img 
+			margin-top: 30px
+	.btn-contain
+		float: right
+		width: 500px
+		height: 95px
+		.btn
+			display: block
+			box-sizing: border-box
+			width: 135px
+			height: 32px
+			line-height: 32px
+			font-size: 16px
+			float: right
+			margin: 32.5px 0 0 20px
+			border-radius: 20px
+			color: #fff
+			transition: box-shadow 0.5s ease, text-shadow 0.5s ease 
+			&.blue
+				background: #00abe9
+				&:hover
+					box-shadow: 0 0 5px #00abe9
+					text-shadow: 0 0 1px #fff
+			&.orange
+				background: #eb6120
+				&:hover
+					box-shadow: 0 0 5px #eb6120
+					text-shadow: 0 0 1px #fff
+			&.green
+				background: #1da95d
+				&:hover
+					box-shadow: 0 0 5px #1da95d
+					text-shadow: 0 0 1px #fff
+			img
+				float: left
+				margin: 1px 5px 0 15px	
+
+.banner
+	height: 750px
+	background: url("../images/banner.jpg") no-repeat center
+	.banner-text
+		width: 570px
+		margin-top: 150px
+		margin-right: 45px
+		float: right
+		&:hover
+			animation: move 0.5s
+		@keyframes move
+			0%
+				transform: translate( 0px, 0 )
+			25%
+				transform: translate( 10px, 0 )
+			50%
+				transform: translate( 0px, 0 )
+			75%
+				transform: translate( 10px, 0 )
+			100%
+				transform: translate( 0px, 0 )	
+	.banner-phone
+		width: 584px
+		height: 750px
+		float left
+		position: relative	
+		.item, iframe
+			position: absolute
+			opacity: 1
+			transform: scale(1)
+			transition:  transform 0.3s
+			&.active
+				transform: scale(0)
+				opacity: 0	
+			img
+				position: absolute
+		.iphone
+			z-index: 3
+			left: 180px
+			top: 17px
+			img
+				position: absolute
+			.iphone-img	
+				width: 366px
+				z-index: 4
+			.iphone-border 
+				z-index: 5
+				right: -367px
+				top: 78px
+				height: 560px
+			iframe
+				background: #fff
+				top: 91px
+				left: 23px
+				width: 340px
+				height: 541px
+				z-index: 4
+		.oppo
+			z-index: 2
+			left: 60px
+			top: 60px
+			img
+				position: absolute
+				z-index: 2
+			iframe
+				z-index: 1
+				top: 56px
+				left: 17px
+				height: 510px
+				width: 289px	
+
+.fun
+	height: 310px
+	.item
+		float: left
+		width: 120px
+		height: 250px
+		margin: 30px 90px
+		text-align: center
+		&:hover img
+			transform: translate( 0 , -10px )
+		img
+			margin-bottom: 20px	
+			transition: transform 0.5s	
+		.title
+			font-size: 30px
+			margin-bottom: 15px
+		li
+			font-size: 15px
+			margin-bottom: 10px
+			&:last-child
+				margin-bottom: 0
+.footer
+	font-size: 14px 
+	width: 100%
+	min-width: 1200px
+	&.mt20
+		margin-top: 0px !important			
+
+@css {
+	/* 火狐兼容 */
+	@-moz-document url-prefix() { 
+			.banner .banner-phone .iphone .iphone-border{
+			right: -366px
+		}		
+	}
+	/* 谷歌兼容 */
+	@media screen and (-webkit-min-device-pixel-ratio:0) { 
+    .banner-phone:hover .iphone-border {
+			right: -366px !important
+        }
+	}
+	/*ie >= 9 兼容*/
+	@media screen and (min-width:0\0) {
+		.banner .banner-phone .iphone .iphone-border{
+			right: -366px
+		}
+	}  
+	/* IE <= 8 */
+	@media \0screen\,screen\9 {
+		.banner .banner-phone .iphone .iphone-border{
+			right: -366px
+		}
+	}
+}

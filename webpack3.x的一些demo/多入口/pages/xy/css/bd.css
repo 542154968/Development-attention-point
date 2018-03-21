@@ -1,0 +1,26 @@
+.echarts-extend {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+}
+.echarts-extend-right {
+  position: absolute;
+  top: 20px;
+  right: 21px;
+}
+.asideModal .noContent,
+.common-asideModal .noContent {
+  text-align: center;
+  padding-top: 70px;
+}
+.asideModal .noContent .icon-img,
+.common-asideModal .noContent .icon-img {
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+}
+.asideModal .noContent p,
+.common-asideModal .noContent p {
+  padding-top: 10px;
+  color: #999;
+}

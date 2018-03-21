@@ -1,0 +1,137 @@
+.pd-bottom-30px {
+  padding-bottom: 30px;
+}
+.more-behavior {
+  cursor: pointer;
+  position: relative;
+  width: 206px;
+}
+.more-behavior .dropdown:hover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  width: 206px;
+  background: #fff;
+  box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.175);
+}
+.more-behavior .dropdown:hover .icon-angle-down.rotate90 {
+  transition: transform 0.2s ease-in-out;
+  transform: rotate(-180deg);
+  display: inline-block;
+}
+.more-behavior .dropdown-toggle {
+  display: block;
+}
+.more-behavior .dropdown-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  border: none;
+}
+.more-behavior .dropdown-menu .item {
+  color: #666;
+  text-align: center;
+  line-height: 2.5;
+  font-size: 14px;
+  font-weight: normal;
+}
+.echarts-extend {
+  position: absolute;
+  left: 20px;
+  top: 28px;
+}
+.asideModal .more-dl,
+.common-asideModal .more-dl {
+  display: none;
+}
+.asideModal .companding,
+.common-asideModal .companding,
+.asideModal .see-more,
+.common-asideModal .see-more {
+  height: 36px;
+  line-height: 36px;
+  cursor: pointer;
+}
+.asideModal .see-more,
+.common-asideModal .see-more {
+  width: 100%;
+  margin-bottom: 25px;
+  position: relative;
+  top: -1px;
+  border-bottom: none;
+}
+.asideModal .see-more > div,
+.common-asideModal .see-more > div {
+  background: #f3f3f3;
+}
+#survey-panel .item {
+  margin: 0;
+  text-align: center;
+}
+#survey-panel .item .title {
+  font-weight: normal;
+  color: #323232;
+}
+#survey-panel .item .bigNum {
+  font-size: 20px;
+  line-height: 40px;
+  color: #eb6120;
+}
+#survey-panel .item .num {
+  font-size: 16px;
+  color: #999999;
+}
+#area-select {
+  font-size: 14px;
+  position: absolute;
+  top: 10px;
+  right: 0;
+  line-height: 1;
+}
+#choiceBtn {
+  position: absolute;
+  left: 33px;
+  top: 23px;
+}
+.section .homeQuick {
+  height: 100px;
+  list-style: none;
+}
+.section .homeQuick .item {
+  padding-right: 10px;
+}
+.section .homeQuick .item:first-child a {
+  background: #62abe2;
+}
+.section .homeQuick .item:nth-child(2) a {
+  background: #95ca61;
+}
+.section .homeQuick .item:nth-child(3) a {
+  background: #da8358;
+}
+.section .homeQuick .item:nth-child(4) a {
+  background: #62ba7e;
+}
+.section .homeQuick .item:nth-child(5) a {
+  background: #a374b9;
+}
+.section .homeQuick .item:last-child {
+  padding-right: 0;
+}
+.section .homeQuick .item:last-child a {
+  background: #74b5b9;
+}
+.section .homeQuick .item a {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  border: 1px solid #ccc;
+  line-height: 100px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 16px;
+}

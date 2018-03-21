@@ -1,0 +1,129 @@
+/* just-Tips */
+.just-tooltip{position:absolute;left:0;top:0;border-radius:5px;background:#000;/*display:inline-block;*/z-index:9999; font-size: 12px;}
+.just-tooltip .just-con{padding:2px 5px;color:#fff;}
+
+.just-tooltip .just-top,
+.just-tooltip .just-bottom,
+.just-tooltip .just-left,
+.just-tooltip .just-right{content:"";position:absolute;width:0;height:0;overflow:hidden;border-style:solid;}
+
+.just-tooltip .just-top{left:50%;top:100%;border-width: 7px 5px 0 5px;margin-left:-5px;
+	border-color: #1B1E24 transparent transparent transparent;
+  	_border-color: #1B1E24 #000000 #000000 #000000;
+  	_filter: progid:DXImageTransform.Microsoft.Chroma(color='#000000');
+}
+.just-tooltip .just-bottom{ left:50%; top:-7px;border-width: 0 5px 7px 5px;margin-left:-5px;
+	border-color: transparent transparent #1B1E24 transparent;
+  	_border-color:#000000 #000000 #1B1E24 #000000;
+  	_filter: progid:DXImageTransform.Microsoft.Chroma(color='#000000');}
+.just-tooltip .just-left{ right:-7px; top:50%;border-width: 5px 0 5px 7px;margin-top:-5px;;
+	border-color: transparent transparent transparent #1B1E24;
+  	_border-color:#000000 #000000 #000000 #1B1E24;
+  	_filter: progid:DXImageTransform.Microsoft.Chroma(color='#000000');
+  }
+.just-tooltip .just-right{ left:-7px; top:50%;border-width: 5px 7px 5px 0;margin-top:-5px;
+	border-color: transparent #1B1E24 transparent transparent;
+  	_border-color:#000000 #000000 #000000 #1B1E24;
+  	_filter: progid:DXImageTransform.Microsoft.Chroma(color='#000000');
+  }
+
+.just-tooltip .just-confirm{text-align:center;margin:0 10px 10px 10px;}
+.just-tooltip .just-yes, .just-tooltip .just-no{background:#fff;color:#000;border:0;padding:5px 10px;}
+.just-tooltip .just-no{margin-left:10px;}
+
+/* Animations */
+.animated{
+	-webkit-animation-fill-mode:both;-moz-animation-fill-mode:both;-ms-animation-fill-mode:both;-o-animation-fill-mode:both;animation-fill-mode:both;
+	-webkit-animation-duration:.5s;-moz-animation-duration:.5s;-ms-animation-duration:.5s;-o-animation-duration:.5s;animation-duration:.5s;
+}
+@-webkit-keyframes flipInUp {
+    0% { -webkit-transform: perspective(400px) rotateX(-90deg); opacity: 0;} 
+    40% { -webkit-transform: perspective(400px) rotateX(5deg);}
+    70% { -webkit-transform: perspective(400px) rotateX(-5deg);}
+    100% { -webkit-transform: perspective(400px) rotateX(0deg); opacity: 1;}
+}
+@-moz-keyframes flipInUp {
+    0% {-moz-transform: perspective(400px) rotateX(-90deg);opacity: 0;}
+    40% {-moz-transform: perspective(400px) rotateX(5deg);}
+    70% {-moz-transform: perspective(400px) rotateX(-5deg);}
+    100% {-moz-transform: perspective(400px) rotateX(0deg);opacity: 1;}
+}
+@-o-keyframes flipInUp {
+    0% {-o-transform: perspective(400px) rotateX(-90deg);opacity: 0;}
+    40% {-o-transform: perspective(400px) rotateX(5deg);}
+    70% {-o-transform: perspective(400px) rotateX(-5deg);}
+    100% {-o-transform: perspective(400px) rotateX(0deg);opacity: 1;}
+}
+@keyframes flipInUp {
+    0% {transform: perspective(400px) rotateX(-90deg);opacity: 0;}
+    40% {transform: perspective(400px) rotateX(5deg);}
+    70% {transform: perspective(400px) rotateX(-5deg);}
+    100% {transform: perspective(400px) rotateX(0deg);opacity: 1;}
+}
+@-webkit-keyframes flipInRight {
+    0% { -webkit-transform: perspective(400px) rotateY(-90deg); opacity: 0;} 
+    40% { -webkit-transform: perspective(400px) rotateY(5deg);}
+    70% { -webkit-transform: perspective(400px) rotateY(-5deg);}
+    100% { -webkit-transform: perspective(400px) rotateY(0deg); opacity: 1;}
+}
+@-moz-keyframes flipInRight {
+    0% {-moz-transform: perspective(400px) rotateY(-90deg);opacity: 0;}
+    40% {-moz-transform: perspective(400px) rotateY(5deg);}
+    70% {-moz-transform: perspective(400px) rotateY(-5deg);}
+    100% {-moz-transform: perspective(400px) rotateY(0deg);opacity: 1;}
+}
+@-o-keyframes flipInRight {
+    0% {-o-transform: perspective(400px) rotateY(-90deg);opacity: 0;}
+    40% {-o-transform: perspective(400px) rotateY(5deg);}
+    70% {-o-transform: perspective(400px) rotateY(-5deg);}
+    100% {-o-transform: perspective(400px) rotateY(0deg);opacity: 1;}
+}
+@keyframes flipInRight {
+    0% {transform: perspective(400px) rotateY(-90deg);opacity: 0;}
+    40% {transform: perspective(400px) rotateY(5deg);}
+    70% {transform: perspective(400px) rotateY(-5deg);}
+    100% {transform: perspective(400px) rotateY(0deg);opacity: 1;}
+}
+.flipInTop, .flipInBottom .flipInLeft .flipInRight { -webkit-backface-visibility: visible !important; -moz-backface-visibility: visible !important; -o-backface-visibility: visible !important; backface-visibility: visible !important}
+.flipInTop, .flipInBottom { -webkit-animation-name: flipInUp; -moz-animation-name: flipInUp; -o-animation-name: flipInUp; animation-name: flipInUp; }
+.flipInLeft, .flipInRight { -webkit-animation-name: flipInRight; -moz-animation-name: flipInRight; -o-animation-name: flipInRight; animation-name: flipInRight; }
+
+@-webkit-keyframes fadeIn { 0% {opacity: 0;} 100% {opacity: 1;}}
+@-moz-keyframes fadeIn { 0% {opacity: 0;} 100% {opacity: 1;}}
+@-o-keyframes fadeIn {0% {opacity: 0;}100% {opacity: 1;}}
+@keyframes fadeIn {0% {opacity: 0;}100% {opacity: 1;}}
+
+.fadeIn{-webkit-animation-name: fadeIn; -moz-animation-name: fadeIn; -o-animation-name: fadeIn; animation-name: fadeIn;}
+
+.moveTop{
+  -webkit-animation: moveTop .6s ease both;
+  animation: moveTop .6s ease both;
+}
+.moveBottom{
+  -webkit-animation: moveBottom .6s ease both;
+  animation: moveBottom .6s ease both;
+}
+.moveLeft{
+  -webkit-animation: moveLeft .6s ease both;
+  animation: moveLeft .6s ease both;
+}
+.moveRight{
+  -webkit-animation: moveRight .6s ease both;
+  animation: moveRight .6s ease both;
+}
+@-webkit-keyframes moveTop {
+  from {opacity: 0;-webkit-transform: translateY(-20px);}
+  to {opacity: 1;-webkit-transform: translateY(0); }
+}
+@-webkit-keyframes moveBottom {
+  from {opacity: 0;-webkit-transform: translateY(20px);}
+  to {opacity: 1;-webkit-transform: translateY(0); }
+}
+@-webkit-keyframes moveLeft {
+  from {opacity: 0;-webkit-transform: translateX(-20px);}
+  to {opacity: 1;-webkit-transform: translateX(0); }
+}
+@-webkit-keyframes moveRight {
+  from {opacity: 0;-webkit-transform: translateX(20px);}
+  to {opacity: 1;-webkit-transform: translateX(0); }
+}

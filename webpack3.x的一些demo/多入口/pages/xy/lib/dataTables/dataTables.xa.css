@@ -1,0 +1,281 @@
+div.dataTables_wrapper {
+
+	min-width: 840px;
+}
+.dataTables_scroll{
+	min-height:256px;
+}
+.dataTables_scrollHead{
+	border: 1px solid #e6e6e6 !important; 
+	border-bottom: 0 !important;
+}
+.dataTables_scrollBody{
+	border: 1px solid #e6e6e6 !important; 
+	border-top: 0 !important;
+	border-bottom: 0 !important;
+}
+.dataTables_processing{
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    margin-left: -100px;
+    margin-top: -26px;
+    text-align: center;
+    padding: 65px 0;
+
+    color: #999
+}
+
+
+/*datatables自定义列 下拉菜单样式*/
+.custom-col-dropdown-menu{
+	width: 315px;
+	padding-left: 15px;
+	
+}
+.custom-col-dropdown-menu .checkbox{
+		width: 85px;
+		margin: 5px;
+	}
+.dataTable .caption{
+	height: 44px;
+	line-height: 44px;
+	padding: 0 15px;
+	font-weight: bold;
+	font-size: 15px;
+	color: #333;
+	border-bottom: 1px solid #e6e6e6;
+}
+
+
+div.dataTables_wrapper>.row:nth-child(2) {
+	background-color: #fff;
+	margin-bottom: -1px;
+}
+
+div.dataTables_length label {
+	font-weight: normal;
+	float: left;
+	text-align: left;
+}
+
+div.dataTables_length select {
+	width: 75px;
+}
+
+div.dataTables_filter label {
+	font-weight: normal;
+	float: right;
+}
+
+div.dataTables_filter input {
+	width: 16em;
+}
+
+div.dataTables_info {
+	padding-top: 20px;
+	color: #999;
+}
+
+div.dataTables_paginate {
+	float: right;
+	margin: 0;
+	padding-top: 20px;
+}
+
+div.dataTables_paginate .previous {
+	display: inline-block;
+	line-height: 28px;
+	text-align: center;
+	background-color: #f1f1f1;
+	color: #666;
+	outline: none;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+div.dataTables_paginate .paginate_button {
+	display: inline-block;
+	padding: 0 15px;
+	height: 28px;
+	line-height: 28px;
+	background-color: #f1f1f1;
+	text-align: center;
+	color: #666;
+	cursor: pointer;
+	text-decoration: none;
+	margin-right: 4px;
+	outline: none;
+}
+
+div.dataTables_paginate .current {
+	color: #ea5e13;
+	background-color: #fff;
+	font-weight: bold;
+}
+
+div.dataTables_paginate .disabled {
+	background-color: #f1f1f1;
+	color: #b7b7b7;
+	cursor: default;
+}
+
+div.dataTables_paginate ul.pagination {
+	margin: 2px 0;
+	white-space: nowrap;
+}
+
+table.dataTable td,
+table.dataTable th {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
+table.dataTable {
+	clear: both;
+	margin-top: 6px !important;
+	margin-bottom: 6px !important;
+	max-width: none !important;
+}
+table.dataTable.cursor-pointer td{
+		cursor: pointer;
+}
+table.dataTable.cursor-pointer tr:hover td{
+		background-color: #ebf2f9;
+}
+table.dataTable thead .sorting,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc,
+table.dataTable thead .sorting_asc_disabled,
+table.dataTable thead .sorting_desc_disabled {
+	cursor: pointer;
+}
+
+
+
+table.dataTable thead > tr > th {
+	padding-left: 18px;
+	padding-right: 18px;
+}
+
+table.dataTable th:active {
+	outline: none;
+}
+
+/* Scrolling */
+div.dataTables_scrollHead table {
+	margin-bottom: 0 !important;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	margin-top: 0 !important;
+}
+
+div.dataTables_scrollHead table thead tr:last-child th:first-child,
+div.dataTables_scrollHead table thead tr:last-child td:first-child {
+	border-bottom-left-radius: 0 !important;
+	border-bottom-right-radius: 0 !important;
+}
+
+div.dataTables_scrollHead table thead tr th {
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	height: 44px;
+	padding: 0;
+	padding-left: 21px;
+	padding-right: 15px;
+	line-height: 44px;
+	color: #333;
+	background-color: #f7f7f7;
+	border-top: none;
+	border-bottom: 1px solid #e6e6e6;
+}
+
+div.dataTables_scrollHead table,div.dataTables_scrollBody table,div.dataTables_scrollFoot table {
+	border-top: none;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+	color: #999;
+	min-width: 100% !important;
+}
+.dataTable{
+	width: 100% !important
+}
+div.dataTables_scrollBody tbody tr:first-child th,
+div.dataTables_scrollBody tbody tr:first-child td {
+	border-top: none;
+}
+
+div.dataTables_scrollBody tbody tr td {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	text-align: center;
+	height: 41px;
+	padding: 0 15px;
+	line-height: 41px;
+	max-width: 150px;
+	min-width: 50px;
+
+}
+
+div.dataTables_scrollBody tbody tr td .switch{
+	position: relative;
+	top: 6px;
+}
+div.dataTables_scrollFoot table {
+	margin: 0 !important;
+	border-top: none;
+}
+div.dataTables_scrollFoot tfoot tr th{
+	text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: center;
+    height: 41px;
+    padding: 0 7px;
+    line-height: 41px;
+    max-width: 150px;
+    min-width: 50px;
+    font-weight: normal;
+    color: #eb6120;
+}
+
+/* Frustratingly the border-collapse:collapse used by Bootstrap makes the column
+   width calculations when using scrolling impossible to align columns. We have
+   to use separate
+ */
+table.table-bordered.dataTable {
+	border-collapse: separate !important;
+}
+
+table.table-bordered thead th,
+table.table-bordered thead td {
+	border-left-width: 0;
+	border-top-width: 0;
+}
+
+table.table-bordered tbody th,
+table.table-bordered tbody td {
+	border-left-width: 0;
+	border-bottom-width: 0;
+}
+
+table.table-bordered th:last-child,
+table.table-bordered td:last-child {
+	border-right-width: 0;
+}
+
+div.dataTables_scrollHead table.table-bordered {
+	border-bottom-width: 0;
+}
+
+div.dataTables_scrollHead div.dataTables_scrollHeadInner {
+	min-width: 100% !important
+}
+
+
+
+
