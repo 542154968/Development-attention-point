@@ -409,3 +409,12 @@ spreadJSON ({}, m, '')
 
 - Blob 对象表示一个不可变、原始数据的类文件对象。Blob 表示的不一定是JavaScript原生格式的数据。文件接口基于Blob，继承了blob的功能并将其扩展使其支持用户系统上的文件。
 - 要从其他非blob对象和数据构造一个Blob，请使用 Blob() 构造函数。要创建包含另一个blob数据的子集blob，请使用 slice()方法。要获取用户文件系统上的文件对应的Blob对象，请参阅 文件文档。
+
+**28. Postcss-cli的简单使用**
+- 今天把项目中的css单独使用postcss优化了一下 
+1. npm i -g|-D postcss-cli 安装postcss-cli
+2. npm i -g autoprefixer 安装插件
+3. cd node_modules/.bin 一定要进入这个文件夹
+4. 在3进入的文件夹中 根据相对路径找到你要优化的css （我的是放在了根目录的css文件中）
+5. postcss ../../common.css -o ../../css/outcommon.css -u autoprefixer
+6. 然后你就拿到了加了兼容的新的css样式
