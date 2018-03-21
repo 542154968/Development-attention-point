@@ -416,6 +416,6 @@ spreadJSON ({}, m, '')
 2. npm i -g autoprefixer 安装插件
 3. cd node_modules/.bin 一定要进入这个文件夹
 4. 在3进入的文件夹中 根据相对路径找到你要优化的css （我的是放在了根目录的css文件中）
-5. postcss ../../common.css -o ../../css/outcommon.css -u autoprefixer
+5. postcss ../../css/common.css -o ../../css/outcommon.css -u autoprefixer
 6. 然后你就拿到了加了兼容的新的css样式
 - 还有很多插件（现在貌似200+）还没用到 有时间一起研究
