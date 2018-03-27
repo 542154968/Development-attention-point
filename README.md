@@ -450,3 +450,15 @@ spreadJSON ({}, m, '')
 - 可看帖子 [解决IE浏览器下：td标签上有position: relative;与background-color属性时td边框消失](https://blog.csdn.net/littlebeargreat/article/details/71123979)
 - 另一种思路，看场景。 不要给td背景色 给tr背景色 当:hover当前行的时候就不会出现边框问题了
 
+**33. 一个横着铺开的ul列表的样式**
+```css
+.tabs .tabs-navbar .tabs-nav{
+    height: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+}   
+.tabs .tabs-navbar .nav-tabs>li{
+    display: inline-block;
+    float: none;
+} 
+```
