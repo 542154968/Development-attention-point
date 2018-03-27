@@ -447,4 +447,7 @@ spreadJSON ({}, m, '')
 	+ 然后后端接到这个请求链接后，将参数附加在URL中 `http://www.shou.com?data={"user": {"openid": "ssxffqfsf"}}`
 	+ 然后后端还会重定向回我们的页面，然后我们再次进入这个登录组件，这个时候就取到了后端给我们的hash然后就可以进入我们的项目了
   
-
+**32. table表格中的表格如果使用relative定位会导致表格边框消失**
+- 在IE、火狐中都测出该问题
+- 解决思路： 给td中套一个div，给这个div设置相对定位，内容写在相对定位的DIV中。
+- 可看帖子 [解决IE浏览器下：td标签上有position: relative;与background-color属性时td边框消失](https://blog.csdn.net/littlebeargreat/article/details/71123979)
