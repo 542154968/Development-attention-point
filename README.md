@@ -448,3 +448,5 @@ spreadJSON ({}, m, '')
 - 在IE、火狐中都测出该问题
 - 解决思路： 给td中套一个div，给这个div设置相对定位，内容写在相对定位的DIV中。
 - 可看帖子 [解决IE浏览器下：td标签上有position: relative;与background-color属性时td边框消失](https://blog.csdn.net/littlebeargreat/article/details/71123979)
+- 另一种思路，看场景。 不要给td背景色 给tr背景色 当:hover当前行的时候就不会出现边框问题了
+
