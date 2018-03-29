@@ -462,3 +462,46 @@ spreadJSON ({}, m, '')
     float: none;
 } 
 ```
+**34. table使用 table-layout: fixed;带来的问题**
+- table使用table-layout: fixed;然后使用colspan rowspan 会使子表格中设置宽度失效，这个时候可以用
+```HTML
+<colgroup>
+	<col style="width: 60px">
+	<col style="width: 100px">
+	<col style="width: 209px">
+	<col style="width: 50px">
+	<col style="width: 60px">
+	<col style="width: 209px">
+	<col style="width: 209px">
+	<col style="width: 80px">
+	<col style="width: 110px">
+	<col style="width: 60px">
+</colgroup>
+```
+- 来分隔表格宽度
+
+**35. JQ $(dom).html()保存的html中没有input和textarea的值**
+- 监听textarea和input的input事件 赋值在DOM结构上即可
+```JAVASCRIPT
+saveDom()
+function saveDom(){
+	var changeInputTimeId = null,
+		changeTextTimeId = null;
+	$('input').on( 'input', function(e){
+		clearTimeout( changeInputTimeId )
+		var $this = $(this);
+		setTimeout( function(){
+			$this.attr( 'value', $this.val() )
+		}, 200 )
+	} )
+
+	$('textarea').on( 'input', function(e){
+		clearTimeout( changeTextTimeId )
+		var $this = $(this);
+		setTimeout( function(){
+			// TEXTAREA必须是val和text
+			$this.text( $this.val() )
+		}, 200 )
+	} )
+}
+```
