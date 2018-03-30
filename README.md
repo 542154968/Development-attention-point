@@ -505,3 +505,44 @@ function saveDom(){
 	} )
 }
 ```
+
+**36. 回流（reflow）和重绘（repaint）**
+> 传送门 [DOM操作成本到底高在哪儿？](https://segmentfault.com/a/1190000014070240?utm_source=feed-content)
+
+- **reflow(回流)**: 根据Render Tree布局(几何属性)，意味着元素的内容、结构、位置或尺寸发生了变化，需要重新计算样式和渲染树；
+- **repaint(重绘)**: 意味着元素发生的改变只影响了节点的一些样式（背景色，边框颜色，文字颜色等），只需要应用新样式绘制这个元素就可以了；
+- reflow回流的成本开销要高于repaint重绘，一个节点的回流往往回导致子节点以及同级节点的回流；
+- **引起reflow回流**
+    1. 页面第一次渲染（初始化）
+    2. DOM树变化（如：增删节点）
+    3. Render树变化（如：padding改变）
+    4. 浏览器窗口resize
+    5. 获取元素的某些属性：
+    6. 浏览器为了获得正确的值也会提前触发回流，这样就使得浏览器的优化失效了，这些属性包括offsetLeft、offsetTop、offsetWidth、offsetHeight、 scrollTop/Left/Width/Height、clientTop/Left/Width/Height、调用了getComputedStyle()或者IE的currentStyle
+	
+- **引起repaint重绘**
+	1. reflow回流必定引起repaint重绘，重绘可以单独触发
+	2. 背景色、颜色、字体改变（注意：字体大小发生变化时，会触发回流）
+
+- **优化方式**
+
+    1. 避免逐个修改节点样式，尽量一次性修改
+    2. 使用DocumentFragment将需要多次修改的DOM元素缓存，最后一次性append到真实DOM中渲染
+    3. 可以将需要多次修改的DOM元素设置display: none，操作完再显示。（因为隐藏元素不在render树内，因此修改隐藏元素不会触发回流重绘）
+    4. 避免多次读取某些属性（见上）
+    5. 将复杂的节点元素脱离文档流，降低回流成本
+
+- **为什么一再强调将css放在头部，将js文件放在尾部**
+	+ DOMContentLoaded 和 load
+		1. DOMContentLoaded 事件触发时，仅当DOM加载完成，不包括样式表，图片...
+		2. load 事件触发时，页面上所有的DOM，样式表，脚本，图片都已加载完成
+	+ CSS 资源阻塞渲染
+		1. 构建Render树需要DOM和CSSOM，所以HTML和CSS都会阻塞渲染。所以需要让CSS尽早加载（如：放在头部），以缩短首次渲染的时间。
+	+ JS 资源
+		1. 阻塞浏览器的解析，也就是说发现一个外链脚本时，需等待脚本下载完成并执行后才会继续解析HTML
+			- 这和之前文章提到的浏览器线程有关，浏览器中js引擎线程和渲染线程是互斥的，详见[《从setTimeout-setInterval看JS线程》](https://segmentfault.com/a/1190000013702430#articleHeader2)
+		2. 普通的脚本会阻塞浏览器解析，加上defer或async属性，脚本就变成异步，可等到解析完毕再执行
+			- async异步执行，异步下载完毕后就会执行，不确保执行顺序，一定在onload前，但不确定在DOMContentLoaded事件的前后
+			- defer延迟执行，相对于放在body最后（理论上在DOMContentLoaded事件前）
+
+
