@@ -546,3 +546,39 @@ function saveDom(){
 			- defer延迟执行，相对于放在body最后（理论上在DOMContentLoaded事件前）
 
 
+**37. 滚动的图片视差效果demo**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>滚动的图片视差效果demo</title>
+    <style>
+        body{
+            margin: 0;
+            background: url('../images/timg.jpg')no-repeat;
+            background-size: 100% 100%;
+	    /*这个属性把背景图固定住*/
+            background-attachment: fixed;
+        }
+        header, footer{
+            height: 800px;
+            background: #fff;
+        }
+        section{
+            height: 100px;
+	    /*背景色透明*/
+            background: transparent;
+        }
+
+    </style>
+</head>
+<body>
+    <header></header>
+    <section>66</section>
+    <footer></footer>
+</body>
+</html>
+```
