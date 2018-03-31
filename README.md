@@ -590,3 +590,8 @@ function saveDom(){
 
 **39. 移动端web页面上使用软键盘时如何让其显示“前往”（GO）而不是换行？**
 - 用一个 form 表单包裹住就会显示前往，单独的一个 input 就会提示换行。
+
+**40. vue使用bootstrap的响应式布局**
+1. http://v3.bootcss.com/customize/ 到这里去定制bootstrap  所有的都不勾选 只勾选 grid
+2. 下载下来 引入到你的vue项目用
+3. 和使用bootstarp一样布局吧 亲测好用
