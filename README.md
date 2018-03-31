@@ -595,3 +595,6 @@ function saveDom(){
 1. http://v3.bootcss.com/customize/ 到这里去定制bootstrap  所有的都不勾选 只勾选 grid
 2. 下载下来 引入到你的vue项目用
 3. 和使用bootstarp一样布局吧 亲测好用
+
+**41. VUE权限控制——动态路由的方案**
+- https://github.com/tianxiadaluan/vue-checkAuth 王大哥总结的 可以学习一波
