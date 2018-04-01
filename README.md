@@ -598,3 +598,30 @@ function saveDom(){
 
 **41. VUE权限控制——动态路由的方案**
 - https://github.com/tianxiadaluan/vue-checkAuth 王大哥总结的 可以学习一波
+
+**42. Vue ElementUI 的导航栏刷新后默认选择的没了**
+```javascript
+	<el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+		<!-- 设置成route模式 然后设置默认选择的路由 -->
+        <el-menu :default-openeds="openIndex" :router="true" :default-active="this.$route.path">
+            <el-submenu index="1">
+                <template slot="title"><i class="el-icon-message"></i>导航一</template>
+                <el-menu-item-group>
+                <template slot="title">分组一</template>
+				<!-- 设置成route模式 index设置成路由 -->
+                <el-menu-item index="/table" >表格1
+                </el-menu-item>
+                <el-menu-item index="/table2">表格2
+                </el-menu-item>
+                </el-menu-item-group>
+                <el-menu-item-group title="分组2">
+                <el-menu-item index="1-3">选项3</el-menu-item>
+                </el-menu-item-group>
+                <el-submenu index="1-4">
+                <template slot="title">选项4</template>
+                <el-menu-item index="1-4-1">选项4-1</el-menu-item>
+                </el-submenu>
+            </el-submenu>
+        </el-menu>
+    </el-aside>
+```
