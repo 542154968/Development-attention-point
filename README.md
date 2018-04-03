@@ -625,3 +625,35 @@ function saveDom(){
         </el-menu>
     </el-aside>
 ```
+
+**43. 关于toString和valueof的面试题**
+```javascript
+var a = {};
+var b = {key: 'b'};
+var c = {key: 'c'};
+var d = [3,5,6];
+a[b] = 123;
+a[c] = 345;
+a[d] = 333;
+console.log(a[b]);
+console.log(a[c]);
+console.log(a[d]);
+// 345
+// 345
+// 333
+????? 没错 没有搞错  why
+/*
+Object内置toString 和 valueOf 方法;
+这种情况a[b] = 123 会默认调用对象的toString()
+所以就是 a['object Objcet'] = 123;
+		a['object Object'] = 345;
+		a['object Array'] = 333;
+		*/
+/*
+如果是多个对象
+var g = [ {name: 666}, {age: 666}, {job: 777} ]
+g.toString()
+"[object Object],[object Object],[object Object]"
+a[g]  其实就是 a["[object Object],[object Object],[object Object]"]
+*/		
+```
