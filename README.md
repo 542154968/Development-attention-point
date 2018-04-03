@@ -657,3 +657,11 @@ g.toString()
 a[g]  其实就是 a["[object Object],[object Object],[object Object]"]
 */		
 ```
+
+**44. ‘false‘如何转成布尔后仍然是false**
+```javascript
+const str = 'false';
+Boolean(str) // true
+JSON.parse(str) // false  
+// 使用JSON.parse()最好try-catch 避免报错
+```
