@@ -665,3 +665,13 @@ Boolean(str) // true
 JSON.parse(str) // false  
 // 使用JSON.parse()最好try-catch 避免报错
 ```
+
+**45. 字符串不会隐式转换的**
+```javascript
+'0' == ''
+false
+'0' == false
+true
+'' == false
+true
+```
