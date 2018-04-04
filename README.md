@@ -675,3 +675,12 @@ true
 '' == false
 true
 ```
+
+**46. 一个数组交叉合并题**
+```javascript
+const arr = [ ["1", "2", "3"], [ "a", "b" ] ];
+for( let i = 0, l = arr[0].length; i < l ; i++ ){
+	newArr.push( arr[0][i] + arr[1][0], arr[0][i] + arr[1][1] )
+}
+// ["1a", "1b", "2a", "2b", "3a", "3b"]
+```
