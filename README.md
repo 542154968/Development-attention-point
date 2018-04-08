@@ -684,3 +684,28 @@ for( let i = 0, l = arr[0].length; i < l ; i++ ){
 }
 // ["1a", "1b", "2a", "2b", "3a", "3b"]
 ```
+
+**47. 函数柯里化**
+```javascript
+// 固定参数实现
+const result = x => y => z => x * y * z;
+result(3)(4)(4) // 48;
+// 柯里化实现
+function curry(fn) {
+	const len = fn.length;
+	return function curried() {
+		const args = Array.prototype.slice.call(arguments);
+		if (args.length >= len) {
+			return fn.apply(this, args);
+		}            
+		return function () {
+			return curried.apply(this, args.concat(Array.prototype.slice.call(arguments)));
+		};
+	};
+}
+const result = curry(function (a, b, c) {
+	return a * b * c;
+});
+result(3)(4)(4); // 48
+
+```
