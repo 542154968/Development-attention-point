@@ -709,3 +709,11 @@ const result = curry(function (a, b, c) {
 result(3)(4)(4); // 48
 
 ```
+
+**48. 空数组循环的问题**
+```javascript
+let arr = [];
+arr[4] = 'a';
+console.log(arr) // [ emptyx3, 4 ]
+// 如果要循环出来 需要用for 使用forEach 等一些高阶函数 会过滤空的数组
+```
