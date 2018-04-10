@@ -717,3 +717,17 @@ arr[4] = 'a';
 console.log(arr) // [ emptyx3, 4 ]
 // 如果要循环出来 需要用for 使用forEach 等一些高阶函数 会过滤空的数组
 ```
+
+**49. Array.sort()**
+- Array.sort()默认是按照字符集排序的
+```javascript
+let arr = [6, 1,0, 8, 9, 10, 15, 20, 9];
+// 字符集
+arr.sort() // (9) [0, 1, 10, 15, 20, 6, 8, 9, 9];
+
+// 老老实实回调不能少
+arr.sort((a, b) => {
+	return a - b;
+})
+
+```
