@@ -223,3 +223,18 @@ var doctype = document.doctype; // 取得对<!DOCTYPE>的引用
 ### 文档信息
 **documtn.title**
 - 作为HTMLDocument的一个实例，document独享还有一些标准的Document对象所没有的属性，这些属性提供了document对象所表现的网页的一些信息。
+```javascript
+docuemnt.title = "new Title"
+```
+**document.domain document.URL document.referrer**
+- URL 地址栏中的URL
+- domain 取得域名
+- referrer 去的来源页面的URL
+- 三个属性中，只有domain是可设置的，但不能设置任何值。只能设置成主域名值。不能将这个属性设置为URL中不包含的域。
+- 如果域名一开始是松散的(loose)，那么不能将它在设置为"紧绷的"（tight）
+```javascript
+// 假设页面来自于 p2p.wrox.com 域
+document.domain = "wrox.com" // 松散的(成功)
+docuemnt.domain = "p2p.wrox.com" // 紧绷的(出错)
+```
+## 查找元素
