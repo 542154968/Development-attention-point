@@ -238,3 +238,167 @@ document.domain = "wrox.com" // 松散的(成功)
 docuemnt.domain = "p2p.wrox.com" // 紧绷的(出错)
 ```
 ## 查找元素
+**document.getElementById**
+- 接收一个参数，要取得元素的ID，如果找到相应的元素则返回该元素，如果不存在，返回Null，严格匹配包括大小写
+```javascript
+// #myDiv
+document.getElementById("myDiv");
+document.getElementById("mydiv") // IE7及更早版本之外的所有浏览器中都会返回Null
+// IE8及较低版本不区分ID的大小写
+```
+- <IE7 低版本有个怪癖：name特性与给定ID匹配的表单元素也会被该方法返回，所以ID尽量和name不要相同
+
+**document.getElementsByTagName**
+- 接收一个参数，要取得元素的标签名，返回的是包含零或多个元素的NodeList
+- 在HTML文档中，这个放啊会返回一个HTMLCollection对象，作为一个动态集合，该对象与NodeList非常类似，可以使用方括号语法item()方法来访问HTMLCollection对象中的项
+- 这个对象中元素的数量可以通过length属性得到
+- namedItem(): 使用这个方法可以通过元素的name特性取到集合中的项
+```html
+<img src="" name="myImg">
+<script>
+    var imgs = document.getElementsByTagName('img');
+    var myImg = imgs.namedItem("myImg")
+    // 还可以按名称访问
+    var myImg = imgs["myImg"]
+</script>
+```
+
+- "\*" 表示全部
+```javascript
+docuemnt.getElementsByTagName("*") // 返回页面中所有的元素
+// 由于IE将注释实现为元素，因此IE中调用会返回所有注释节点
+```
+
+**getElementsByName**
+- 只有HTMLDocument类型才有的方法，这个方法会返回带有给定name特性的所有元素
+
+**特殊集合**
+- docuemnt.anchors 文档中带有name特性的a元素
+- docuemnt.applets 文档中所有<applets> 已废弃
+- document.forms 文档中所有表单元素
+- document.images 所有img元素
+- document.links 所有带href特性的a   
+    
+**DOM一致性检测**
+- document.implementation
+- DOM一级职位该属性规定了一个方法——hasFeature()。参数1： 要检测的DOM功能的名称及版本号，如果浏览器支持给定名称和版本的功能，返回true
+- 该方法也有缺陷，最好除了检测hasFeature之外还是用能力检测
+
+**文档写入**
+- docuemnt.write() 原样写入
+- doucemnt.writeln() 字符串末尾加上换行符
+- docuemnt.open和close 用于打开和关闭网页输出流
+
+## Element类型
+- Element类型用于表现XML或HTML元素，提供了对元素标签名，子节点及特性的访问
+-   1. nodeType 值为1
+    2. nodeName 值为元素标签名
+    3. nodeValue 的值为null
+    4. parentNode 可能是Document或Element
+    5. 子节点类型比较多
+    
+- 要访问元素标签名，可以使用nodeNmae属性，也可以使用tagName属性，这两个属性会返回相同的值（使用后者主要是为了清晰可见）
+```javascript
+var div = document.getElementById('myDiv');
+div.tagName // "DIV" // 在HTML中，标签名始终以全部大写表示，在XML中则与源码一直，当不确定在HTML还是XML中，最好都转换成小写
+div.tagName.toLowerCase() // div
+div.nodeName // true
+```
+
+**HTML元素**
+- 所有HTML元素都有HTMLElement类型表示，不是直接通过这个类型也是通过它的子类型表示
+- HTMLElement类型直接继承自Element并添加了一些属性
+-   1. id 元素在文档中的唯一标识符
+    2. title 有关元素的附加说明信息，一般通过工具提示条显示出来
+    3. lang 元素内容的语言代码
+    4. dir 语言的方向 ltr left-to-right rtl right-to-left
+    5. className 与元素的calss特性对应，即为元素指定的CSS类
+- 以上都是可读可修改的
+
+**特性**
+- getAttribute
+- setAttribute
+- removeAttribute
+- 自定义属性应该加上data-前缀
+- 只有公认的（非自定义的）特性才会以属性的形式添加到DOM对象中
+- style和onclick等事件的会返回的不一致
+- <IE7 setAttribute存在一些异常 蛇者clas和style没有效果设置事件处理也无效IE8才解决
+- <IE6 不支持removeAttribute
+
+**attributes**
+- Element类型是使用attributes属性的唯一一个DOM节点类型
+- attributes属性中包含一个NamedNodeMap， 与NodeList类似也是一个动态集合，元素的每一个特性都由一个Attr节点表示，每个节点都保存在NamedNodeMap对象中
+-   1. getNamedItem 返回nodeName属性等于name的节点
+    2. removeNamedItem 从列表中移除nodeNmae属性等于name的节点
+    3. setNamedItem 想列表中添加节点 以节点的nodeName属性为索引
+    4. item 返回位于数字pos位置处的节点
+- 不太方便 大家还是用上面的特性
+
+**创建元素**
+- docuemnt.createElement()方法创建新元素
+- 只接受一个参数——要创建的元素标签名 这个标签名在HTML中不区分大小写，而在XML中区分
+- 使用该方法的同时，也为新元素设置了ownerDocuemnt属性，此时，还可以操作元素的特性，为它添加更多子节点及操作
+```javascript
+var div = document.createElement("div");
+div.id = "myNewDiv";
+div.className = "box"
+```
+- 创建好后并没有添加到文档树中，因此，设置这些特性不会影响浏览器的显示
+- 可以使用 appendChild() insertBefore() 或 replaceChild()方法， 一但将元素添加到文档中，浏览器就会立即呈现该元素，此后，对这个元素的任何修改都会实时反映在浏览器中
+- IE中可以为这个方法传入完整的元素标签，也可以包含属性
+```javascript
+var div = docuemnt.createElement("<div id=\"myNewDiv\" class=\"box\" ></div>")
+```
+- 这种方式有助于避开在IE7及更早版本中动态创建元素的某些问题
+-   1. 不能设置动态创建的iframe元素的name特性
+    2. 不鞥呢通过表单的reset方法重设动态创建的input元素
+    3. 动态创建的type特性值为"reset"的<button>元素重设不了表单
+    4. 动态创建的一批name相同的单选按钮彼此毫无关系
+- 上述问题都可以通过这种方式解决 但是只能在IE中 
+    
+**元素子节点**
+- 元素的childNodes属性中包含了它的所有子节点
+- 不同浏览器中子节点数量不同，所以在执行某项操作前，都要先检查下nodeType属性
+```javascript
+for( var i = 0, l = element.childNodes.length; i < l; i++ ){
+    if( element.childNodes[i].nodeType == 1 ){
+    
+    }
+}
+```
+- 通过某个特定的标签名取得子节点或后代节点
+```javascript
+    var ul = docuemnt.getElementById("myList");
+    var items = ul.getElementsByTagName("li")
+```
+
+## Text类型
+- 文本节点由Text类型表示，包含的是可以照字面解释的纯文本内容。春文中可以包含转义后的HTML字符，但不能包含HTML代码
+-   1. nodeType 3
+    2. nodeName "#text"
+    3. nodeValue 为节点所包含的文本
+    4. parentNode是一个Element
+    5.不支持（没）子节点
+- 可以通过nodeValue属性或data属性访问Text接地那种包含的文本，两个属性更改，另一方都会反映出来。
+-   1. appendData(text) 将text添加到节点末尾
+    2. deleteData(offset, count) 从offset指定的位置开始删除count个字符
+    3. insertData(offset, test) 在offset指定的位置插入text
+    4. replaceData(offset, count, text) 用text替换从offset指定的位置开始到offsetcout为止处的文本
+    5. splietText(offset) 从offset指定的位置将当前文本节点分成两个文本节点
+    6. substringData(offset, count) 提取从offset指定的位置开始到offsetcount位置的字符串
+- length 属性  nodeValue.length 和 data.length 相同的值
+- 修改文本节点时还要注意，此时的字符串会经过HTML（取决于文档类型）编码
+
+**创建文本节点**
+- document.createTextNode()
+- 同样可以设置ownerDocuemnt属性
+- 同样是添加到文档树中才能看到
+- 如果连个文本几点是相邻的同胞节点，那么这两个节点就会串联显示，中间不会有空格
+
+**规范化文本节点**
+- normalize() IE6中使用这个方法可能会崩溃IE6
+- 如果一个包含两个或多个文本节点的父元素上调用normalize()方法，则会将所有文本节点合并成一个节点，结果节点的nodeValue等于将合并前每个文本节点的nodeValue值拼起来的值
+
+**分割文本节点**
+- splitText() 
+- 按照指定位置分割文本节点
