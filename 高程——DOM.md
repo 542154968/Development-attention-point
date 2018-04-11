@@ -131,3 +131,95 @@ var formerLastChild = someNode.removeChild( someNode.lastChild )
 - 并不是所有的节点都有子节点，如果在不支持子节点的节点使用该方法将会报错。
 
 ## 其他方法
+**cloneNode()**
+- 用于创建调用这个方法的节点的一个完全相同的副本
+- cloneNode方法接受一个布尔值参数，表示是否执行深刻复制， 当参数为true时，执行深刻复制，也就是复制节点及其整个节点树
+- 当参数为false时，执行浅复制，即只复制节点本身。复制后返回的节点副本属于文档所有，但并没有为它指定父节点。因此，这个节点副本就成为了一个孤儿，除非通过appendChild()、 insertBefore()或replaceChild()将它添加到文档中
+```html
+<ul>
+    <li>item 1</li>
+    <li>item 2</li>
+    <li>item 3</li>
+</ul>
+<script>
+    // 若果我们已经将ul元素的引用保存在了变量myList中，name通常下列代码就可以看出使用cloneNode()方法的两种模式
+    
+    var deepList = myList.cloneNode( true );
+    alert( deepList.childNodes.length ) // 3 (IE < 9) 或 7（其他浏览器); 可能会有些差异，主要因为IE8及更早版本与其他浏览器处理空白字符的方式不一样
+                                                     
+    var shallowList = myList.cloneNode( false );
+    alert( shallowList.childNodes.length ) // 0 浅复制不包含子节点                                                  
+</script>
+```
+
+**normalize()**
+- 这个方法唯一的作用就是处理文档树中的文本节点
+- 由于解析器的实现或DOM操作等原因，可能会出现文本节点不包含文本，或者接连出现连个文本几点的情况
+- 当在某个节点上调用这个方法时，就会在该节点的后代节点中查找上述两种情况
+- 如果找到了空文本节点，则删除它，如果找到相邻的文本节点，则将他们合并为一个文本节点。
+
+## Document类型
+- JS通过Document类型表示文档。
+- 在浏览器中，document对象是HTMLDocument( 继承自Document类型 )的一个是心理，表示整个HTML页面
+- document对象是window对象的一个属性，因此可以将其作为全局对象来访问
+- 特征：
+    1. nodeType 9
+    2. nodeName "#document"
+    3. nodeValue null
+    4. parentNode null
+    5. ownerDocument null
+    6. 其子节点可能是一个DocumentType(最多一个) Element(最多一个) ProcessingInstruction 或 Comment
+- Document类型可以表示HTML页面或者其它基于XML的文档。不过，最常见的应用还是作为HTMLDocument实例的doucment对象。
+- 通过这个文档对象，不仅可以取得与页面有关的信息，而且还能操作页面的外观及其底层结构。
+
+### 文档的子节点
+- 虽然DOM标准规定Document节点的自及诶单可以是DocumentTYpe、 Element、 ProcessingInstruction 或Comment 但还有两个内置的访问器子节点的快捷方式。
+**documentElement**
+- `documentElement`  该属性始终指向HTML页面中的<html>元素。
+    
+- 另个一个就是通过 `childNodes`里诶包访问文档元素
+- 单通过`documentElement`属性则能更快捷、更直接的访问该元素。
+```html
+<html>
+    <body>
+        <script>
+            var html = document.documentElement // 取得对<html>的引用
+            alert( html === document.childNodes[0] ) // true
+            alert( html === document.firstChild ) // true
+        </script>
+    </body>
+</html>
+```
+- 作为HTMLDocument的实例，document对象还有一个body属性，直接指向<body>元素
+    
+```javascript
+    var body = document.body; // 取得对body的引用    
+``` 
+**DocumentType**
+- Document另一个可能的子节点是`DocumentType`。通常将`<!DOCTYPE>`标签看成一个与文档其他部分不同的实体，可以通过doctype属性来访问它的信息
+```javascript
+var doctype = document.doctype; // 取得对<!DOCTYPE>的引用
+```
+- <IE8，如果存在文档类型声明，会将其错误地解释为一个注释并把它 当做 Comment节点；而document.doctype的值始终为null
+- IE9+及firefox 如果在文档类型声明，则将其作为围挡的第一个子节点；documnt.doctype是一个DocumentType节点，也可以通过document.firstChild或document.childNodes[0]访问同一个节点
+- Safari Chrome 和Opera 如果存在文档类型声明，则将其解析，但不作为文档的子节点。document.doctype是一个DocumentType节点，但该节点不会出现在document.childNodes中
+- 由于浏览器对docuemnt.doctype的支持不一，因此这个属性的用处很有限
+
+**注释的节点问题**
+```html
+<!--第一条注释-->
+<html>
+    <body>
+    </body>
+</html>
+<!--第二条注释-->
+```
+- 这个页面看起来有3个子节点： 注释、<html>元素、注释。从逻辑上将，我们会认为document.childNodes中英爱包含与这3个子节点对应的3项。但是现实中的浏览器在处理位于<html>外部的主食方面存在如下差异
+-   1. <IE8、Safari3.1及更高版本、Opera Chrome职位的一条注释创建节点不为第二条注释创建节点，结果第一条注释就会成为document.childNodes中的第一个子节点。
+    2. IE9+会为每条注释创建一个节点
+    3. Firefox以及Safari3.1之前的版本会完全你忽略这两条注释   
+- 同样，浏览器间的这种不一致性也导致了位于<html>元素外部的注释没有什么用处           
+
+### 文档信息
+**documtn.title**
+- 作为HTMLDocument的一个实例，document独享还有一些标准的Document对象所没有的属性，这些属性提供了document对象所表现的网页的一些信息。
