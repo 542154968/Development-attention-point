@@ -402,3 +402,195 @@ for( var i = 0, l = element.childNodes.length; i < l; i++ ){
 **分割文本节点**
 - splitText() 
 - 按照指定位置分割文本节点
+
+## Comment类型
+- 是注释类型
+-   1. nodeType 8
+    2. nodeName "#comment"
+    3. nodeValue 值为注释内容
+    4. parentNode 可能是Docuemnt或Element
+    5. 不支持（没有）子节点
+- Comment类型与Text类型继承自相同的基类，因此它拥有除splitText()之外的所有字符串操作方法，与Text类型相似，也可以通过nodeValue或data属性来取得注释内容    
+
+## CDATASection
+- 基于XML文档，表示的是CDATA区域
+- 与Comment类似，CDATASection类型继承自Text类型，因此拥有除solitText之外的所有字符串操作方法
+-   1. nodeType 4
+    2. nodeName "#cdata-section"
+    3. nodeValue 是CDATA区域中的内容
+    4. parentNode 可能是Docuemnt 或Element
+    5. 不支持 没有子节点
+    
+## DocuemntType类型
+## DocumentFragment类型
+## Attr类型
+- nodeType 2
+
+# DOM操作
+
+## 动态脚本
+```javascript
+var script = docuemnt.createElement("script");
+script.type = "text/javascript";
+script.src = "client.js"
+docuemnt.bpdy.appendChild(script)
+// script.appendChild( document.createTextNode("function(){alert(\"hi\")}") ) 这种在IE可能会报错
+script.text = "function(){alert(\"hi\")}" // safari 3.0 之前可能会报错
+// 兼容写法
+var code = "function(){alert(\"hi\")}";
+try {
+    script.appendChild( document.createTextNode(code) )
+} catch (ex){
+    script.text = code;
+}
+```
+## 动态样式
+```javascript
+var link = document.createElement("link");
+link.rel = "stylesheet";
+link.type = "text/css";
+link.href = "style.css";
+var head = document.getElementsByTagName('head')[0];
+head.appendChild( link )
+
+var style = docuemnt.createElement("style"),
+    code =  "body{color: #666}" ;
+style.type = "text/css";
+try{
+    // IE 低版本会报错
+    style.appendChild( document.createTerxtNode(code);
+} catch(ex){
+    style.styleSheet.cssText = code;
+}
+```
+
+## 创建表格  
+- 太麻烦了  直接 innerHTML吧。。。
+
+## 使用NodeList
+- NodeList 近亲 NameNodeMap HTMLCollection  三个都是动态的 每当文档结构变化 他们都会得到更新
+```javascript
+// 这种由于divs每次都是动态获取的所以会无限循环 因为length是动态的
+var divs = document.getElementsByTagName("div"),
+    div;
+for( i = 0; i < divs.length; i++ ){
+    div = document.createElement("div");
+    document.body.appendChild(div)
+}
+
+// 把length存起来即可
+var divs = document.getElementsByTagName("div"),
+    div;
+for( i = 0, l = divs.length; i < l; i++ ){
+    div = document.createElement("div");
+    document.body.appendChild(div)
+}
+```
+
+# DOM扩展
+
+## querySlector()
+- 接收一个CSS选择符， 返回该模式匹配的第一个元素，如果没有，返回null
+- 通过Element类型调用querySelector方法时，只会在该元素后代元素的范围内查找匹配元素
+- 如果传入了不被支持的选择符，querySelector会抛出错误
+- IE8开始支持
+
+## querySelectorAll()
+- 接受一个css选择符 返回NodeList实例
+- 如果没有找到匹配的元素 返回的是空的
+- 如果传入了不被支持的选择符，querySelectorAll会抛出错误
+- MDN上说IE不支持:SCOPED
+
+## matchesSelector() matches()
+- 一个参数，如果调用该元素与该选择符匹配，返回true 否则 返回false
+- 所有浏览器都不支持 可以用浏览器私有
+```javascript
+// 兼容写法
+if (!Element.prototype.matches) {
+    Element.prototype.matches = 
+        Element.prototype.matchesSelector || 
+        Element.prototype.mozMatchesSelector ||
+        Element.prototype.msMatchesSelector || 
+        Element.prototype.oMatchesSelector || 
+        Element.prototype.webkitMatchesSelector ||
+        function(s) {
+            var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+                i = matches.length;
+            while (--i >= 0 && matches.item(i) !== this) {}
+            return i > -1;            
+        };
+}
+```
+
+## 元素遍历
+- 对于元素间的空格 IE9及之前版本不会返回文本节点，而其他所有浏览器都会返回文本节点，为了弥补差异同事保持DOM规范不变，新增了如下API
+-   1. childElementCount 返回子元素（不包括文本节点和注释）的个数
+    2. firstElementChild 指向第一个子元素 firstChild的元素版
+    3. lastElementChild 指向对吼一个子元素 lastChild的元素版
+    4. previousElementSibling 指向前一个同辈元素 previousSibling 的元素版
+    5. nextElementSibling 指向后一个同辈元素 nextSibling的元素版
+- IE9+ Firefox 3.5+ Safari 4+ Chrome Opera 10+    
+- 利用这些元素不必担心空白文本节点，从而更方便的查找DOM元素了， 举个例子
+
+- ```javascript
+var i,
+    len,
+    child = element.firstChild;
+while( child != element.lastChild ){
+    // 检查是不是元素
+    if( child.nodeType == 1 ){
+        processChild(child)
+    }
+    child = child.nextSibling'
+}   
+
+// 使用 Element Traversal 新增的元素
+var i,
+    len,
+    child = element.firstElementChild;
+ while( child != element.lastElementChild ){
+    processChild( child )
+    child = child.nextElementSibling;
+ };
+``` 
+```
+
+# HTML5
+
+## getElementsByClassName()方法
+- 接收一个参数，即一个包含已获多个类名的字符串，返回带有指定类的所有元素的NodeList
+- 传入多个类名时先后顺序不重要
+```javascript
+docuemnt.getElementById('#div').docuemnt.getElementsByClassName(" username current ")
+```
+- IE 9+ Firefox 3+ Safari 3.1+ Chrome Opera 9.5+
+
+## classList
+- 在操作类名时，需要通过className 属性添加、删除和替换类名。因为className是一个字符串，即使修改字符串的一部分，也必须每次都设置整个字符串的值
+```html
+<div class="bd user disabled">...</div>
+<script>
+// 删除user类
+var className = div.className.split(/\s+/);
+var pos = -1,
+    i,
+    len;
+for( i = 0, len = classNames.length; i < len; i++ ){
+    if( className[i] == "user" ){
+        pos = i;
+        break;                                             
+    }                                         
+}    
+// 删除类名                                             
+classNames.splice(i, 1);     
+// 把剩下的类名拼成字符串重新设置
+div.className = classNames.join(" ");                                             
+</script>
+```
+- `classList`属性是心机和类型DOMTokenList的实例
+- DOMTokenList有一个标识自己包含多少元素的length属性，而要取得每个元素可以使用item()方法，也可以使用方括号语法，还有如下方法
+-   1. add 将给定的字符串值添加到列表中，如果值已经存在，就不添加了
+    2. contains 标识列表中是否存在给定的值，如果存在返回true 否则返回false
+    3. remove 从列表中删除给定的字符串
+    4. toggle 如果列表中存在给定的值，删除它；如果列表中没有给定的值，添加它
+- 很可惜 只有Firefox 3.6+ 和Chrome8.0 IE10+(不支持toggle) Opera11.5 Safari (WebKit)5.1 
