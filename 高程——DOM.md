@@ -613,5 +613,118 @@ if( document.readyState == "complete" ){
 ```
 
 **兼容模式**
+- 从IE6开始区分渲染页面的模式是标准的还是混杂的。
+- IE6给document添加了一个名为compatMode的属性，值是浏览器采用了哪种渲染模式
+- 标准模式下 document.compatMode的值是`CSS1Compat`
+- 混杂模式下 document.compatMode的值是`BackCompat`
 
+**head属性**
+- HTML5增加了docuemnt.head属性
+```javascript
+// 兼容写法
+var head = document.head || document.getElementsByTagName("head")[0]
+```
 
+**字符集属性**
+- document.charset
+- 如果文档没有使用默认的字符集，那charset和defaultCharset属性的值可能会不一样
+```javascript
+if( document.charset != document.defaultCharset ){
+    // 
+}
+```
+
+**自定义数据属性**
+- 为元素添加非标准的属性必须要写成data-的形式，目的是伪元素提供与渲染无关的信息，或者提供语义信息
+```html
+<div id="myDiv" data-appid = "123456" ></div>
+<script>
+    var div = document.getElmentById("myDiv");
+    var appId = div.dataset.appId;
+    console.log( appId )
+    div.dataset.appId = 2446;
+</script>
+```
+- 全浏览器支持
+
+## 插入标记
+**innerHTML**
+- 不多讲
+- 插入script时，必须为其制定defer属性，必须位于有作用域的元素之后 很多问题 插入script 和link
+- 在IE8中 可以通过 window.toStaticHTML()方法去除脚本节点和事件处理程序属性
+- 自己也要注意处理
+
+**outerHTML**
+- 在读模式下，outerHTML返回调用它的元素及所有子节点的HTML标签。
+- 在写模式下，outerHTML会根据指定的HTML字符串创建新的DOM子树，然后用这个DOM子树完全替换调用元素
+> [参考](https://blog.csdn.net/html5_/article/details/23619103)
+
+```html
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <meta charset= 'utf-8'>  
+    <title></title>  
+</head>  
+<body>  
+    <div id="test1">这是div中的文字<span>这是span中的文字</span></div>  
+  
+    <script type="text/javascript">  
+        console.log('innerHTML:'+test1.innerHTML);  
+        console.log('outerHTML:'+test1.outerHTML);  
+        console.log('innerText:'+test1.innerText);  
+        console.log('outerText:'+test1.outerText);  
+    </script>  
+</body>  
+</html> 
+
+innerHTML:这是div中的文字<span>这是span中的文字</span>
+outerHTML:<div id="test1">这是div中的文字<span>这是span中的文字</span></div>
+innerText:这是div中的文字这是span中的文字
+outerText:这是div中的文字这是span中的文字
+```
+
+**insertAdjacentHTML()方法**
+- 最早在IE中出现的， 接收两个参数 插入位置和要插入的HTML文本
+- 第一个参数
+-   1. beforebegin 在当前元素之前插入一个紧邻的
+    2. afterbegin 在当前元素之下插入一个新的子元素或在第一个子元素之前在插入新的子元素
+    3. beforeend 在当前元素之下插入一个新的子元素或在最后一个子元素之后再插入新的子元素
+    4. afterend 在当前元素之后插入一个紧邻的同辈元素
+- IE8+  都支持
+
+**scrollIntoView()**
+- 可以在所有HTML元素上调用，通过滚动浏览器窗口或某个容器内的元素，调用元素就可以出现在视口中
+- 传入true或不传入，窗口滚动之后会让调用元素的顶部与视口顶部尽可能平齐
+- 传入false元素尽可能出现在视口中，可能的话，调用元素的底部会与视口顶部平齐 不过顶部不一定平齐
+```javascript
+document.forms[0].scrollIntoView();
+```
+- IE8+
+
+## 专有扩展
+**文档模式**
+- 页面的文档模式决定了可以使用什么功能 页面的文档模式决定了你可以使用哪个级别的CSS 可以在JS中使用哪些API，以及如何对待文档类型
+- 到了IE9 总共有四种文档模式
+-   1. IE5 以混杂模式渲染页面 ie8+的功能都无法使用
+    2. IE7 IE7标准模式 IE8+无法使用
+    3. IE8 已IE8标准渲染 IE8中的新api都可使用 IE9+无法使用
+    4. IE9 IE9
+- <meta http-equiv="X-UA-Compatible" content="IE=IEVersion">  
+- 最好使用 IE = Edge  始终已最新的文档模式来渲染
+- var mode = document.documentMode // 返回模式
+
+**children**
+- 由于IE9之前的版本处理空白文本有差异，于是就出现了children属性
+```javascript
+var childCount = element.children.length
+var firstChild = element.children[0]
+```
+- IE8及更早版本的children属性中也会包含注释节点 ie9之后只返回元素节点
+
+**contains()**
+- 检测某个节点是否是另一个节点的后代
+- 所有浏览器都支持
+```javascript
+document.documentElement.contains( document.body ) // true
+```
