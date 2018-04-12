@@ -601,3 +601,17 @@ div.className = classNames.join(" ");
 - 默认情况下，文档刚刚加载完成时，doucment.activeElement中保存的是document.body元素的引用。文档加载期间，document.activeElement的值为null
 - document.hasFocus();
 - 用于确定文档是否获得了焦点
+
+## HTMLDocument变化
+**readyState属性**
+- IE4提出，HTML5纳入标准
+- 两个值： loading——正在加载文档 complete——已经加载完文档
+```javascript
+if( document.readyState == "complete" ){
+    // 执行操作
+}
+```
+
+**兼容模式**
+
+
