@@ -594,3 +594,10 @@ div.className = classNames.join(" ");
     3. remove 从列表中删除给定的字符串
     4. toggle 如果列表中存在给定的值，删除它；如果列表中没有给定的值，添加它
 - 很可惜 只有Firefox 3.6+ 和Chrome8.0 IE10+(不支持toggle) Opera11.5 Safari (WebKit)5.1 
+
+## 焦点管理
+- document.activeElement
+- 这个属性始终会引用DOM中当前获得了焦点的元素
+- 默认情况下，文档刚刚加载完成时，doucment.activeElement中保存的是document.body元素的引用。文档加载期间，document.activeElement的值为null
+- document.hasFocus();
+- 用于确定文档是否获得了焦点
