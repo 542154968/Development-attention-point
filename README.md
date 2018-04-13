@@ -756,3 +756,33 @@ console.log( JSON.stringify( arr ) ) // [[1,8],[16,192],[193,256]]
 - modal的遮罩层和#content是兄弟节点关系
 - #content 是absolute定位 但是没有设置z-index modalz-index是1050 遮罩层是1040
 - 当使用animation-fill-mode: forwards时 modal的z-index失效 或是受#content的无z-index影响 导致遮罩挡着弹窗 具体原因 还不清楚
+
+**53. 传统a链接跳转的网页也可以加过度动画的**
+- 具体动画看你怎么加喽  体验也很棒
+```html
+<head>
+	<style>
+		.content{
+			opacity: 0;
+			transition: opacity 0.5s;
+		}
+		.content.active{
+			opacity: 1;
+		}
+	</style>
+</head>
+<body>
+	<nav>
+		<ul>
+			<li><a href="/">首页</a></li>
+			<li><a href="/my">我的</a></li>
+			<li><a href="/you">你的</a></li>
+		</ul>
+	</nav>
+	<div class="content">内容</div>	
+	<script>
+		var content = document.querySelector('.content');
+		content.classList.add( 'active' ) // 这个 classList IE10才行
+	</script>
+</body>
+```
