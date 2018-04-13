@@ -728,3 +728,67 @@ var firstChild = element.children[0]
 ```javascript
 document.documentElement.contains( document.body ) // true
 ```
+- 使用 DOM Level3 `compareDocumentPosition()` 也能够确定节点之间的关系
+- IE9+ 
+- 返回一个标识该关系的位掩码
+-   1. 1 无关 给定的节点不在当前文档中
+    2. 2 居前 给定的节点再DOM树中位于参考节点之前
+    3. 4 居后 给定的结点在DOM数中位于参考节点之后
+    4. 8 包含 给定的节点是参考节点的祖先
+    5. 16 被包含 给定的节点是参考节点的后代
+- 为模仿contains方法 应该关注的是掩码16 可对`compareDocumnetPosition` 的结果执行按位与，以确定参考节点（调用compareDocumentPosition方法的当前节点）是否包含给定的节点（传入的节点）
+```javascript
+var result = docuemnt.docuemntElement.compareDocumentPosition( document.body );
+alert( !!( result & 16 ) ) // 20
+```
+- 执行上面的代码后，结果会变成20（表示居后的4加上表示被包含的16） 对掩码16执行按位操作会返回一个非零数值，而两个逻辑非操作会将该数值转换成布尔值
+```javascript
+function contains(refNode, otherNode){
+    if (typeof refNode.contains == "function" &&
+        (!client.engine.webkit || client.engine.webkit >= 522)){
+        return refNode.contains(otherNode);
+    } else if (typeof refNode.compareDocumentPosition == "function"){
+        return !!(refNode.compareDocumentPosition(otherNode) & 16);
+    } else {
+        var node = otherNode.parentNode;
+        do {
+            if (node === refNode){
+                return true;
+            } else {
+                node = node.parentNode;
+            }
+        } while (node !== null);
+        return false;
+    }
+}
+```
+
+## 插入文本
+- IE的innerText和outerText没有纳入HTML5规范
+
+**innerText**
+- 通过innerText属性可以操作元素中包含的所有文本内容，包括子文档树中的文本
+- 在通过innerText读取值时，它会按照由浅入深的顺序，将子文档树中的所有文本拼接起来
+- 在通过innerText写入值时，结果会删除元素的所有子节点，插入包含响应文本值的文本节点
+- firefox 45 才开始支持 他有类似的 textContent
+```javascript
+function getInnerText(element){
+    return ( typeof element.textContent == "string" ) ? 
+            element.textContent : clement.innerText
+}
+
+function setInnerText(element, text){
+    if( typeof element.textContent == "string" ){
+        element.textContent = text;
+    } else {
+        element.innerText = text;
+    }
+}
+```
+
+**outerText**
+- 读的模式下 和 innerText基本上没多大区别
+- 写的模式下 outerText会替换整个元素，导致该元素从文档中被删除而无法访问
+
+## 滚动
+- scrollIntoViewIfNeeded(alignCenter): 只在当前元素在是口中不可见的情况下，才滚动浏览器窗口或容器元素，最终让它看见，如果当前元素在视口中课件，这个方法什么都不做
