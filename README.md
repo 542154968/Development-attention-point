@@ -783,3 +783,6 @@ console.log( JSON.stringify( arr ) ) // [[1,8],[16,192],[193,256]]
 	</script>
 </body>
 ```
+
+**54. net::ERR_BLOCKED_BY_CLIENT**
+- 可能是用户装了什么过滤插件  把当前域名加到浏览器白名单或插件白名单就行了
