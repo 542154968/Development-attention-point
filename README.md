@@ -751,3 +751,8 @@ console.log( JSON.stringify( arr ) ) // [[1,8],[16,192],[193,256]]
 多次使用同一个g正则匹配同个字符串可能会出现问题
 ```
 
+**52. animation-fill-mode: forwards 影响z-index关系**
+- #content > .modal #content包裹着modal弹窗 
+- modal的遮罩层和#content是兄弟节点关系
+- #content 是absolute定位 但是没有设置z-index modalz-index是1050 遮罩层是1040
+- 当使用animation-fill-mode: forwards时 modal的z-index失效 或是受#content的无z-index影响 导致遮罩挡着弹窗 具体原因 还不清楚
