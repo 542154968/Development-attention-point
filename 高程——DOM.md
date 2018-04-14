@@ -792,3 +792,193 @@ function setInnerText(element, text){
 
 ## 滚动
 - scrollIntoViewIfNeeded(alignCenter): 只在当前元素在是口中不可见的情况下，才滚动浏览器窗口或容器元素，最终让它看见，如果当前元素在视口中课件，这个方法什么都不做
+- scrollByLines(lineCount): 将元素的内容滚动指定的行高，lineCount可以是正值也可以是负值 非规范 S 和Chrome实现
+- scrollByPage(pageCount): 将元素内容滚动到指定的页面高度
+- scrollIntoView 和 scrollIntoViewIfNeeded作用的是元素容器  scrollByLines 和 scrollByPages 影响的是元素本身
+
+# DOM2和DOM3
+- DOM3 同时增强了既有类型，也引入了一些新类型  主要是命名空间
+
+**Node类型的变化**
+> 命名空间实际上没有什么用  混合两种语言的时候就有用了
+
+- localName 不带命名空间前缀的节点名称
+- namespaceURI 命名空间URI或者（未指定）情况下 null
+- prefix 命名空间前缀或者（未指定）null
+```html
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+    <head> 
+        <title>Example XHTML page</title> 
+    </head> 
+    <body> 
+        <s:svg xmlns:s="http://www.w3.org/2000/svg" version="1.1" 
+            viewBox="0 0 100 100" style="width:100%; height:100%"> 
+            <s:rect x="0" y="0" width="100" height="100" style="fill:red"/> 
+        </s:svg> 
+    </body> 
+</html>
+对于<s:svg>而言
+它的localName 是 svg
+tagName 是 s:svg
+namespaceURI 是 
+prefix 是s    
+```
+- 更多方法就不介绍啦 很少用
+
+## 其他方面变化
+
+**DocumentType**
+- publicId 
+- systemId
+- 上面两个DOM1中无法访问
+```html
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+"http://www.w3.org/TR/html4/strict.dtd"> 
+对这个文档类型声明而言，publicId是"-//W3C//DTD HTML 4.01//EN"，而systemId是"http: 
+//www.w3.org/TR/html4/strict.dtd"。在支持DOM2级的浏览器中，应该可以运行下列代码。
+alert(document.doctype.publicId); 
+alert(document.doctype.systemId);
+```
+- internalSubset 文档类型声明中的额外定义
+
+**Document 类型的变化**
+- 唯一与命名空间无关的是 importNode
+- 从文档中去的一个节点，然后将其导入另一个文档，时期成为这个文档结构的一部分
+- 每个节点都有一个ownerDocument属性，表示所属的文档
+- 如果调用appendChild()时传入的节点属于不同的文档，则会导致错误
+- 但在调用importNode()时传入不同文档的节点会返回一个新节点，这个新节点的所有权归当前文档所有
+- 和element的cloneNode()方法非常相似 接受两个参数 要复制的节点合一表示是否赋值子节点对的布尔值
+
+**defaultView**
+- DOM2级视图模块添加了一个名为defaultView属性，其中保存着一个指针，指向拥有给定文档的窗口（或框架） 
+- 除IE之外所有有浏览器都支持 IE中有个等价属性叫parentWindow(Opera也支持)
+```javascript
+var parentWindow = docuemnt.defaultView || document.parentWindow
+```
+
+**document.implementation**
+- createDocumentType
+-   1. 文档类型名称
+    2. publicId
+    3. stytemId
+```javascript
+var doctype = document.implementation.createDocumentType("html", 
+                "-//W3C//DTD HTML 4.01//EN", 
+                "http://www.w3.org/TR/html4/strict.dtd");
+```    
+- createDocument
+-   1. 针对文档中元素的 namespaceURI
+    2. 文档元素的标签名
+    3. 新文档的文档类型
+```javascript
+var doctype = document.implementation.createDocumentType("html", 
+" -//W3C//DTD XHTML 1.0 Strict//EN", 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"); 
+var doc = document.implementation.createDocument("http://www.w3.org/1999/xhtml", 
+"html", doctype); 
+// 创建一个新的xhtml文档
+```    
+
+**document.implementation**
+- DOM2级的HTML模块也新增了一个方法 叫 createHTMLDocument()
+- 这个方法用途是创建一个完整的HTML文档 包括<html><head><title><body>
+- 只接受一个参数 即新创建文档的标题返回新出的HTML文档  
+```javascript
+var htmldoc = docuemnt.implementation.createHTMLDocument("new doc")    
+```    
+
+## Node类型的变化
+
+**isSupported 即将废弃**
+> [MDN介绍](https://developer.mozilla.org/en-US/docs/Web/API/Node/isSupported)
+
+- 用于确定当前节点具有什么能力 
+- 两个参数 特姓名和特性版本号
+- 如果浏览器实现了相应特性而且能够基于给定节点执行该特性 isSupported就返回一个true
+- 但是浏览器的返回还是不一致  用能力检测吧 
+
+**isSameNode  isEqualNode**
+> [MDN介绍](https://developer.mozilla.org/en-US/docs/Web/API/Node/isSameNode)
+
+- 很冷门 很多浏览器兼容未知
+- 接受一个节点参数 并在传入节点与引用的节点相同或相等时返回true
+- 相同： 两个节点引用的是同一个对象
+- 相等： 连个节点是相同的类型，具有相等的属性，他们的attributes和childNodes属性也相等
+```javascript
+var div1 = docuemnt.createElement("div");
+div1.setAttribute("class", "box")
+var div2 = document.createElement("div");
+div2.setAttribute("class", "box")
+
+div1.isSameNode(div1) // true 相同  同一个对象
+div1.isEqualNode(div2) // true 相等 完全一样
+div.siSameNode(div2) // false 引用的不是同一个对象
+```
+
+**setUserData 该方法已经被废弃**
+> [MDN介绍](https://developer.mozilla.org/en-US/docs/Web/API/Node/setUserData)
+
+- DOM3级还针对DOM节点添加额外数据引入了新方法。 setUserData方法会将数据指定给节点
+- 接受三个参数： 要设置的键、实际的数据（可以是任意类型）和处理函数
+```javascript
+docuemnt.body.setUserData("name", "Nicholas", function(){});
+// 通过getUserData并传入相同的键，就可以取得该数据
+var value = docuemnt.body.getUserData("name")
+```
+
+## 框架的变化
+- 框架和内嵌框架飞别用HTMLFrameElement和THMLFrameElement表示， 他们在DOM2级中都有了一个新属性明教contentDocument
+- 这个属性包含一个指针，指向表示框架内容的文档对象在此之前，无法直接通过元素取得这个文档对象，只能通过iframe集合
+```javascript
+var iframe = docuemng.getElementById("myIframe");
+var iframeDoc = iframe.contentDocument // IE8之前无效
+```
+- IE8之前有个contentWindow的属性，该属性返回框架的window对象，而这个window对象又有一个doucumnet属性
+```javascript
+var iframe = document.getElementById("myiframe");
+var iframeDoc = iframe.contentDocument || iframe.contentWindow.docuemnt
+```
+
+## 样式
+
+**能力检测**
+- DOM2级样式模块提供了一套能力检测的API
+```javascript
+var supportsDOM2CSS = document.implementation.hasFeature("CSS", "2.0");
+var upportsDOM2CSS2 = document.implementation.hasFeature("css2", "2.0")
+```
+
+**访问样式**
+- float是保留字，因此要用`cssFloat`访问  IE使用`styleFloat`
+- `-`必须转成驼峰法  
+- 最好都指定单位
+- 如果没有为元素设置style特性 那么style对象中可能会包含一些默认值，这些默认值并不能准确的反映钙元素的样式信息
+```javscript
+var div = document.getElementsByTagName('div')[0];
+div.style.bakcground //
+div.style.background = "red"
+```
+
+**DOM样式属性和方法**
+1. cssText 能够访问到style特性中的CSS代码
+2. length 应用给元素的CSS属性的数量
+3. parentRule CSS信息的CSSRule对象
+4. getPropertyCSSValue(propertyName) 返回包含给定属性值的CSSValue对象
+5. getPropertyPriority 如果给定属性使用了!important设置 则返回"important" 否则返回空字符串
+6. getPropertyValue 返回给定属性的字符串内置
+7. item 返回给定位置的CSS属性名称
+8. removePorperty 从样式中删除指定属性
+9. setProperty( propertyName, value, priority ) 将给定属性设置为相应的值并加上权重标志("important"或空字符串)
+
+- cssText 读模式 cssText返回浏览器对style特性中css代码的内部表示， 写模式 重写真个style特性对的值
+- length 将其与item方法配套使用 以便迭代在元素中定义的CSS属性
+```javascript
+var prop, value, i, len;
+for( i = 0, len = myDiv.style.length; i < len; i++ ){
+    prop = myDiv.style[i]; // 或者 myDiv.style.item();
+    value = myDiv.style.getPropertyCSSValue(prop);
+    console.log( prop + ":" + value.cssText + "(" + value.cssValueType + ")" );
+}
+```
+
+**计算的样式**
