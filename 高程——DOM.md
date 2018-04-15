@@ -982,3 +982,160 @@ for( i = 0, len = myDiv.style.length; i < len; i++ ){
 ```
 
 **计算的样式**
+- 虽然style对象能够提供支持style特性的任何元素的样式信息，但它不包含那些从其他样式表层叠而来并影响到当前元素的样式信息
+- DOM2级增强了document.defaultView，提供了`getComputedStyle()`方法
+- 这个方法接受两个参数 要取得计算样式的元素 和一个伪元素字符串（例如:after） 如果不需要伪元素信息，第二个参数可以是null
+- getComputedStyle方法返回一个CSSStyleDeclaration对象（与style属性的类型相同）其中包含当前元素的所有计算的样式
+```html
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <title>Computed Styles Example</title> 
+        <style type="text/css"> 
+        #myDiv { 
+        background-color: blue; 
+        width: 100px; 
+        height: 200px; 
+        } 
+        </style> 
+    </head> 
+    <body> 
+        <div id="myDiv" style="background-color: red; border: 1px solid black"></div> 
+        <script>
+            var myDiv = document.getElementById("myDiv"); 
+            var computedStyle = document.defaultView.getComputedStyle(myDiv, null); 
+            alert(computedStyle.backgroundColor);  // "red" 
+            alert(computedStyle.width); // "100px" 
+            alert(computedStyle.height); // "200px" 
+            alert(computedStyle.border); // 在某些浏览器中是"1px solid black" 
+        </script>
+    </body> 
+</html>
+```
+- 有些浏览器compitedStyle.boder不会返回值，因为不同浏览器解释综合(rollup)属性的方式不同，computedStyle.borderLeftWidth会返回值
+- IE9+支持 低版本IE每个具有style属性的元素还有一个currentStyle属性，这个属性是CSSStyleDeclaration的实例，包含当前元素全部计算后的样式
+```javascript
+var myDiv = document.getElementById("myDiv");
+var computedStyle = myDiv.currentStyle;
+```
+
+## 操作样式表
+- `CSSStyleSheet`类型表示的是样式表，包括通过`<link>`元素包含的样式表和在`<style>`元素中定义的样式表，这两个元素本身分别是由HTMLLinkElement和HTMLStyleElement类型表示的
+- CSSStyleSheet类型相对更加通用一些， 它指标是样式表，而不管这些牙膏你失败哦在HTML中是如何定义的
+- 上述两个针对元素的类型允许修改HTML特性，单CSSStyleSheet独享则是一套只读的接口，有一个属性例外，使用下面的代码可以确定浏览器是否支持DOM2级样式表
+```javascript
+var supportsDOM2StyleSheets = documeng.implementation.hasFeature("StyleSheets", "2.0");
+```
+- CSSStyleSheet继承自StyleSheet 后者可以作为一个基础接口来定义非CSS样式表
+-   1. disabled：表示样式表是否被禁用的布尔值。这个属性是可读/写的，将这个值设置为true可
+以禁用样式表。
+    2. href：如果样式表是通过<link>包含的，则是样式表的URL；否则，是null。
+    3. media：当前样式表支持的所有媒体类型的集合。与所有DOM集合一样，这个集合也有一个
+    length属性和一个item()方法。也可以使用方括号语法取得集合中特定的项。如果集合是空
+    列表，表示样式表适用于所有媒体。在IE中，media是一个反映<link>和<style>元素media
+    特性值的字符串。
+    4. ownerNode：指向拥有当前样式表的节点的指针，样式表可能是在HTML中通过<link>或
+    <style/>引入的（在XML中可能是通过处理指令引入的）。如果当前样式表是其他样式表通过
+    @import导入的，则这个属性值为null。IE不支持这个属性。
+    5. parentStyleSheet：在当前样式表是通过@import导入的情况下，这个属性是一个指向导入
+    它的样式表的指针。
+    6. title：ownerNode中title属性的值。
+    7. type：表示样式表类型的字符串。对CSS样式表而言，这个字符串是"type/css"。
+    除了disabled 属性之外，其他属性都是只读的。在支持以上所有这些属性的基础上，
+    CSSStyleSheet类型还支持下列属性和方法：
+    8. cssRules：样式表中包含的样式规则的集合。IE不支持这个属性，但有一个类似的rules属性。
+    9. ownerRule：如果样式表是通过@import导入的，这个属性就是一个指针，指向表示导入的规
+    则；否则，值为null。IE不支持这个属性。
+    10. deleteRule(index)：删除cssRules集合中指定位置的规则。IE不支持这个方法，但支持
+    一个类似的removeRule()方法。
+    11. insertRule(rule,index)：向cssRules集合中指定的位置插入rule字符串。IE不支持这
+    个方法，但支持一个类似的addRule()方法。
+- 应用于文档的所有样式表是通过document.styleSheets集合来表示的，通过这个集合的length属性可以获知文档中样式表的数量，而通过方括号语法或item方法可以访问每一个样式表    
+```javascript
+var sheet = null;
+for ( var i = 0, l = document.styleSheets.length; i < l; i++ ){
+    sheet = document.styleSheets[i];
+    alert(sheet.href)
+}
+```
+- 所有浏览器都会包含`<style>`元素和rel特性被设置为"stylesheet"的`link`元素引入的样式表      
+- IE和Opera也包含rel特性被设置为"alernate stylesheet"的link元素引入的样式表 但是我刚才火狐试了下取到的并不精确  
+- **兼容写法** 通过link或style元素取得
+```JAVASCRIPT
+function getStyleSheet( element ){
+    return element.sheet || element.styleSheet;    
+}    
+var link = document.getElementsByTagName("link")[0];
+var sheet = getStylesheet(link)    
+```    
+    
+**CSS规则**
+-   1. cssText：返回整条规则对应的文本。由于浏览器对样式表的内部处理方式不同，返回的文本
+    可能会与样式表中实际的文本不一样；Safari始终都会将文本转换成全部小写。IE不支持这个
+    属性。
+    2. parentRule：如果当前规则是导入的规则，这个属性引用的就是导入规则；否则，这个值为
+    null。IE不支持这个属性。
+    3. parentStyleSheet：当前规则所属的样式表。IE不支持这个属性。
+    4. selectorText：返回当前规则的选择符文本。由于浏览器对样式表的内部处理方式不同，返回
+    的文本可能会与样式表中实际的文本不一样（例如，Safari 3之前的版本始终会将文本转换成全
+    部小写）。在Firefox、Safari、Chrome和IE中这个属性是只读的。Opera允许修改selectorText。
+    5. style：一个CSSStyleDeclaration对象，可以通过它设置和取得规则中特定的样式值。
+    6. type：表示规则类型的常量值。对于样式规则，这个值是1。IE不支持这个属性。
+- 举个栗子
+```html
+<style>
+    div.box{
+        background-color: blue;
+        width: 100px;
+        height: 200px
+    }
+</style>
+<script>
+    va sheet = documeng.styleSheets[0];
+    var rules = sheet.cssRules || sheet.rules;
+    var rule = rules[0];   //取得第一条规则
+    alert(rule.selectorText);   //"div.box" 
+    alert(rule.style.cssText);   //完整的CSS代码
+    alert(rule.style.backgroundColor);   //"blue" 
+    alert(rule.style.width);   //"100px" 
+    alert(rule.style.height);   //"200px" 
+</script>
+```
+
+**创建规则**
+- DOM规定，使用`insertRule()`方法向现有样式表中添加新规则
+- 接受两个参数，规则文本和表示在哪里插入规则的索引
+```javavscript
+sheet.insertRule("body{background: silver}", 0)
+```
+- IE8级更早版本有个`addRule()`方法
+```JAVSCRIPT
+sheet.addRule("body", "background-color: sliver", 0) // 仅对IE有效 MDN没查到
+```
+- 据说最多可以使用addRule()添加4095条样式规则超出这个上限的调用将会导致错误
+- **兼容写法**
+```javascript
+function insertRule( sheet, selectoreText, cssText, position ){
+    if( sheet.inserRule ){
+        sheet.insertRule(selectoreText + "{" + cssText + "}", position)
+    }else if(sheet.addRule){
+        sheet.addRule( selectoreText, cssText, position )
+    }
+}
+```
+
+**删除规则**
+- `deleteRule()`  IE8- `removeRule()` 
+- 接受一个参数 要删除的规则的位置
+```javascript
+function deleteRule( sheet, index ){
+    if( sheet.deleteRule ){
+        sheet.deleteRule(index)
+    }else{
+        sheeet.removeRule(index)
+    }
+}
+```
+- 添加和删除规则不是实际Web开发中常见做法 需要谨慎对待
+
+## 元素大小
