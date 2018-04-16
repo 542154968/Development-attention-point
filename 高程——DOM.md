@@ -1139,3 +1139,65 @@ function deleteRule( sheet, index ){
 - 添加和删除规则不是实际Web开发中常见做法 需要谨慎对待
 
 ## 元素大小
+- DOM中没有规定如何确定页面中元素的大小，IE为此率先引入了一些属性，目前所有主要的浏览器都已经支持这些属性。
+
+**偏移量——offset**
+- 包括元素在屏幕上占用的所有可见的空间。元素的可见大小由其高度，宽度决定，包括所有内边距、滚动条和边框的大小（不包括**外边距**）
+-   1. `offsetHeight`: 元素在垂直方向上占用的空间大小，以像素计。包括元素的高度、（可见的）水平滚动条的高度，上边框高度和下边框高度。
+    2. `offsetWidth`: 元素在水平方向上占用的空间大小，以像素计。包括元素的宽度、（可见的）垂直滚动条的宽度，左边框宽度和有边框宽度。
+    3. `offsetLeft`: 元素的左外边框至包含元素的左内边框之间的像素距离
+    4. `offsetTop`: 元素的上外边框至包含元素的上内边框之间的像素距离
+- `offsetLeft`和`offsetTop`属性与包含的元素有关，包含元素的引用保存在`offsetParent`属性中。
+- offsetParent属性不一定与parentNode的值相等。
+- 例如td元素的offsetParent是作为其祖先元素的table元素。因为table是在DOM层次中距td最近的一个具有大小的元素
+- 要想知道某个元素叜页面上的偏移量，将这个元素的offsetLeft和offsetTop与其offsetParent的相同属性相加，如此循环至根元素，就可以得到一个基本准确的值。
+```javascript
+function getElementLeft(element){
+    var actualLeft = element.offsetLeft;
+    var current = element.offsetParent;
+    while (current !== null){
+        actualLeft += current.offsetLeft;
+        current = current.offsetParent;
+    }
+    return actualLeft;
+}
+
+getElementLeft($('.collapse-button')[0])
+1809 实际到页面的距离 
+$('.collapse-button')[0].offsetLeft
+1639 到父容器（offsetParent）的距离
+```
+
+```JavaScript
+function getElementTop(element){
+    var actualTop = element.offsetTop;
+    var current = element.offsetParent;
+    while (current !== null){
+        actualTop += current. offsetTop;
+        current = current.offsetParent;
+    }
+    return actualTop;
+}
+```
+- 对于使用表格和内嵌框架布局的页面，由于不同浏览器实现这些元素的方式不同，因此得到的值就不太精确了。一般来说，页面中的所有元素都会被包含在几个<div>元素中，而这些<div>元素的offsetParent又是<body>元素，所以以上两个方法会返回与offsetLeft和offsetTop相同的值
+- 所有这些偏移量属性都是只读的，而且每次访问他们都要重新计算，因此应该尽量避免重复计算这些属性，如果需要重复计算使用 **变量** 保存，以提高性能  
+    
+**客户区大小 clientWidth、clientHeight**
+- 元素的客户区大小( `client dimension` )， 指的是元素内容及其内边距所占据的大小不包括border、外边距、滚动条。
+```JavaScript
+function getViewport(){
+    // 检查浏览器是否运行在混杂模式 每次读取都是要重新计算的 
+    if( document.compatMode == "BackCompat" ){
+        return {
+            width: document.body.clientWidth,
+            height: document.body.clientHeight
+        }
+    } else {
+        return {
+            width: document.documentElement.clientWidth,
+            height: document.documentElement.clientHeight
+        }
+    }
+}
+```
+- 只读而且需要重新计算
