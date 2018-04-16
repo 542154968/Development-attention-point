@@ -1231,5 +1231,75 @@ function scrollToTop( element ){
 ```
 
 **确定元素大小 —— getBoundingClientRect()**
-- 
+- 浏览器为每个元素都提供了`getBoundingClientRect()`方法，这个方法返回一个矩形对象，包含四个属性：left top right bottom
+- 这些属性给出了元素在页面中相对于视口的位置
+- 不同浏览器的实现稍有不同，IE8及更早版本认为文档的左上角坐标是(2, 2), 而其他浏览器包括IE9则将传统的(0, 0)当做起点坐标。
+- 因此，需要在一开始检查下位于(0, 0)处的元素位置
+```javascript
+function getBoundingClientRect(element){
+    if( typeof arguments.callee.offset != "number" ){
+        var scrollTop = document.documentElement.scrollTop;
+        var temp = document.createElement("div");
+        temp.style.cssText = "position:absolute;left:0;top:0";
+        document.body.appendChild(temp);
+        arguments.callee.offset = -temp.getBoundingClientRect().top - scrollTop;
+        document.body.removeChild(temp);
+        temp = null;
+    }
+    var rect = element.getBoundingClientRect();
+    var offset = arguments.callee.offset;
+    reuturn {
+        left: rect.left + offset,
+        right: rect.right + offset,
+        top: rect.top + offset,
+        bottom: rect.bottom + offset
+    }
+}
+```
+- 对于不支持的浏览器，一般来说right和left的差值与offsetWidth的值相等，而bottom与top的差值与offsetHeight相等。而且left和top属性大致等于使用本章前面定义的`getElementLeft`和`getElementTop`函数取得的的值
+- 兼容写法
+```JavaScript
+function getBoundingClientRect(element){ 
+    var scrollTop = document.documentElement.scrollTop; 
+    var scrollLeft = document.documentElement.scrollLeft; 
+    if (element.getBoundingClientRect){ 
+    if (typeof arguments.callee.offset != "number"){ 
+        var temp = document.createElement("div"); 
+        temp.style.cssText = "position:absolute;left:0;top:0;"; 
+        document.body.appendChild(temp); 
+        arguments.callee.offset = -temp.getBoundingClientRect().top - scrollTop; 
+        document.body.removeChild(temp); 
+        temp = null; 
+    } 
+    var rect = element.getBoundingClientRect(); 
+    var offset = arguments.callee.offset; 
+    return { 
+            left: rect.left + offset, 
+            right: rect.right + offset, 
+            top: rect.top + offset, 
+            bottom: rect.bottom + offset 
+        }; 
+    } else { 
+        var actualLeft = getElementLeft(element); 
+        var actualTop = getElementTop(element); 
+        return { 
+                left: actualLeft - scrollLeft, 
+                right: actualLeft + element.offsetWidth - scrollLeft, 
+                top: actualTop - scrollTop, 
+                bottom: actualTop + element.offsetHeight - scrollTop 
+            } 
+    } 
+}
+```
 
+## 遍历
+- DOM2级遍历和范围模块定义了两个用于辅助完成顺序遍历DOM结构的类型`NodeIterator`和`TreeWalker`这两个类型能够基于给定的起点对DOM结构执行深度优先的遍历操作。IE9+
+- 先能力检测
+```javascript
+var supportsTraversals = document.implementation.hasFeature("Traversal", "2.0");
+var supportsNodeIterator = ( typeof document.createNodeIterator = "function" );
+var supportsTreeWalker = ( typeof document.createTreeWalker == "function" );
+```
+- DOM遍历是深度优先的DOM结构遍历，也就是说吗，一定的方向至少有两个（取决于使用的遍历类型），遍历以给定节点韦根，不可能向上超出DOM树的根节点
+
+## 范围
