@@ -1202,7 +1202,7 @@ function getViewport(){
 ```
 - 只读而且需要重新计算
 
-**滚动大小**
+**滚动大小 scrollleft|top|width|height**
 - 包含滚动内容的元素的大小
 - 有些元素（例如html元素），即使没有执行任何代码也能自动地添加滚动条，另外一些元素，则需要通过CSS的`overflow`属性进行设置才能滚动
 -   1. scrollHeight 在没有滚动条的情况下，元素内容的总高度
@@ -1210,4 +1210,26 @@ function getViewport(){
     3. scrollLeft 被隐藏在内容区域左侧的像素数。通过设置这个属性可以改变元素的滚动位置
     4. scrollTop 被隐藏在内容区域上方的像素数。通过这个属性可以改变元素的滚动位置
 - `scrollWidth`和`scrollHeight`主要用于确定元素内容的实际大小。例如： 通常认为`<HTML>`元素是在Web浏览器的视口中滚动的元素（IE6之前的版本运行在混杂模式下时是`BODY`元素）。因此，带有垂直滚动条的页面总高度就是`document.documentElement.scrollHeight`
-- 对于不包含滚动条的页面而言，`scrollWidth`和`scrrollHeight`与`clientHeight`和`clientWidth`之间的关系并不清晰，在这种情况下，基于`document.documentElement`查看这些属性胡子爱不同浏览器之间发现一些不一致的问题
+- 对于不包含滚动条的页面而言，`scrollWidth`和`scrrollHeight`与`clientHeight`和`clientWidth`之间的关系并不清晰，在这种情况下，基于`document.documentElement`查看这些属性会在不同浏览器之间发现一些不一致的问题
+-   1. Firefox中这两组属性始终都是相等的，但大小代表的是文档内容区域的实际尺寸，而非视口的尺寸
+    2. Opear Safari3.1+ Chrome中的这两组属性是有差别的， 其中scrollWidth和scrollHeight等于视口大小，而clientWidth和clientHeight等于文档内容区域的大小
+    3. IE（标准模式）中的这两组属性不相等，其中`scrollWidth`和`scrollHeight`等于文档内容区域的大小，而`clientWidth`和`clientHeight`等于视口大小
+- 兼容写法 取得文档的总高度和宽度（包括基于视口的最小高度时），必须取得scrollWidth/clientWidth和scrollHeight/clientHeight中的最大值，才能保证在扩浏览器的环境下得到精确的结果
+```javascript
+var docHeight = Math.max( document.documentElement.scrollHeight, document.docuemntElement.clientHeight );
+var docWidth = Math.max( document.documentElement.scrollWidth, document.documentElement.clientWidth );
+// 混杂模式下的IE用document.body代替document.documentElement
+```
+- 滚动到顶部
+```javascript
+// 这个函数既取得了scrollTop的值 也设置了它的值
+function scrollToTop( element ){
+    if( element.scrollTop != 0 ){
+        element.scrollTop = 0;
+    }
+}
+```
+
+**确定元素大小 —— getBoundingClientRect()**
+- 
+
