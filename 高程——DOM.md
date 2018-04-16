@@ -1201,3 +1201,13 @@ function getViewport(){
 }
 ```
 - 只读而且需要重新计算
+
+**滚动大小**
+- 包含滚动内容的元素的大小
+- 有些元素（例如html元素），即使没有执行任何代码也能自动地添加滚动条，另外一些元素，则需要通过CSS的`overflow`属性进行设置才能滚动
+-   1. scrollHeight 在没有滚动条的情况下，元素内容的总高度
+    2. scrollWidth 在没有滚动条的情况下，元素内筒的总宽度
+    3. scrollLeft 被隐藏在内容区域左侧的像素数。通过设置这个属性可以改变元素的滚动位置
+    4. scrollTop 被隐藏在内容区域上方的像素数。通过这个属性可以改变元素的滚动位置
+- `scrollWidth`和`scrollHeight`主要用于确定元素内容的实际大小。例如： 通常认为`<HTML>`元素是在Web浏览器的视口中滚动的元素（IE6之前的版本运行在混杂模式下时是`BODY`元素）。因此，带有垂直滚动条的页面总高度就是`document.documentElement.scrollHeight`
+- 对于不包含滚动条的页面而言，`scrollWidth`和`scrrollHeight`与`clientHeight`和`clientWidth`之间的关系并不清晰，在这种情况下，基于`document.documentElement`查看这些属性胡子爱不同浏览器之间发现一些不一致的问题
