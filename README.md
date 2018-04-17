@@ -795,3 +795,6 @@ console.log( JSON.stringify( arr ) ) // [[1,8],[16,192],[193,256]]
 
 **56. 接口、css、JS中不要出现 ad或者广告一类的英文词语**
 - 为啥 会被无情地屏蔽 哈哈哈
+
+**57. Blob对象了解下**
+[MDN-Blob](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob)
