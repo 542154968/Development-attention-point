@@ -798,3 +798,15 @@ console.log( JSON.stringify( arr ) ) // [[1,8],[16,192],[193,256]]
 
 **57. Blob对象了解下**
 [MDN-Blob](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob)
+
+**58. :active在移动端不生效**
+> [解决方案](https://blog.csdn.net/freshlover/article/details/43735273)
+
+-看来在iOS系统的移动设备中，需要在按钮元素或body/html上绑定一个touchstart事件才能激活:active状态
+```javascript
+/*
+1] By default, Safari Mobile does not use the :active state unless there is a touchstart event handler on the relevant element or on the <body>.
+看来在iOS系统的移动设备中，需要在按钮元素或body/html上绑定一个touchstart事件才能激活:active状态。
+*/
+document.body.addEventListener('touchstart', function () { //...空函数即可});  
+```
