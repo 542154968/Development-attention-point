@@ -810,3 +810,9 @@ console.log( JSON.stringify( arr ) ) // [[1,8],[16,192],[193,256]]
 */
 document.body.addEventListener('touchstart', function () { //...空函数即可});  
 ```
+
+**59. 移动端点击会有部分高亮**
+- 无背景会发现
+```css
+*{ -webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-tap-highlight-color: transparent; /* For some Androids */ } 
+```
