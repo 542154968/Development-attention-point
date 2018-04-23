@@ -858,3 +858,5 @@ document.body.addEventListener('touchstart', function () { //...空函数即可}
 - 导致component不会重新渲染， aside的导航栏的active获取就出了问题
 - 这样，切换header的时候 aside和contain就切换了
 - 切换aside 只切换contain
+
+**61. 牢记一点：切换路由，相同的组件不会重新渲染！**
