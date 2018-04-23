@@ -816,3 +816,45 @@ document.body.addEventListener('touchstart', function () { //...空函数即可}
 ```css
 *{ -webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-tap-highlight-color: transparent; /* For some Androids */ } 
 ```
+
+**60. Vue和Elementui写后台页面，路由和组件划分的问题**
+- 如果我们有两个导航栏，hader（头） 和 aside（左侧）和一个主体区域contain
+- 想实现 切换头的导航 aside和contain要切换
+- 切换aside的导航 只切换contian
+- index组件和me组件的内容 **即便一样也要拆开**
+```vue
+<template>
+    <div class="container-fluid index">
+        <v-header />
+        <v-aside />
+        <transition name="el-fade-in-linear" >
+            <router-view class="container-fluid"></router-view>
+        </transition>
+    </div>
+</template>
+```
+- header部分的导航看做父路由，如果两个导航内的结构和代码一样的话也要拆分开，不然路由的组件不会重新渲染，比如/index,/me,即便component的内容相同，也要写成
+```javascript
+{
+	path: '/index',
+	component: index
+},
+{
+	path: '/me',
+	component: me
+}
+```
+- 一开始我写的是
+```javascript
+{
+	path: '/index',
+	component: index
+},
+{
+	path: '/me',
+	component: index
+}
+```
+- 导致component不会重新渲染， aside的导航栏的active获取就出了问题
+- 这样，切换header的时候 aside和contain就切换了
+- 切换aside 只切换contain
