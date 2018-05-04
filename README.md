@@ -864,3 +864,16 @@ document.body.addEventListener('touchstart', function () { //...空函数即可}
 
 **62. 了解下鸭式辩型**
 - 他和鸭子一样的习性，就认为他是鸭子
+
+**63. 在vue中灵活运用原生JS**
+- 比如我点击按钮之后禁止它点击，我就可以这样
+```template
+<button @click="refuse($event)" ></button>
+```
+```javascript
+methods: {
+	refuse(event){
+		event.target.disabled = true;
+	}
+}
+```
