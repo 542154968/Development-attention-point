@@ -162,3 +162,53 @@ var rm_a = /a*/.match(s)
 - 如果想要的水性完全不存在与原型里那种，那么结果就是`undefined`，这个过程称为**委托**
 - 源性关系是一种动态的关系
 - 如果我我们添加一个新的属性到原型中，改属性会立即对所有基于该原型创建的对象可见
+
+## 反射
+- 检查对象并确定对象有什么属性是很容易的事情，只要试着去检索该属性并验证取得的值
+- 原型链中的任何属性也会产生一个值
+```javascript
+typeof flight.toString // 'function
+```
+- 有两个方法去处理这些不需要的属性
+- 第一个是让你的程序检查并剔除函数值。一般来说，做反射的目标是数据，因此你应该意识到一些值可能回事函数
+- 另一个方法是使用`hasOwnProperty`方法，如果对象拥有独有的束胸，他将返回true。`hasOwnProperty`方法不会检查原型链
+```javascript
+flight.hasOwnProperty('number') // true
+flight.hasOwnProperty('constructor') // false
+```
+
+## 枚举
+- for in 语句可用来遍历一个对象中的所有属性名
+- 该枚举过程将会列出所有的属性——包括函数和你可能不关心的原型中的属性——所以有必要过滤掉那些你不想要的值
+- 最常用的过滤器是`hasOwnProperty`以及`typeof` 排除函数
+```javascript
+var name;
+for( name in another_stooge ){
+    if( typeof another_stooge[name] !== 'function' ){
+        document.writeln( name + ":" + another_stooge[name] )
+    }
+}
+```
+- 属性名的出现顺序是不确定的，因此要对任何可能出现的顺序有所准备
+- 如果你想要确保属性以特定的顺序出现，最好的办法就是完全避免使用`for in`语句，而是创建一个数组，其中以正确的顺序包含属性名
+```javascript
+var i;
+var propertyes = [
+    'first-name',
+    'middle-name',
+    'last-name',
+    'profession'
+];
+for( i = 0; i < properties.length; i++){
+    console.log( another_stooge[ properties[i] ] );
+}
+```
+- 通过使用`for`配合数组，可以得到我们想要的属性，而不用担心可能发掘出原型链中的属性，并且我们按正确的顺序取得了它们的值
+
+## 删除
+- `delete`运算符可以用来删除对象的属性.将会移除对象中确定包含的属性，不会触及原型链中的任何对象
+- 删除对象的属性可能会让来自原型链中的相同key的属性浮现出来，继承来的
+
+## 减少全局变量污染
+- JS可以很随意的定义那些可保存所有应用资源的全局变量。不幸的是，全局变量削弱了程序的灵活性，所以应该避免。
+- 最小化使用全局变量的一个方法是在应用中只创建唯一一个全局变量
