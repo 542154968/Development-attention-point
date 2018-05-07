@@ -895,3 +895,19 @@ methods: {
 undefined
 2
 ```
+- 解释(看着生涩)
+```javascript
+- var语句被挂起（没有它们的值初始化）到它所属的全局或函数作用域的顶部，即使它位于with或catch块内。但是，错误的标识符只在catch块内部可见。它相当于：
+(function () {
+    var x, y; // outer and hoisted
+    try {
+        throw new Error();
+    } catch (x /* inner */) {
+        x = 1; // inner x, not the outer one
+        y = 2; // there is only one y, which is in the outer scope
+        console.log(x /* inner */);
+    }
+    console.log(x);
+    console.log(y);
+})();
+```
