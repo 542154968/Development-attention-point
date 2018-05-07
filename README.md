@@ -877,3 +877,21 @@ methods: {
 	}
 }
 ```
+
+**64. 一个关于作用域的面试题**
+```javascript
+(function () {
+    try {
+        throw new Error();
+    } catch (x) { // 因为这个x的关系， 外部的x不可访问了 而y仍然可以访问
+        var x = 1, y = 2; 
+        console.log(x);
+    }
+    console.log(x);
+    console.log(y);
+})();
+
+1
+undefined
+2
+```
