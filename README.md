@@ -911,3 +911,10 @@ undefined
     console.log(y);
 })();
 ```
+
+**65. FormData配合JQ ajax**
+> [通过Ajax使用FormData对象无刷新上传文件](https://www.cnblogs.com/zzgblog/p/5417969.html)
+
+- Ajax的processData设置为false。因为data值是FormData对象，不需要对数据做处理。（第二种方式中<form>标签加enctyp　　e="multipart/form-data"属性。）
+- cache设置为false，上传文件不需要缓存。
+- contentType设置为false。因为是由<form>表单构造的FormData对象，且已经声明了属性enctype="mutipart/form-data"，所以这里设置为false。
