@@ -943,3 +943,6 @@ select{
   -webkit-tap-highlight-color: transparent; 
 }
 ```
+
+**70. webview中用户不选照片仍会返回一个file对象**
+- 可以通过file的size来判断是否有图片
