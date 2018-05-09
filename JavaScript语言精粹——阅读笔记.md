@@ -267,4 +267,65 @@ var add = function( a, b ){
 - 方法可以使用this去访问对象，所以他能从对象中取值或修改该对象
 - this到对象的绑定发生在调用的时候
 - 这个“超级”迟绑定(very late binding)使得函数可以对`this`高度复用
-- 通过`this`可取的他们所属对象的上线爱问的方法称为**公共方法**
+- 通过`this`可取的他们所属对象的上下问的方法称为**公共方法**
+
+## 函数调用模式
+- 当一个函数并非一个对象的属性时，那么他被当做一个函数来调用
+```javascript
+var sum = add(3, 4)
+```
+- 当函数以此模式调用时，`this`被绑定到全局对象，这是语言设计上的一个错误，可以在外部用变量保存this，那么内部函数就可以通过那个变量访问this，一般命名为that
+
+## 构造器调用模式
+- JS是一门基于原型集成的语言，这意味着对象可以直接从其他对象继承属性，该语言是无类别的（无类，基于原型继承）
+- 如果在一个函数前面带上new来调用，那么将创建一个隐藏链接到该函数的`prototype`成员的新对象，同时`this`将会被绑定到哪个新对象上
+- `new`前缀也会改变return语句的行为
+```javascript
+var Quo = function( string ){
+    this.status = string;
+}
+Quo.prototype.get_status = function(){
+    return this.status
+}
+var myQuo = new Quo('confused')
+```
+- 结合`new`前缀调用的函数被称为构造器函数
+- 按照约定，他们保存在以大写格式命名的变量里
+
+## Apply调用模式
+- JS是一门函数式的面向对象编程语言，所以函数可以拥有方法
+- `apply`方法让我们构建一个参数数组并用其去调用函数。
+- 它也允许我们选择`this`的值
+- `apply`方法接收两个参数，第一个是将被绑定给`this`的值， 第二个就是一个参数数组。
+```javascript
+var array = [3, 4];
+var sum = add.apply( null, array ); // sum为7
+var statusObject = {
+    status: 'A-OK'
+}
+// statusObject并没有继承自Quo.prototype,但我们可以再statusObject上调用get_status方法，尽管statusObject并没有一个名为get_status的方法
+var status = Quo.prototype.get_status.apply( statusObject )
+```
+
+## 参数
+- 当参数被调用是时，会得到一个免费奉送的参数，那就是`arguments`数组
+- 通过它，函数可以访问所有它被调用时传递给它的参数列表，包括哪些没有被分配给函数声明时定义的形式参数的多与参数，这使得编写一个无需指定参数个数的函数成为可能
+```javascript
+var sum = function(){
+    var i, sum = 0;
+    for( i = 0; i < arguments.length; i++ ){
+        sum += arguments[i]
+    }
+    return sum
+}
+document.writeln( sum(4, 8, 15, 16, 23, 42) )
+```
+- arguments并不是一个真正的数组，它是一个类数组对象。
+- arguments拥有一个length属性，但它缺少所有的数组方法
+
+## 返回
+- 当一个函数被调用时，它从第一个语句开始执行，并在遇到关闭函数体`}`时结束。那使得函数把控制权交还给调用该函数的程序部分
+- `return`语句可用来使函数提前返回
+- 当return被执行时，函数立即返回而不再执行余下的语句
+- 一个函数总是会返回一个值，如果没有指定，返回undefined
+- 如果函数以在前面加上`new`前缀的方式来调用，且返回值不是一个对象，则返回this（该新对象）
