@@ -922,3 +922,6 @@ undefined
 **66. 图片预览**
 - URL.createObjectURL(blob);
 - FileReader()
+
+**67. webview不支持input:file 需要安卓重写底层**
+**68. webview如果不开启DOM缓存，localStorage等将失效**
