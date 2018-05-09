@@ -924,4 +924,22 @@ undefined
 - FileReader()
 
 **67. webview不支持input:file 需要安卓重写底层**
+
 **68. webview如果不开启DOM缓存，localStorage等将失效**
+
+**69. 美化select input 等 移动端原表单组件**
+> [MDN-appearance](https://developer.mozilla.org/zh-CN/docs/Web/CSS/-moz-appearance)
+```css
+select{
+/* 看起来是个按钮 */
+  appearance:button;
+  -moz-appearance:button;
+  -webkit-appearance:button;
+  border:none;
+}
+/* 去除点击高亮 */
+*{ 
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent; 
+}
+```
