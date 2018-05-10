@@ -946,3 +946,38 @@ select{
 
 **70. webview中用户不选照片仍会返回一个file对象**
 - 可以通过file的size来判断是否有图片
+
+**71. VUE使用viewerJS**
+> [viewerJS传送门](https://github.com/fengyuanchen/viewerjs)
+
+```javascript
+import viewer from 'viewerjs'
+// 取得css
+import '../../../../node_modules/viewerjs/dist/viewer.min.css'
+
+export default{
+	data() {
+        return {
+            viewerId: null
+		}	
+    }
+	methods: {
+		getData(){
+			ajax().then( (res)=>{
+				// 渲染dom的逻辑
+				this.$nextTick( ()=>{
+					// 我的场景是一个弹窗中显示图片 因为弹窗是个组件，所以并不会每次关闭都销毁
+					// 所以我选择每次获取数据后销毁viewer
+					// 如果你的场景每次进入需要重新created的话，应该是不需要销毁的
+					// 如果你需要更新图片列表 可以使用update方法
+					// 注意要用新版本 老版本的没有update方法
+                    this.viewerId && this.viewerId.destroy()
+					// 假设你的图片列表的id是images
+                    this.viewerId = new viewer(document.getElementById('images'));
+                } )
+			})
+		}
+	}
+}
+
+```
