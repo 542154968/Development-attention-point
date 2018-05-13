@@ -329,3 +329,21 @@ document.writeln( sum(4, 8, 15, 16, 23, 42) )
 - 当return被执行时，函数立即返回而不再执行余下的语句
 - 一个函数总是会返回一个值，如果没有指定，返回undefined
 - 如果函数以在前面加上`new`前缀的方式来调用，且返回值不是一个对象，则返回this（该新对象）
+
+## 异常
+- JS提供了一套异常处理机制。异常是干扰程序的正常流程的非正常（并非完全出乎意料）的事故
+```javascript
+throw {
+    name: 'TypeError',
+    message: 'add needs numbers
+}
+```
+- throw 语句中断函数的执行。
+- try catch
+```javascript
+try {
+
+} catch(e){
+    console.log(e)
+}
+```
