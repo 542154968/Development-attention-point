@@ -980,3 +980,10 @@ export default{
 	}
 }
 ```
+
+**73. 善用打印寻找要找的内容**
+```javascript
+console.log( this.$refs.passInput ) // 显示的是vue组件 然后我找到了挂载的el
+console.log( this.$refs.passInput.$el ) // 显示的是当前DOM 
+this.$refs.passInput.$el.querySelector('input').focus() // 然后在找到input focus
+```
