@@ -987,3 +987,32 @@ console.log( this.$refs.passInput ) // 显示的是vue组件 然后我找到了�
 console.log( this.$refs.passInput.$el ) // 显示的是当前DOM 
 this.$refs.passInput.$el.querySelector('input').focus() // 然后在找到input focus
 ```
+
+**74. Vue-cli架构的建议**
+- axios请求的方法单独封装
+```javascript
+const fetch = () => {
+    // axios + promise
+}
+export default fetch;
+```
+- 请求的接口单独管理
+```javascript
+/*api.js*/
+export const List = '/api/list/search'
+```
+- 请求的方法单独管理
+```javascript
+/*list.js*/
+// 我们封装的fetch.js
+import fetch from 'axios.js'
+import api from 'api.js'
+
+export const getList = (data) => {
+    return fetch({
+               url: api.List,
+	       method: 'post',
+	       data
+	   })
+}
+```
