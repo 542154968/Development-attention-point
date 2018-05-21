@@ -988,31 +988,101 @@ console.log( this.$refs.passInput.$el ) // 显示的是当前DOM
 this.$refs.passInput.$el.querySelector('input').focus() // 然后在找到input focus
 ```
 
-**74. Vue-cli架构的建议**
-- axios请求的方法单独封装
-```javascript
-const fetch = () => {
-    // axios + promise
-}
-export default fetch;
-```
-- 请求的接口单独管理
+**74. Vue-cli api请求架构的建议**
+
+- 请求的接口单独管理 —— api.js
 ```javascript
 /*api.js*/
-export const List = '/api/list/search'
-```
-- 请求的方法单独管理
-```javascript
-/*list.js*/
-// 我们封装的fetch.js
-import fetch from 'axios.js'
-import api from 'api.js'
+export const CONTEXT = '';
 
-export const getList = (data) => {
-    return fetch({
-               url: api.List,
-	       method: 'post',
-	       data
-	   })
+export const LOGIN = CONTEXT + '/pub/loginAndRegister/login';
+```
+
+- 请求的方法单独管理 —— fetch.js
+```javascript
+/*fetch.js*/
+// 我们封装的fetch.js
+import axios from 'axios';
+import {Message} from 'element-ui';
+import auth from './auth';
+const model = process.env.NODE_ENV === 'development';
+
+//设置用户信息action
+export default function fetch(options, type) {
+  let token = '';
+  if (options.url.indexOf('api') > 0) {
+    token = JSON.stringify({
+      deviceType: 'WEB',
+      token: 'Basic  ' + auth.getToken()
+    });
+  }
+  //console.log('token is ' + token);
+  return new Promise((resolve, reject) => {
+    // https://github.com/mzabriskie/axios
+    //创建一个axios实例
+    const instance = axios.create({
+      headers: {
+        'Authorization': token
+      }
+    })
+    //请求处理
+    instance(options)
+      .then(({
+        data: data
+      }) => {
+        //console.log(data);
+        var status = data.status;
+        var msg = data.msgContent;
+        var body = data.body;
+
+        //请求成功时,根据业务判断状态
+        if (status === 200) {
+          //console.log(11);
+          resolve({
+            data: body
+          })
+        } else if (status === 300) {
+          if( model ){
+            Message.warning(msg)
+          }else{
+            setUserInfo(null)
+            router.replace({name: "login"})
+            Message.warning(msg)
+          }
+        }
+      })
+      .catch((error) => {
+        //请求失败时,根据业务判断状态
+        if (error.response) {
+          let resError = error.response
+          let resCode = resError.status
+          let resMsg = error.message;
+          // 判断是否是开发模式 开发模式调用本地模拟数据
+          if( model ){
+            let mockData = getMockData(JSON.stringify(options.url))
+            resolve({
+              data: mockData
+            });
+          }else{
+            Message.error('操作失败！错误原因 ' + resMsg)
+            reject({code: resCode, msg: resMsg})
+          }
+        }
+      })
+  })
+}
+```
+
+- 具体到某个模块的请求 —— list.js
+```javascript
+import * as api from '../api'
+import fetch from '../common/fetch'
+
+export function getList (data) {
+  return fetch({
+    url: api.FILE_LIST,
+    method: 'post',
+    data
+  })
 }
 ```
