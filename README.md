@@ -995,7 +995,7 @@ this.$refs.passInput.$el.querySelector('input').focus() // 然后在找到input 
 /*api.js*/
 export const CONTEXT = '';
 
-export const LOGIN = CONTEXT + '/pub/loginAndRegister/login';
+export const FILE_LIST = CONTEXT + '/api/file/list';
 ```
 
 - 请求的方法单独管理 —— fetch.js
