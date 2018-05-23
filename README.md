@@ -1142,3 +1142,16 @@ var server = app.listen(app.get('port'), function() {
 ```javascript
 nodemon app.js
 ```
+
+**75. js触发window的resize事件**
+```javascript
+export const triggerResize = ()=>{
+  if( document.createEvent) {
+    var event = document.createEvent ("HTMLEvents");
+    event.initEvent("resize", true, true);
+    window.dispatchEvent(event);
+  } else if(document.createEventObject){
+    window.fireEvent("onresize");
+  } 
+}
+```
