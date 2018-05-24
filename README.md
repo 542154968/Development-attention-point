@@ -1167,3 +1167,29 @@ export const bytesToSize = (bytes) => {
  return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
 }
 ```
+
+**77. Vue监听store中的state**
+```javascript
+export default{
+	data(){
+		return {
+			reloadStatus: this.$store.state.reloadStatus
+		}
+	},
+	watch: {
+		reloadStatus( cur, old ){
+			console.log( cur ) // 无效
+		}
+	}
+}
+
+// 怎么办呢
+// 可以使用computed
+
+computed: {  
+	reloadStatus() {
+		return this.$store.state.indexRefresh 
+	}  
+},
+
+```
