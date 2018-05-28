@@ -1324,3 +1324,7 @@ SolidGauge(Highcharts);
 
 **79. Vue少用scoped**
 - 如果引用了公共样式，公共样式同样会加scoped  会造成重复代码
+
+**80. echarts的响应式**
+- echart.resize()
+- option.grid.containLabel // 这个参数非常棒
