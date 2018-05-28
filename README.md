@@ -1331,3 +1331,38 @@ SolidGauge(Highcharts);
 
 **81. addEventListener的第三个参数已经是一个对象了，不再是简单的true，false**
 > [MDN-EventTarget.addEventListener()](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener)
+
+**82. 简单的节流写法**
+- 防抖是事件不再触发多少秒后触发回调函数
+- 节流是事件频繁触发中每多少秒触发一次回调函数
+- 之前一直叫反了
+
+```javascript
+// 简单的节流函数
+function throttle(func, wait, mustRun) {
+    var timeout,
+        startTime = new Date();
+ 
+    return function() {
+        var context = this,
+            args = arguments,
+            curTime = new Date();
+ 
+        clearTimeout(timeout);
+        // 如果达到了规定的触发时间间隔，触发 handler
+        if(curTime - startTime >= mustRun){
+            func.apply(context,args);
+            startTime = curTime;
+        // 没达到触发间隔，重新设定定时器
+        }else{
+            timeout = setTimeout(func, wait);
+        }
+    };
+};
+// 实际想绑定在 scroll 事件上的 handler
+function realFunc(){
+    console.log("Success");
+}
+// 采用了节流函数
+window.addEventListener('scroll',throttle(realFunc,500,1000));
+```
