@@ -1328,3 +1328,6 @@ SolidGauge(Highcharts);
 **80. echarts的响应式**
 - echart.resize()
 - option.grid.containLabel // 这个参数非常棒
+
+**81. addEventListener的第三个参数已经是一个对象了，不再是简单的true，false**
+> [MDN-EventTarget.addEventListener()](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener)
