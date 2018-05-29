@@ -1420,3 +1420,31 @@ getName(); // 5
 getName = function () { alert (4) };
 getName(); // 4
 ```
+
+**84. 数组方法的32场演唱会**
+> 摘抄自 @大转转FE
+
+```html
+来跟我一起唱
+判断是不是数组，isArray最靠谱。
+按照条件来判断，every/some给答案
+是否包含此元素，includes最快速。
+find/findIndex很相似，按条件给第一个值。
+indexOf/lastIndexOf也很强，有没有来在哪忙。
+from和of，都能用来生数组。
+concat当红娘，数组结婚她帮忙。
+filter瘦身有一套，不想要的都不要。
+map整容有实力，改头换面出新意。
+slice就像买切糕，想切哪来就下刀。
+自力更生很重要，copyWithin自己搞。
+fill就像填大坑，想往哪扔往哪扔。
+搬山摸金四兄弟，pop、push、shift、unshift不难记。
+造反其实很容易，reverse一下看好戏。
+sort排序有技巧，能小大来能大小。
+splice要认识，能插能删有本事。
+forEach最熟悉，有人说它是万能滴。
+keys、values、entries，遍历数组新方式。
+算总账，不要慌，reduce、reduceRight帮你忙。
+toString，join变字符，toLocaleString不常用。
+当里个当，当里个当，数组32方法，猥琐发育不要浪，嘿！不要浪！
+```
