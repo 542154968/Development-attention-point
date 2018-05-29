@@ -1448,3 +1448,10 @@ keys、values、entries，遍历数组新方式。
 toString，join变字符，toLocaleString不常用。
 当里个当，当里个当，数组32方法，猥琐发育不要浪，嘿！不要浪！
 ```
+
+**85. Object对象如果key是数字，会按照数字从小到大排列**
+```javascript
+const object3 = { 100: 'a', 2: 'b', 7: 'c' };
+console.log( object3 );
+// {2: "b", 7: "c", 100: "a"}
+```
