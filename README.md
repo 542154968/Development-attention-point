@@ -1393,3 +1393,30 @@ new new Foo().getName();
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 ```
 - 这道题的答案是：2、4、1、1、2、3、3。
+-这里考察声明提前的题目在代码中已经标出，这里声明getName方法的两个语句：
+```javascript
+var getName = function () { alert (4) };
+function getName() { alert (5) }
+```
+-实际上在解析的时候是这样的顺序：
+```javascript
+function getName() { alert (5) }
+var getName;
+getName = function () { alert (4) };
+```
+- 如果我们在代码中间再加两个断点：
+```javascript
+getName(); // 5
+var getName = function () { alert (4) };
+getName(); // 4
+function getName() { alert (5) }
+```
+- 在第一次getName时，function的声明和var的声明都被提前到了第一次getName的前面，而getName的赋值操作并不会提前，单纯使用var的声明也不会覆盖function所定义的变量，因此第一次getName输出的是function声明的5；
+而第二次getName则是发生在赋值语句的后面，因此输出的结果是4，所以实际代码的执行顺序是这样：
+```javascript
+function getName() { alert (5) }
+var getName;
+getName(); // 5
+getName = function () { alert (4) };
+getName(); // 4
+```
