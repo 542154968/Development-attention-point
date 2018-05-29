@@ -1366,3 +1366,30 @@ function realFunc(){
 // 采用了节流函数
 window.addEventListener('scroll',throttle(realFunc,500,1000));
 ```
+
+**83. 一个声明提前面试题**
+```javascript
+function Foo() {
+    getName = function () { alert (1); };
+    return this;
+}
+Foo.getName = function () { alert (2);};
+Foo.prototype.getName = function () { alert (3);};
+var getName = function () { alert (4);};
+function getName() { alert (5);}
+
+// 请写出以下输出结果：
+Foo.getName();
+getName(); // 声明提前
+Foo().getName();
+getName();
+new Foo.getName();
+new Foo().getName();
+new new Foo().getName();
+
+作者：不肥的肥羊
+链接：https://juejin.im/post/5b0562306fb9a07aaf3596c1
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+- 这道题的答案是：2、4、1、1、2、3、3。
