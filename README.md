@@ -1455,3 +1455,27 @@ const object3 = { 100: 'a', 2: 'b', 7: 'c' };
 console.log( object3 );
 // {2: "b", 7: "c", 100: "a"}
 ```
+
+**86. Object.definePrototy 用法的一道题**
+```javascript
+var foo = ( function(){
+	var o = {
+		a: 1,
+		b: 2
+	};
+	return function( key ){
+		return o[key]
+	}
+} )();
+// 不改变以上函数  取出o的所有属性
+
+Object.defineProperty( Object.prototype, '_getAll', {
+	get(){
+		return this;
+	}
+})
+let obj = foo('_getAll');
+// 避免污染
+delete Object.prototype._getAll;
+Obejct.keys( obj )
+```
