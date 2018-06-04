@@ -1477,5 +1477,5 @@ Object.defineProperty( Object.prototype, '_getAll', {
 let obj = foo('_getAll');
 // 避免污染
 delete Object.prototype._getAll;
-Obejct.keys( obj )
+Object.keys( obj )
 ```
