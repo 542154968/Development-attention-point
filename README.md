@@ -1479,3 +1479,35 @@ let obj = foo('_getAll');
 delete Object.prototype._getAll;
 Object.keys( obj )
 ```
+
+**87、 OS X 快捷键**
+```html
+control + a ：移到命令行首，HOME
+control + e ：移到命令行尾，End
+
+control + f ：按字符前移（右向）
+control + b ：按字符后移（左向）
+
+option + f ：按单词前移（右向）
+option + b ：按单词后移（左向）
+
+control + u ：从光标处删除至命令行首
+control + k ：从光标处删除至命令行尾
+
+control + w ：从光标处删除至字首等同于option + backspace
+option + d ：从光标处删除至字尾
+
+control + l : Clean
+
+control + d ：删除光标处的字符
+control + h ：删除光标前的字符
+
+control + y ：粘贴至光标后
+
+option + c ：从光标处更改为首字母大写的单词
+option + u ：从光标处更改为全部大写的单词
+option + l ：从光标处更改为全部小写的单词
+
+control + t ：交换光标处和之前的字符
+option + t ：交换光标处和之前的单词
+```
