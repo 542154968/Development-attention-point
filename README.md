@@ -1511,3 +1511,31 @@ option + l ：从光标处更改为全部小写的单词
 control + t ：交换光标处和之前的字符
 option + t ：交换光标处和之前的单词
 ```
+
+**88. 一个简单的模板引擎**
+```javascript
+let data = {
+	'up': '运行了',
+	'Exited': '关闭了',
+	'month': '月',
+	'days': '天',
+	'hours': '小时',
+	'minutes': '分钟',
+	'secondes': '秒',
+	'ago': '',
+	'Less than a second': '少于一秒',
+	'About a minute': '大概一分钟',
+}
+
+var str = '系统{%up%}, 15{%days%}';
+var regex = /\{%([^{]+)%\}/g;
+var match = null;
+while( match = regex.exec( str ) ){
+	// console.log( match )
+	match.index -= match[0].length;
+	console.log( match[0] )
+	str = str.replace( match[0], data[match[1]] );
+	regex.lastIndex = 0
+}
+console.log(str )  
+```
