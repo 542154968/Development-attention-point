@@ -1539,3 +1539,24 @@ while( match = regex.exec( str ) ){
 }
 console.log(str )  
 ```
+
+**89. 获取对象中所有的id**
+```javascript
+let data = {"body":[{"icon":"fa fa-cloud","sort":5,"type":"PAGE","parentId":0,"isShow":true,"children":[{"icon":"fa fa-laptop","sort":1,"type":"PAGE","parentId":13,"isShow":true,"name":"主机信息","id":14,"href":"/server/resource"},{"icon":"fa fa-cubes","sort":2,"type":"PAGE","parentId":13,"isShow":true,"name":"容器服务","id":15,"href":"/server/container"},{"icon":"fa fa-database","sort":3,"type":"PAGE","parentId":13,"isShow":true,"name":"mysql数据库","id":16,"href":"/backup/mysqlFileList"},{"icon":"fa fa-database","sort":4,"type":"PAGE","parentId":13,"isShow":true,"name":"mongo数据库","id":17,"href":"/backup/mongoFileList"}],"name":"服务器管理","id":13,"href":"/server/resource"}],"msgCode":"ACTIVE","msgContent":"正常","status":200}
+
+- 有这样一段数据 要拿出所有的id
+
+function getAllId( data ){
+    let str = '',
+	regexp = /,"id":(\d+)(?=,)/g,
+	matchStr = '',
+	idArr = [];
+    try {
+	str = JSON.stringify( data );
+    } catch (error) {}    
+    while(matchStr = regexp.exec( str )){
+	idArr.push( matchStr[1] )
+    }
+    return idArr
+}
+```
