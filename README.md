@@ -1563,22 +1563,81 @@ function getAllId( data ){
 
 **90. ajax请求到的blob对象下载**
 ```javascript
-axios({}).then( res => {
-	const content = res
-	const blob = new Blob([content])
-	const fileName = Date.parse(new Date()) + '.xls'
-	if ('download' in document.createElement('a')) { // 非IE下载
-		const elink = document.createElement('a')
-		elink.download = fileName
-		elink.style.display = 'none'
-		elink.href = URL.createObjectURL(blob)
-		document.body.appendChild(elink)
-		elink.click()
-		URL.revokeObjectURL(elink.href) // 释放URL 对象
-		document.body.removeChild(elink)
-	} else { // IE10+下载
-		navigator.msSaveBlob(blob, fileName)
-	}
-})
+/**
+ * 下载传入的文件流
+ * @param { Blob } blob 文件流
+ * @param { String } file_name 生成的文件名称 
+ */
+export const download_blob = ( blob, file_name ) => {
+  return new Promise( (resolve, reject) => {
+    try {
+      const BLOB = new Blob([blob])
+      if ('download' in document.createElement('a')) { // 非IE下载
+          const elink = document.createElement('a')
+          elink.download = file_name;
+          elink.style.display = 'none';
+          elink.href = URL.createObjectURL(BLOB);
+          document.body.appendChild(elink);
+          elink.click(); 
+          // trigger 不触发下载 trigger( elink, 'click' )
+          // 删除引用 释放URL 对象
+          URL.revokeObjectURL(elink.href);
+          document.body.removeChild(elink);
+        // IE10+下载  
+      } else { 
+          navigator.msSaveBlob(BLOB, file_name)
+      }
+      resolve({ status: 'success', content: '' })
+    } catch (error) {
+      reject({ status: 'error', content: error })
+    }
+  })
+}
 
+
+axios({}).then( res => {
+                download_blob( res, Date.parse(new Date()) + '.xls' ).then( data => {
+                    console.log( data )
+                }).catch( err => {
+                    console.log( err )
+                })
+            }).catch( err => {
+                console.log( err )
+            })
+
+```
+
+**91. 前端下载文件常见的两种方式**
+- ajax
+```javascript
+// 请求的responsetype设置为 responseType: 'blob'
+// 剩下的参考90那条
+```
+- form表单下载
+> 参考 [隐藏form表单下载文件](https://blog.csdn.net/java_trainee/article/details/73647806)
+
+```javascript
+function downloadFile(actoinURL,filePath,fileName){  
+<span style="white-space:pre;"> </span>var form = $("<form>");     
+    $('body').append(form);    
+        form.attr('style','display:none');     
+        form.attr('target','');  
+        form.attr('method','post');  
+        form.attr('action',actoinURL);//下载文件的请求路径  
+          
+          
+        var input1 = $('<input>');   
+        input1.attr('type','hidden');   
+        input1.attr('name','filePath');   
+        input1.attr('value',filePath);  
+        form.append(input1);    
+        var input2 = $('<input>');   
+        input2.attr('type','hidden');   
+        input2.attr('name','fileName');   
+        input2.attr('value',fileName);  
+        form.append(input2);  
+          
+        form.submit();      
+      
+    }; 
 ```
