@@ -1650,3 +1650,14 @@ function downloadFile(actoinURL,filePath,fileName){
 - 另外：ajax 起的作用仅仅是第一个过程內，而真正的下载是第二个过程，所以说「ajax 下载文件」是不准确的
 
 **93. 使用开源库或者框架的时候，要小心了，可能被人嵌入挖矿代码！**
+
+**94. vue-cli3.0 webpack插件设置**
+```javascript
+module.exports = {
+	configureWebpack: {
+		plugins: {
+			new XXX()
+		}
+	}
+}
+```
