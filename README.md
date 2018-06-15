@@ -1678,3 +1678,16 @@ module.exports = {
 
 **99. OS系统是真的好看**
 - 平心而论，UI效果比Windows确实好，好友推荐给我了一款软件叫`mactype`，用来在Windows上做类似OS的美化
+
+**100. 如何不写域名的情况下修改端口**
+```javascript
+io.connect("http://192.168.1.122:8080");
+// 改成我们自己的
+io.connect(":9101"); // http://localhost:9101
+```
+
+**101. Vue Highcharts 双饼图需要引入的**
+```javascript
+// 只有这一个就好啦
+import Highcharts from 'highcharts'
+```
