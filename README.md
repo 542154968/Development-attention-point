@@ -1700,3 +1700,6 @@ import Highcharts from 'highcharts'
 	border-image: linear-gradient(45deg,red,blue) 10%
 }
 ```
+
+**103. 禁止缩放的时候（meta）部分浏览器就已经解决300毫秒延迟的问题了**
+> [移动端点击300ms延迟问题和解决](https://blog.csdn.net/qq_34986769/article/details/62046696)
