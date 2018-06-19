@@ -1691,3 +1691,12 @@ io.connect(":9101"); // http://localhost:9101
 // 只有这一个就好啦
 import Highcharts from 'highcharts'
 ```
+
+**102. linear-gradient可以用在很多地方的**
+```css
+.box{
+	height: 400px; width: 400px;
+	border: 30px solid transparent;
+	border-image: linear-gradient(45deg,red,blue) 10%
+}
+```
