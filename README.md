@@ -1713,3 +1713,12 @@ import Highcharts from 'highcharts'
 }
 
 ```
+
+**14. 请用JS计算1-10000之间有几个零**
+```javascript
+let arr = [];
+for( let i = 1, l = 10000; i <= l; i++){
+	arr.push(i)
+}
+arr.join().match(/0/g) // 2893
+```
