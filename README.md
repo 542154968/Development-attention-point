@@ -1713,7 +1713,7 @@ import Highcharts from 'highcharts'
 
 ```
 
-**14. 请用JS计算1-10000之间有几个零**
+**105. 请用JS计算1-10000之间有几个零**
 ```javascript
 let arr = [];
 for( let i = 1, l = 10000; i <= l; i++){
@@ -1721,3 +1721,10 @@ for( let i = 1, l = 10000; i <= l; i++){
 }
 arr.join().match(/0/g) // 2893
 ```
+
+**106. 一个比较全面的前端面试题集合**
+- [前端面试题（1）Html](https://segmentfault.com/a/1190000014994737)
+- [前端面试题（2）CSS](https://segmentfault.com/a/1190000014994892)
+- [前端面试题（3）JavaScript现代化开发](https://segmentfault.com/a/1190000015150912)
+- [前端面试题（4）JavaScript知识点](https://segmentfault.com/a/1190000015162142)
+- [前端面试题（5）安全性能优化](https://segmentfault.com/a/1190000015275832)
