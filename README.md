@@ -1332,10 +1332,9 @@ SolidGauge(Highcharts);
 **81. addEventListener的第三个参数已经是一个对象了，不再是简单的true，false**
 > [MDN-EventTarget.addEventListener()](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener)
 
-**82. 简单的节流写法**
-- 防抖是事件不再触发多少秒后触发回调函数
-- 节流是事件频繁触发中每多少秒触发一次回调函数
-- 之前一直叫反了
+**82. 简单的防抖写法**
+- 节流是事件不再触发多少秒后触发回调函数
+- 防抖是事件频繁触发中每多少秒触发一次回调函数
 
 ```javascript
 // 简单的节流函数
