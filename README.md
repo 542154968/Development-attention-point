@@ -1730,3 +1730,19 @@ arr.join().match(/0/g) // 2893
 - [前端面试题（5）安全性能优化](https://segmentfault.com/a/1190000015275832)
 - [前端面试题（6）HTML语义化标签](https://segmentfault.com/a/1190000013901244)
 - [前端面试题（7）href url src](https://segmentfault.com/a/1190000013845173)
+
+**107. 今天踩得IE的几个坑**
+- IE没有`window.scrollY` 使用document来获取滚动高度
+```javascript
+export const getScrollTop = function () {
+    let scrollTop = 0;
+    if (document.documentElement && document.documentElement.scrollTop) {
+        scrollTop = document.documentElement.scrollTop;
+    } else if (document.body) {
+        scrollTop = document.body.scrollTop;
+    }
+    return scrollTop;
+}
+```
+- IE的new Date("2018-05-06 00:00:00")报错 要改成斜线
+- IE的Date.parse("2018-05-06 00:00:00")报错 要改成斜线
