@@ -1728,3 +1728,4 @@ arr.join().match(/0/g) // 2893
 - [前端面试题（3）JavaScript现代化开发](https://segmentfault.com/a/1190000015150912)
 - [前端面试题（4）JavaScript知识点](https://segmentfault.com/a/1190000015162142)
 - [前端面试题（5）安全性能优化](https://segmentfault.com/a/1190000015275832)
+- [前端面试题（6）HTML语义化标签](https://segmentfault.com/a/1190000013901244)
