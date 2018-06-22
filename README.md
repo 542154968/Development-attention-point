@@ -1749,3 +1749,7 @@ export const getScrollTop = function () {
 
 **108. promiseAll 使用的时候也是要多考虑的**
 - 比如我有三个请求 使用了promiseAll之后 其中一个请求报500了  整个promiseall的回调会走向catch 其他正确的不再执行了
+
+**109. transform和z-index的关系 了解下**
+- 今天做项目再次遇到了z-index失效的问题 上次是因为animation 这次是因为 transform 
+- [z-index和transform,你真的了解吗？](https://blog.csdn.net/fanhu6816/article/details/52523815)
