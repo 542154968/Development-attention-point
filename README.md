@@ -1746,3 +1746,6 @@ export const getScrollTop = function () {
 ```
 - IE的new Date("2018-05-06 00:00:00")报错 要改成斜线
 - IE的Date.parse("2018-05-06 00:00:00")报错 要改成斜线
+
+**108. promiseAll 使用的时候也是要多考虑的**
+- 比如我有三个请求 使用了promiseAll之后 其中一个请求报500了  整个promiseall的回调会走向catch 其他正确的不再执行了
