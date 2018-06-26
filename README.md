@@ -1807,3 +1807,15 @@ export const getScrollTop = function () {
 
 **111. 再次强调不要怕抽离麻烦，你会很感激今天的抽离**
 - 这两天接口更改，项目合并，又体会到了抽离的好处，不用频繁的更改真的爽。
+
+**112. 平铺多维数组**
+```javascript
+function flattenArray(arr) {
+  const flattened = [].concat(...arr);
+  return flattened.some(item => Array.isArray(item)) ? 
+    flattenArray(flattened) : flattened;
+}
+const arr = [11, [22, 33], [44, [55, 66, [77, [88]], 99]]];
+const flatArr = flattenArray(arr); 
+//=> [11, 22, 33, 44, 55, 66, 77, 88, 99]
+```
