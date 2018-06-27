@@ -1819,3 +1819,39 @@ const arr = [11, [22, 33], [44, [55, 66, [77, [88]], 99]]];
 const flatArr = flattenArray(arr); 
 //=> [11, 22, 33, 44, 55, 66, 77, 88, 99]
 ```
+
+**112. compositionstart和compositionend**
+- 今天遇到一个场景，共有六个inpu，点删除按键删空这个之后，让上一个input聚焦
+- 于是遇到了一个问题
+- 搜狗输入法输入的状态下，如果这个input不是第一个而且是空的，在没有输入进去的情况下，按删除键取到的$val是空的，会造成聚焦上一个input，从而再按删除的时候，删除上一个input的值，导致光标乱跳
+- 通过composition的状态可以确定用户是否输入完毕，之后再进行之后的逻辑
+```vue
+<template>
+<div class="seria-item" v-for="( item, index ) in seriaNums" :key="index">
+	<input v-model.trim="seriaNums[index]" class="ht-input small seria" ref="seriaInput" @compositionstart="composition=false" @compositionend="composition=true" @keyup.delete="seriaDelete($event, index)" @input="seriaChange($event, index)">
+	<span v-if="index < 5"></span>
+</div>
+</template>
+<script>
+export default{
+	return{
+		data(){
+			composition: false
+		}
+	},
+	methods: {
+		seriaDelete($event, index) {
+            const $val = this.seriaNums[index];
+            if (this.composition) {
+                if ($val.length <= 0) {
+                    this.$refs &&
+                        this.$refs.seriaInput &&
+                        this.$refs.seriaInput[index - 1] &&
+                        this.$refs.seriaInput[index - 1].focus();
+                }
+            }
+        },
+	}
+}
+</script>
+```
