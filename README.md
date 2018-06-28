@@ -1858,6 +1858,7 @@ export default{
 
 **113. 地图如果做到区域点聚合？**
 > [百度地图 省市区县 信息展示](https://blog.csdn.net/liuyuqin1991/article/details/78052262)
+> (我自己亲测可跑的demo 没图片，可以自己随便找几个图片)[https://github.com/542154968/Development-attention-point/blob/master/webpack3.x%E7%9A%84%E4%B8%80%E4%BA%9Bdemo/%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BE%E6%A0%B9%E6%8D%AE%E5%8C%BA%E5%9F%9F%E8%81%9A%E5%90%88%E7%82%B9%E7%9A%84demo.md]
 
 - 是  根据地图的缩放zoom值  分级 （省 市 区/ 乡镇 街道） 
 - 根据这个值 来获得后端返回的每个级别的数据 然后写个自定义的标注在该级别点的坐标上
