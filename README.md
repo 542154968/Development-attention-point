@@ -1872,3 +1872,8 @@ export default{
 - 请求url不允许带自定义端口，只能是默认80端口；
 - 请求content-type默认为'application/json'，如需用POST请求则需改为'application/x-www-form-urlencoded'或'multipart/form-data'，否则后台请求里得不到post数据；
 - 后台接收请求php里最好用json_decode（file_get_contents("php://input")）方式获取完整的post数据，否则如果传递较为复杂的多层post数据结构体，直接用$_POST等可能导致获取数据格式异常或失败
+
+**115. 在移动端遇到的一个VUE数据渲染的问题**
+- 场景是一个table列表，分页
+- 遇到的问题是 第一页的第一条的mobile手机号数据，再跳转第二页后，仍保留。PC上没有这个问题
+- 解决方法是，加个setTimeout，等待VUE的数据切换完成之后再渲染
