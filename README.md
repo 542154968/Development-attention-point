@@ -1864,3 +1864,11 @@ export default{
 - 是  根据地图的缩放zoom值  分级 （省 市 区/ 乡镇 街道） 
 - 根据这个值 来获得后端返回的每个级别的数据 然后写个自定义的标注在该级别点的坐标上
 - 一二三级都是统计数据  第四级是详细的点数据
+
+**114. 小程序数据请求的注意点（待验证）**
+> [《腾讯游戏人生》微信小程序开发总结](https://segmentfault.com/a/1190000015393890)
+
+- 请求不支持设置header的refer；
+- 请求url不允许带自定义端口，只能是默认80端口；
+- 请求content-type默认为'application/json'，如需用POST请求则需改为'application/x-www-form-urlencoded'或'multipart/form-data'，否则后台请求里得不到post数据；
+- 后台接收请求php里最好用json_decode（file_get_contents("php://input")）方式获取完整的post数据，否则如果传递较为复杂的多层post数据结构体，直接用$_POST等可能导致获取数据格式异常或失败
