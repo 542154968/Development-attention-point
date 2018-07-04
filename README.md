@@ -1882,3 +1882,7 @@ export default{
 
 **117. 如果后端返回你的日期对象是这样的2018-05-08T01:16:11.000+0000**
 - 注意了 这个时区不是我们这里的时区，会造成时间偏差 需要先`new Date()`一下这个时间，之后再转换成你要的格式。
+
+**118. -apple-system, BlinkMacSystemFont,**
+- -apple-system 是在以 WebKit 为内核的浏览器（如 Safari）中，调用 Apple（苹果公司）系统（iOS, macOS, watchOS, tvOS）中默认字体（现在一般情况下，英文是 San Francisco，中文是苹方）
+- BlinkMacSystemFont 是在 Chrome 中实现调用 Apple 的系统字体
