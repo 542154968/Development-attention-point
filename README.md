@@ -1886,3 +1886,6 @@ export default{
 **118. -apple-system, BlinkMacSystemFont,**
 - -apple-system 是在以 WebKit 为内核的浏览器（如 Safari）中，调用 Apple（苹果公司）系统（iOS, macOS, watchOS, tvOS）中默认字体（现在一般情况下，英文是 San Francisco，中文是苹方）
 - BlinkMacSystemFont 是在 Chrome 中实现调用 Apple 的系统字体
+
+**119. UglifyJsPlugin报错？**
+- 看看是哪个文件夹的es6没有被babel转义 一包含就有效
