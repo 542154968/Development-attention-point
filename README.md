@@ -1889,3 +1889,24 @@ export default{
 
 **119. UglifyJsPlugin报错？**
 - 看看是哪个文件夹的es6没有被babel转义 一包含就有效
+
+**120. JS动画帧与速度的关系**
+- 我的天啊 我迷了好久 今天终于想透彻了
+- 就拿匀速运动举例子
+```javascript
+// 首先知道 距离 x 时间 ms 
+// 求速度  v = x / ms;
+// setTinterval 最好是 16.7毫秒执行一次 
+// 以前就理解不了这个16.7毫秒和速度时间的关系 
+// 换个角度想一下 16.7毫秒动一次 那每次动的距离不就是 16.7 * 每毫秒动的距离吗 
+// 关系就出来了
+const v = x / ms,
+	onceMoveLong = v * 16.7;
+// 移动距离
+let s = 0;	
+
+setInterval( function(){
+	// 避免计算不精确的小数问题
+	s = ~~(s) + onceMoveloNG;	
+}, 16.7 )
+```
