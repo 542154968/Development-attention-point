@@ -1910,3 +1910,23 @@ setInterval( function(){
 	s = ~~(s) + onceMoveloNG;	
 }, 16.7 )
 ```
+
+**121. vue style scoped 想对设置了scoped的子组件里的元素进行控制可以使用`>>>`或者`deep`**
+```vue
+<template>
+  <div id="app">
+    <gHeader></gHeader>
+  </div>
+</template>
+
+<style lang="css" scoped>
+  .gHeader /deep/ .name{ //第一种写法
+    color:red;
+  }
+  .gHeader >>> .name{   //二种写法
+    color:red;
+  }
+</style>
+```
+- 一些预处理程序例如sass不能解析>>>属性，这种情况下可以用deep，它是>>>的别名，工作原理相同。
+- 使用v-html动态创建的DOM内容，不受设置scoped的样式影响，但你依然可以使用深选择器进行控制
