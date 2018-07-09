@@ -1930,3 +1930,8 @@ setInterval( function(){
 ```
 - 一些预处理程序例如sass不能解析>>>属性，这种情况下可以用deep，它是>>>的别名，工作原理相同。
 - 使用v-html动态创建的DOM内容，不受设置scoped的样式影响，但你依然可以使用深选择器进行控制
+
+**122. 如何不通过控制台编辑DOM就能修改网页？**
+> [document.designMode](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/designMode)
+
+- `document.designMode`了解下
