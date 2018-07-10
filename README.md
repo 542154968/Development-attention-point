@@ -1935,3 +1935,7 @@ setInterval( function(){
 > [document.designMode](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/designMode)
 
 - `document.designMode`了解下
+
+**123. vue mixins 太好用了**
+- 简单来讲就是合并vue的代码的 可以把script中的data、methods、生命周期等抽离出去
+- 就像抽离公共方法一样
