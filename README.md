@@ -1939,3 +1939,29 @@ setInterval( function(){
 **123. vue mixins 太好用了**
 - 简单来讲就是合并vue的代码的 可以把script中的data、methods、生命周期等抽离出去
 - 就像抽离公共方法一样
+
+**124. vue directives 好用**
+- 我觉得它更大的用处是分离数据渲染和UI渲染
+- 场景是 进度条 宽度是靠width的css来控制的 比如现在宽度是20% 然后我刷新数据之后，因为这个值是20% 再次取得的数据还是20% 导致宽度变化的css动画就不再触发了 
+- 通过自定义指令 分割了UI渲染和数据渲染部分 简化了代码量 更加清晰
+
+```vue
+export default {
+directives: {
+    frame: {
+        bind(el, binding, vNode) {
+                el.style.width = `0%`;
+                setTimeout(_ => {
+                    el.style.width = `${binding.value}%`;
+                }, 20);
+        },
+        update(el, binding, vNode) {
+                el.style.width = `0%`;
+                setTimeout(_ => {
+                    el.style.width = `${binding.value}%`;
+                }, 100);
+            }
+        }
+    },
+}
+```
