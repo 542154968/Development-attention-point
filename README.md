@@ -1965,3 +1965,68 @@ directives: {
     },
 }
 ```
+
+**125. 今天遇到的一个下往上找到所有的父级Id的场景问题**
+- 由于element的tree组件没全选的情况下，父级的Id取不到，所以有了从下往上找到所有的父级Id的场景需求
+- 受 @大狗蛋 的指导，合理使用`Map`，较为优雅解决问题
+```javascript
+const arr = [
+	{
+		parentId: 0,
+		id: 1,
+		children: [
+			{
+				parentId: 1,
+				id: 2,
+				children: [{
+					parentId: 2,
+					id: 3
+				}]
+			}
+		]
+	},
+	{
+		parentId: 0,
+		id: 4,
+		children: [
+			{
+				parentId: 4,
+				id: 5,
+				children: [{
+					parentId: 5,
+					id: 6
+				}]
+			}
+		]
+	},
+]
+
+let m = new Map();
+let iKnowIds = [3, 6];
+
+function arr2Map(arr) {
+	for (let i = 0, l = arr.length; i < l; i++) {
+		let item = arr[i];
+		m.set(item.id, item.parentId)
+		if (Array.isArray(item.children) && item.children.length > 0) {
+			arr2Map(item.children)
+		}
+	}
+}
+// 先变成map结构
+arr2Map(arr);
+
+function deepMap(key, allIds) {
+	let parentId = m.get(key);
+	if (parentId !== 0) {
+		allIds.push(parentId);
+		deepMap(parentId, allIds)
+	}
+}
+
+function getIds(key) {
+	let allIds = [];
+	deepMap(key, allIds)
+	console.log(allIds)
+}
+```
