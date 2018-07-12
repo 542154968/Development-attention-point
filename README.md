@@ -2030,3 +2030,61 @@ function getIds(key) {
 	console.log(allIds)
 }
 ```
+
+**126. vue引入百度地图的两种方式**
+- 方式一
+```javascript
+1. index.html 中引入script
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=HWzRuiQHQj1QrMifGGkXXXXXXXXX"></script>
+
+2. webpack.base.conf.js中 
+module.exports = {
+    entry: {
+        app: "./src/main.js",
+        vendor: ["vue", "vuex", "vue-router", "element-ui"] //第三方库和框架
+    },
+    externals: {
+    // 扩展外部
+        BMap: "BMap"
+    },
+} 
+
+3. 要使用的组件中
+// const BMap = require('BMap');  
+import BMap from require('BMap');
+
+4. 缺点 
+如果百度的链接出现延迟 500等问题 会导致整个项目出现问题
+``` 
+- 方式二
+```vue
+export default {
+    mounted(){
+        this.MP().then( BMap => { this.initMap( BMap ) } )
+    },
+    methods: {
+        MP() {
+            return new Promise(function(resolve, reject) {
+                window.init = function() {
+                    resolve(BMap);
+                };
+                var script = document.createElement("script");
+                script.type = "text/javascript";
+		// 注意这里的callback 
+                script.src =
+                    "http://api.map.baidu.com/api?v=3.0&ak=HWzRuiQHQj1QrMifGGxxxx&callback=init";
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        },
+	initMap(Map){
+	    // 初始化地图
+	}
+    }
+}
+
+缺点 
+可能是我引入方式有问题 
+每次都会增加script标签
+造成重复的百度地图的map对象加入 
+```
