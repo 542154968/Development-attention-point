@@ -2199,3 +2199,17 @@ export default {
 
 ```
 
+**128. JS触发事件**
+```javascript
+// 创建事件.
+  let event = document.createEvent('HTMLEvents');
+  // 初始化一个点击事件，可以冒泡，无法被取消
+  event.initEvent('click', true, false);
+  let elm = document.getElementById('wq')
+  // 设置事件监听.
+  elm.addEventListener('click', (e) => {
+    console.log(e)
+  }, false);
+  // 触发事件监听
+  elm.dispatchEvent(event);
+```
