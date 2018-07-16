@@ -2086,5 +2086,116 @@ export default {
 缺点 
 可能是我引入方式有问题 
 每次都会增加script标签
-造成重复的百度地图的map对象加入 
+造成重复的百度地图的Map对象加入 
 ```
+
+**127. echarts、HighCharts按需加载**
+- echarts
+```javascript
+const echarts = require('echarts/lib/echarts');
+require('echarts/lib/chart/line');
+require('echarts/lib/chart/bar');
+require('echarts/lib/chart/pie');
+// 引入提示框和标题组件
+require('echarts/lib/component/tooltip');
+require('echarts/lib/component/title');
+```
+
+- Highcharts（这个商业化要收费）
+```javascript
+import HighchartsMore from "highcharts/highcharts-more";
+import SolidGauge from "highcharts/modules/solid-gauge.js";
+HighchartsMore(Highcharts);
+SolidGauge(Highcharts);
+```
+
+- 终极版真正按需加载 懒加载
+> 场景是滚动到某个距离 加载echarts
+
+```vue
+
+<script type="text/ecmascript-6">
+let echarts = null;
+
+export default {
+    data() {
+        return {
+           
+        };
+    },
+    mounted() {
+        this.addeventWindow();
+        this.handleScroll();
+    },
+    methods: {
+        handleScroll() {
+            window.addEventListener("scroll", this.drawAll);
+        },
+        drawAll(event) {
+            let _this = this;
+            clearTimeout(_this.load_all_timeId);
+            _this.load_all_timeId = setTimeout(function() {
+                if (
+                    _this.$refs.EError.offsetTop <=
+                    getScrollTop() + window.innerHeight - 100
+                ) {
+                    _this.syncLoadEcharts().then( res => {
+                        _this.load_all_data();
+                        _this.isLoaded = true;
+                        window.removeEventListener("scroll", _this.drawAll);
+                    })
+                }
+            }, 200);
+        },
+        syncLoadEcharts(){
+            return new Promise( (resolve, reject) => {
+                require.ensure([], function() {
+                    echarts = require('echarts/lib/echarts');
+                    require('echarts/lib/chart/line');
+                    require('echarts/lib/chart/bar');
+                    require('echarts/lib/chart/pie');
+                    // 引入提示框和标题组件
+                    require('echarts/lib/component/tooltip');
+                    require('echarts/lib/component/title');
+                    resolve('success')
+                }, 'syncEcharts')
+            })
+        },
+       
+        // 画终端分配
+        drawDistribution() {
+            this.distribution_chart
+                ? this.distribution_chart.clear()
+                : (this.distribution_chart = echarts.init(
+                      document.getElementById("distribution-chart")
+                  ));
+            this.distribution_chart.setOption(this.distribution_option, true);
+        },
+        // 以下全是响应式改变的逻辑
+        addeventWindow() {
+            window.addEventListener("resize", this.resizeIndexCharts);
+        },
+        resizeIndexCharts() {
+            clearTimeout(this.resizeTimeId);
+            this.resizeTimeId = setTimeout(() => {
+                this.resetSize();
+            }, 200);
+        },
+        resetSize() {
+            this.$nextTick(() => {
+                this.terminal_chart && this.terminal_chart.resize();
+                this.error_msg_chart && this.error_msg_chart.resize();
+                this.distribution_chart && this.distribution_chart.resize();
+            });
+        }
+    },
+    beforeDestroy() {
+        echarts = null;
+        window.removeEventListener("resize", this.resizeIndexCharts);
+        window.removeEventListener("scroll", this.drawAll);
+    }
+};
+</script>
+
+```
+
