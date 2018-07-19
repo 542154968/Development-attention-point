@@ -2216,3 +2216,46 @@ export default {
 
 **129. 优化重排重绘**
 - 重排与重绘的代价非常昂贵。如果操作需要进行多次重排与重绘，建议先让元素脱离文档流，处理完毕后再让元素回归文档流，这样浏览器只会进行两次重排与重绘（脱离时和回归时）。
+
+**130. VsCode保存格式化代码的配置**
+> [参考这里](https://blog.csdn.net/weixin_36222137/article/details/80040758)
+
+- 真正起作用的其实还是`vetur`
+- `eslint`，`prettier-Code formatter`， `vetur` 这三个插件必须安装，其他的插件根据自己的习惯
+
+```json
+{
+    "workbench.colorTheme": "Ysgrifennwr",
+    "workbench.iconTheme": "vscode-icons",
+    "search.followSymlinks": false,
+    "prettier.tabWidth": 4,
+    "editor.lineNumbers": "on", //开启行数提示
+    "editor.quickSuggestions": { //开启自动显示建议
+        "other": true,
+        "comments": true,
+        "strings": true
+    },
+    "editor.formatOnSave": true, //每次保存自动格式化
+    "eslint.autoFixOnSave": true, // 每次保存的时候将代码按eslint格式进行修复
+    "prettier.eslintIntegration": true, //让prettier使用eslint的代码格式进行校验
+    "vetur.format.defaultFormatter.html": "js-beautify-html", //格式化.vue中html
+    "vetur.format.defaultFormatter.js": "vscode-typescript", //让vue中的js按编辑器自带的ts格式进行格式化
+    "vetur.format.defaultFormatterOptions": {
+        "js-beautify-html": {
+            "wrap_attributes": "force", //属性强制折行不一定对齐
+        }
+    },
+    "eslint.validate": [ //开启对.vue文件中错误的检查
+        "javascript",
+        "javascriptreact",
+        {
+            "language": "html",
+            "autoFix": true
+        },
+        {
+            "language": "vue",
+            "autoFix": true
+        }
+    ],
+}
+```
