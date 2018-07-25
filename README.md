@@ -2259,3 +2259,6 @@ export default {
     ],
 }
 ```
+
+**130. IE中 left等不支持unset 默认auto**
+> 这几天github卡爆了 更新不上去 
