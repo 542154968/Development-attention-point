@@ -2264,3 +2264,9 @@ export default {
 > 这几天github卡爆了 更新不上去 
 
 **131. async的await要接收一个promise对象哦**
+
+**132. 不要忘了let可以解决异步循环i的问题**
+
+**133. scrollTo scroolTop**
+- 火狐 谷歌的DOM可以有scrollTo()
+- 而IE 只有window 有scrollTo() DOM要用scrollTop
