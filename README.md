@@ -2270,3 +2270,8 @@ export default {
 **133. scrollTo scroolTop**
 - 火狐 谷歌的DOM可以有scrollTo()
 - 而IE 只有window 有scrollTo() DOM要用scrollTop
+
+**134. IE11中的overflow**
+- 如果你设置了 overflow-x： hidden  overflow-y: auto
+- 你再设置 overfow: hidden的时候是无效的
+- 你要设置 overflow-x： hidden overflow-y： hidden
