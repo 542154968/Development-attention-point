@@ -2278,3 +2278,31 @@ export default {
 
 **135. 超详细的数组方法总结 给力！**
 [JavaScript数组的十八般武艺](https://segmentfault.com/a/1190000015908109)
+
+**136. css小技巧之改变png图片的颜色**
+> [不定期更新的CSS奇淫技巧](https://juejin.im/post/5b607a0b6fb9a04fd260aa70)
+
+- 就是通过filter属性啦
+
+```html
+<style>
+.icon-color{
+	display: inline-block;
+	width: 144px;
+	height: 144px;
+	background: url('https://user-gold-cdn.xitu.io/2018/7/31/164f0e6745afe2ba?w=144&h=144&f=png&s=2780') no-repeat center / cover;
+	overflow: hidden;
+}
+.icon-color:after{
+	content: '';
+	display: block;
+	height: 100%;
+	transform: translateX(-100%);
+	background: inherit;
+	filter: drop-shadow(144px 0 0 #42b983); // 需要修改的颜色值
+}
+</style>
+
+<i class="icon-color"></i>
+
+```
