@@ -2306,3 +2306,7 @@ export default {
 <i class="icon-color"></i>
 
 ```
+
+**137. form表单中只有一个input输入框时**
+- form表单中只有一个input输入框时， `W3C`规定会触发提交事件，需要组织表单的提交 
+- vue中element-ui中使用 `@submit.native.prevent`阻止提交
