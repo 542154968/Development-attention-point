@@ -2318,6 +2318,23 @@ export default {
 - 如果按钮不是用input，而是用button，并且没有加type，IE下默认为type=button，FX默认为type=submit。
 - 其他表单元素如textarea、select不影响，radio checkbox不影响触发规则，但本身在FX下会响应回车键，在IE下不响应。
 - type=”image”的input，效果等同于type=”submit”，不知道为什么会设计这样一种type，不推荐使用，应该用CSS添加背景图合适些
-- ```javascript
+- 
+
+```javascript
 // 我在一个form表单中  写了个没有type的button  当 inupt 按回车时  触发了这个button的click事件  把这个 button 声明为type=button就行了
+```
+
+
+**139. 正确监听退出全屏的姿势**
+- 不要用windows的resize事件 当浏览器F11全屏后，用户按着esc关闭全屏，resize事件是没法监听到的。
+
+```javascript
+document.addEventListener('fullscreenchange', toggleChange)
+document.addEventListener('webkitfullscreenchange', toggleChange)
+document.addEventListener('mozfullscreenchange', toggleChange)
+document.addEventListener('MSFullscreenChange', toggleChange)
+
+function toggleChange(){
+	console.log('magic')
+}
 ```
