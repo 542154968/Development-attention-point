@@ -2337,4 +2337,9 @@ document.addEventListener('MSFullscreenChange', toggleChange)
 function toggleChange(){
 	console.log('magic')
 }
+
 ```
+
+**140. 相同的代码打包到一个chunk中**
+- webpack会合并相同的代码 减少我们的包的体积
+- 首屏可以使用懒加载去加载组件和插件 利用chunk分割
