@@ -2217,7 +2217,7 @@ export default {
 **129. 优化重排重绘**
 - 重排与重绘的代价非常昂贵。如果操作需要进行多次重排与重绘，建议先让元素脱离文档流，处理完毕后再让元素回归文档流，这样浏览器只会进行两次重排与重绘（脱离时和回归时）。
 
-**130. VsCode保存格式化代码的配置**
+**130. VsCode保存格式化代码的配置和我用的插件**
 > [参考这里](https://blog.csdn.net/weixin_36222137/article/details/80040758)
 
 - 真正起作用的其实还是`vetur`
@@ -2259,6 +2259,40 @@ export default {
     ],
 }
 ```
+- 我用的插件
+```html
+Auto Close Tag
+Auto Rename Tag
+canvas-snippets
+Chinese
+Class autocomplete for HTML 
+Color Info
+Css Peek
+Document This
+Eslint
+HTML Boilerplate
+HTML CSS Support
+HTML Snippets
+HTMLHint
+htmltagwrap
+Image Preview
+JavaScript (ES6) snippets
+language-stylus
+Live server
+Node.js Modules Intellisense
+Prettier formatter
+SCSS interlliSense
+stylus
+vetur
+vscode-faker
+vscode-icons
+vue 2 Snippets
+Vue Peek
+Vue VSCode Snippets
+VueHelper
+Ysgrifennwr Color Theme // 最爱的猪蹄
+```
+
 
 **130. IE中 left等不支持unset 默认auto**
 > 这几天github卡爆了 更新不上去 
