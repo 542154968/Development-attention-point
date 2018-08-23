@@ -2379,3 +2379,6 @@ function toggleChange(){
 - 首屏可以使用懒加载去加载组件和插件 利用chunk分割
 
 **141. vue中监听鼠标滚轮用`@wheel`指令**
+
+**142. 如何判断文字溢出（DOM溢出同理）了**
+- 当前dom的 `scrollWidth` 和 `offsetWidth` 做比较
