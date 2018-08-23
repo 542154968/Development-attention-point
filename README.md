@@ -2382,3 +2382,5 @@ function toggleChange(){
 
 **142. 如何判断文字溢出（DOM溢出同理）了**
 - 当前dom的 `scrollWidth` 和 `offsetWidth` 做比较
+
+**143. 当对象中的key为数字时，会自动按着从小到大的顺序排序**
