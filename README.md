@@ -2384,3 +2384,4 @@ function toggleChange(){
 - 当前dom的 `scrollWidth` 和 `offsetWidth` 做比较
 
 **143. 当对象中的key为数字时，会自动按着从小到大的顺序排序**
+- 当有人说Map结构比Object结构好的时候，你就可以拿这个场景告诉他 并不一定哦
