@@ -2400,10 +2400,9 @@ function toggleChange(){
 </template>
 
 <script lang="ts">
-/// <reference path="test.d.ts"/>
 import { Component, Vue, Prop } from "vue-property-decorator";
 import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
-import * as test from "show";
+import test from "./test";
 
 @Component({
   components: {
@@ -2417,6 +2416,10 @@ export default class Home extends Vue {
     return this.msg + "7777";
   }
 
+  beforeCreate() {
+    test.$alert("haha");
+  }
+
   handleClick(event: object, name: string) {
     this.msg = "666";
     // console.log(event, name);
@@ -2427,6 +2430,7 @@ export default class Home extends Vue {
   }
 }
 </script>
+
 
 ```
 
