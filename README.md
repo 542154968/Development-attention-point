@@ -2385,3 +2385,80 @@ function toggleChange(){
 
 **143. 当对象中的key为数字时，会自动按着从小到大的顺序排序**
 - 当有人说Map结构比Object结构好的时候，你就可以拿这个场景告诉他 并不一定哦
+
+**144. @vue/cli（vue-cli3）中含有TypeScript 开箱即用 非常方便**
+- 拥抱新cli 以下是一个小demo
+- Home.vue
+```vue
+<template>
+  <div class="home">
+    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"
+      :num="6666"
+      @reset="resetMsg" />
+    <h1 @click="handleClick($event, '666')">{{computedMsg}}</h1>
+  </div>
+</template>
+
+<script lang="ts">
+/// <reference path="test.d.ts"/>
+import { Component, Vue, Prop } from "vue-property-decorator";
+import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import * as test from "show";
+
+@Component({
+  components: {
+    HelloWorld
+  }
+})
+export default class Home extends Vue {
+  private msg: string = "Hello, World!";
+
+  get computedMsg(): string {
+    return this.msg + "7777";
+  }
+
+  handleClick(event: object, name: string) {
+    this.msg = "666";
+    // console.log(event, name);
+  }
+
+  resetMsg(data: any) {
+    console.log(data, "父组件收到啦");
+  }
+}
+</script>
+
+```
+
+- HelloWorld.vue
+```vue
+<template>
+  <div class="hello"
+    @click="resetMsg({name: 'lqk'})">
+    {{num}}
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Prop, Vue, Emit } from "vue-property-decorator";
+
+@Component
+export default class HelloWorld extends Vue {
+  @Prop() private msg!: string;
+  @Prop({ default: 6, type: Number })
+  private num!: number;
+  count: number = 0;
+
+  @Emit("reset")
+  resetMsg(data: object) {
+    console.log("父组件收到没");
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+
+```
