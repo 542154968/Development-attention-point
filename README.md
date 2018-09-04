@@ -2466,3 +2466,7 @@ export default class HelloWorld extends Vue {
 </style>
 
 ```
+
+**145. 小程序云开发（数据库）开始公测了**
+
+**146. **
