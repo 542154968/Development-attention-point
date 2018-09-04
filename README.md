@@ -2495,3 +2495,5 @@ export default class HelloWorld extends Vue {
 	},
 }	
  ```
+ 
+ **147. echarts时间轴的图数据一定要按着顺序来排列 不然画出的图可能会有问题**
