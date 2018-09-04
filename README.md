@@ -2469,4 +2469,29 @@ export default class HelloWorld extends Vue {
 
 **145. 小程序云开发（数据库）开始公测了**
 
-**146. **
+**146. 百度地图和页面滚动的一个场景**
+- 需求： 鼠标在百度地图上滚动时，页面不随之滚动
+- 问题：
+ 1. 最开始使用的是鼠标进入父元素（此处为`.content`）的时候，`.content`设置为`overflow:hidden` 
+ 2. 鼠标离开`.content`，`.content`设置为`overflow:auto`
+ 3. 这种做法能满足需求 但是会有抖动的问题 
+ 4. 后来发现了一个更大的问题 快速在百度地图上滚动滚轮的时候 再次让`.content`设置为`overflow:auto`的时候，虽然滚动条还在，但是滚动失效了！！！
+- 解决方案
+ 1. 换了种思路 鼠标`.content`的时候，让`docuemnt`监听`mousewheel`和`DOMMouseScroll`事件 并且阻止默认事件
+ 2. 移除的时候移除监听
+ 3. 很完美 不会有抖动的问题也不会无法滚动了
+ ```javascript
+ methods: {
+ 	autoHtml (event) {
+        document.removeEventListener('mousewheel', this.stopWheel)
+        document.removeEventListener('DOMMouseScroll', this.stopWheel)
+    },
+	stopWheel (event) {
+        event.preventDefault()
+    },
+	hiddenHtml () {
+		document.addEventListener('mousewheel', this.stopWheel)
+		document.addEventListener('DOMMouseScroll', this.stopWheel)
+	},
+}	
+ ```
