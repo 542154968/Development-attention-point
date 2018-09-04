@@ -2482,7 +2482,7 @@ export default class HelloWorld extends Vue {
  3. 很完美 不会有抖动的问题也不会无法滚动了
  ```javascript
  methods: {
- 	autoHtml (event) {
+    autoHtml () {
         document.removeEventListener('mousewheel', this.stopWheel)
         document.removeEventListener('DOMMouseScroll', this.stopWheel)
     },
