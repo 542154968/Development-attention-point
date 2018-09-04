@@ -2477,8 +2477,8 @@ export default class HelloWorld extends Vue {
  3. 这种做法能满足需求 但是会有抖动的问题 
  4. 后来发现了一个更大的问题 快速在百度地图上滚动滚轮的时候 再次让`.content`设置为`overflow:auto`的时候，虽然滚动条还在，但是滚动失效了！！！
 - 解决方案
- 1. 换了种思路 鼠标`.content`的时候，让`document`监听`mousewheel`和`DOMMouseScroll`事件 并且阻止默认事件
- 2. 移除的时候移除监听
+ 1. 换了种思路 鼠标进入`.content`的时候，让`document`监听`mousewheel`和`DOMMouseScroll`事件 并且阻止默认事件
+ 2. 鼠标移除`.content`的时候移除`mousewheel`和`DOMMouseScroll`的监听
  3. 很完美 不会有抖动的问题也不会无法滚动了
  ```javascript
  methods: {
