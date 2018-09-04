@@ -2499,3 +2499,9 @@ export default class HelloWorld extends Vue {
 **147. echarts时间轴的图数据一定要按着顺序来排列 不然画出的图可能会有问题**
 
 **148. 写某个模块的时候尽量想全面点 比如没数据怎么展示**
+
+**149. webpack引入min.css的时候要当心**
+- 我自己写的一个动画 被webpack打包后变成了 `@keyframes a`
+- 然后我引入的有一个`css`文件，它也经过压缩处理了 也有一个 `@keyframes a` 
+- 然后就冲突了
+- 后来更换了没压缩的`css`文件引入进来了 `webpack`也会压缩的就是不会别名处理了
