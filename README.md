@@ -2507,6 +2507,8 @@ export default class HelloWorld extends Vue {
 - 后来更换了没压缩的`css`文件引入进来了 `webpack`也会压缩的就是不会别名处理了
 
 **150. a == 1 && a == 2 && a == 3 成立**
+> [从 (a==1&&a==2&&a==3) 成立中看javascript的隐式类型转换](https://yq.aliyun.com/articles/399499) 看这篇文章
+
 - 方法1
 ```javascript
 var a = {
@@ -2526,4 +2528,14 @@ a == 1 && a == 2 && a == 3 // true
 a = [1, 2, 3]
 a.join = a.shift
 a ==1 && a== 2 && a==3
+```
+- 更奇葩的
+```javascript
+var aﾠ = 1;
+var a = 2;
+var ﾠa = 3;
+if(aﾠ==1 && a== 2 &&ﾠa==3) {
+    console.log("Why hello there!")
+}
+// Why hello there!
 ```
