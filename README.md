@@ -2508,6 +2508,7 @@ export default class HelloWorld extends Vue {
 
 **150. a == 1 && a == 2 && a == 3 成立**
 > [从 (a==1&&a==2&&a==3) 成立中看javascript的隐式类型转换](https://yq.aliyun.com/articles/399499) 看这篇文章
+[你所忽略的js隐式转换](https://juejin.im/post/5a7172d9f265da3e3245cbca)
 
 - 方法1
 ```javascript
