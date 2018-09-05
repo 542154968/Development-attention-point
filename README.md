@@ -2505,3 +2505,17 @@ export default class HelloWorld extends Vue {
 - 然后我引入的有一个`css`文件，它也经过压缩处理了 也有一个 `@keyframes a` 
 - 然后就冲突了
 - 后来更换了没压缩的`css`文件引入进来了 `webpack`也会压缩的就是不会别名处理了
+
+**149. a == 1 && a == 2 && a == 3 成立**
+```javascript
+var a = {
+	i: 1,
+	toString(){
+		return (a.i, a.i++)
+	}
+}
+a == 1 && a == 2 && a == 3 // true
+```
+- 原理
+	1. 符合对象类型再喝基础值类型进行表达式操作时，会基于“场景”自动调用`toString`或是`valueOf`方法，以最为'恰当'的方式，自动完成表达式的计算
+	2. 全等表达式会比较数据类型，符合对象类型不会进行隐式转换，即不执行`toString`或`valueOf`方法直接参与比较计算
