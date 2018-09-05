@@ -2540,3 +2540,6 @@ if(aﾠ==1 && a== 2 &&ﾠa==3) {
 }
 // Why hello there!
 ```
+
+**151. keep-alive和beforeDestory**
+- 当组件使用`keep-alive`的时候，组件的生命周期`beforeDestory`不再生效，应使用`deactivated`或者`beforeRouterLeave`代替
