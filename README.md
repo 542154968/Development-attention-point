@@ -2563,3 +2563,43 @@ loadData().then(res=>{
     Array.isArray(res.contentList) && (this.list = res.contentList)
 })
 ```
+
+**153. webpack通过命令行去设置不同的请求接口**
+```json
+{
+"scripts": {
+        "dev": "node build/dev-server.js",
+        "xia": "node build/dev-server.js",
+        "me": "node build/dev-server.js",
+        "niu": "node build/dev-server.js",
+        "build": "node build/build.js",
+        "lint": "eslint --ext .js,.vue src",
+        "mock": "babel-node build/mock-server.js --presets es2015,stage-0",
+        "mockdev": "npm run dev & npm run mock"
+    }
+}
+```
+
+```javascript
+// config/index.js
+let HOST = 'http://192.168.1.112:9000'
+// 1
+// const HOST = "http://192.168.1.63:9000";
+// 2
+// const HOST = 'http://192.168.1.59:9000'
+// 测试服务器
+// const HOST = 'http://192.168.1.112:9000'
+// 这个路由是本地服务器路由
+// const HOST = 'http://localhost:3001'
+
+// packagejson里面有script里的标识 判断启用哪个接口去对接
+const ENVIRONMENT = process.env.npm_lifecycle_event
+
+if (ENVIRONMENT.indexOf('xia') > -1) {
+    HOST = 'http://192.168.1.59:9000'
+} else if (ENVIRONMENT.indexOf('niu') > -1) {
+    HOST = 'http://192.168.1.63:9000'
+} else if (ENVIRONMENT.indexOf('me') > -1) {
+    HOST = 'http://localhost:3001'
+}
+```
