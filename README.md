@@ -2603,3 +2603,6 @@ if (ENVIRONMENT.indexOf('xia') > -1) {
     HOST = 'http://localhost:3001'
 }
 ```
+
+**154. Object.freeze 提升性能**
+- 由于 `Object.freeze()` 会把对象冻结，所以比较适合展示类的场景，如果你的数据属性需要改变，可以重新替换成一个新的 `Object.freeze()` 的对象。
