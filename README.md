@@ -2612,3 +2612,16 @@ if (ENVIRONMENT.indexOf('xia') > -1) {
 word-break: break-all;
 text-align: left;
 ```
+
+**156.vueli3的配置文件另一种写法**
+```javascript
+configureWebpack: confing =>{
+    config.resolve = {
+	    extensions: ['.js', '.vue', '.json', '.css'],
+		alias : {
+		   'vue$': 'vue/dist/vue.esm.js',
+		   '@': resolve('src')
+		}
+	}
+}
+```
