@@ -2625,3 +2625,17 @@ configureWebpack: confing =>{
 	}
 }
 ```
+
+**157. JS中字符字节的问题**
+> 摘自 [ECMAScript 6 入门——字符串的扩展](http://es6.ruanyifeng.com/#docs/string)
+
+- JavaScript 内部，字符以 UTF-16 的格式储存，每个字符固定为2个字节。对于那些需要4个字节储存的字符（Unicode 码点大于0xFFFF的字符），JavaScript 会认为它们是两个字符。
+```javascript
+var s = "𠮷";
+
+s.length // 2
+s.charAt(0) // ''
+s.charAt(1) // ''
+s.charCodeAt(0) // 55362
+s.charCodeAt(1) // 57271
+```
