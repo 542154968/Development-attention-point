@@ -2665,6 +2665,7 @@ git remote add origin [url]
 - 直接修改config文件 
 
 **160. 一个比较显眼的交互动画曲线**
+- 动画曲线是有回弹效果的
 ```css
 cubic-bezier(0.3, 0, 0.2, 2)
 ```
