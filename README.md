@@ -2663,3 +2663,8 @@ git remote rm origin
 git remote add origin [url]
 ```
 - 直接修改config文件 
+
+**160. 一个比较显眼的交互动画曲线**
+```css
+cubic-bezier(0.3, 0, 0.2, 2)
+```
