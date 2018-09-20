@@ -2649,13 +2649,17 @@ str.replace(/(.+?)\-(.+?)\-(\d{2}).+/,"$1年$2月$3日")
 ```
 
 **159. git修改仓库地址**
-方法有三种：
-1.修改命令
+> 迁移仓库地址也是这样
+
+- 方法有三种：
+- 修改命令
+```git
 git remote set-url origin [url]
-
 例如：git remote set-url origin gitlab@gitlab.chumob.com:php/hasoffer.git
-
-2.先删后加
+```
+- 先删后加
+```git
 git remote rm origin
 git remote add origin [url]
-3.直接修改config文件 
+```
+- 直接修改config文件 
