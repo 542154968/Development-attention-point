@@ -2669,3 +2669,51 @@ git remote add origin [url]
 ```css
 cubic-bezier(0.3, 0, 0.2, 2)
 ```
+
+**161. element-ui render select**
+```javascript
+typeRenderFuc (h, { column, $index }) {
+            const $this = this
+            return h(
+                'el-select',
+                {
+                    attrs: {
+                        clearable: true,
+                        placeholder: '请选择类型',
+                        value: $this.searchBody.type
+                    },
+                    on: {
+					// 竟然是input 触发的改变。。。
+                        input (v) {
+                            console.log(v)
+                        }
+                    }
+                },
+                [this.getTypeListDom(h)]
+            )
+        },
+        getTypeListDom (h) {
+            let arr = []
+            this.typeList.forEach((v, k) => {
+                arr.push(
+                    h(
+                        'el-option',
+                        {
+                            attrs: {
+                                key: k,
+                                label: v.label,
+                                value: v.value
+                            },
+                            on: {
+                                click (e) {
+                                    console.log(e)
+                                }
+                            }
+                        }
+
+                    )
+                )
+            })
+            return arr
+        },
+```
