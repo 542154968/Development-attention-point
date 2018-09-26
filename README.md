@@ -2717,3 +2717,44 @@ typeRenderFuc (h, { column, $index }) {
             return arr
         },
 ```
+
+**162. rem导致table的border不见**
+```stylus
+getBorder() {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    width: 200%;
+    height: 200%;
+    border: 2px solid #DFDFDF;
+    transform-origin: 0 0;
+    transform: scale(0.5);
+}
+table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 24px;
+        position: relative;
+
+        &:after {
+            getBorder();
+            border-left: none;
+            border-bottom: none;
+        }
+
+        td {
+            height: 56px;
+            padding: 0 10px;
+            vertical-align: middle;
+            position: relative;
+
+            &::after {
+                getBorder();
+                border-top: none;
+                border-right: none;
+            }
+        }
+    }
+```
