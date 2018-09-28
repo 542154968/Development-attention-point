@@ -2758,3 +2758,6 @@ table {
         }
     }
 ```
+
+**163. vscode CPU 占用率 100%**
+- 干掉 `SCSS IntelliSense`这个插件！！！
