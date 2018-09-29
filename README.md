@@ -2761,3 +2761,5 @@ table {
 
 **163. vscode CPU 占用率 100%**
 - 干掉 `SCSS IntelliSense`这个插件！！！
+
+**164. 动态切换audio标签的src时 一定要通过dom添加的方式去切换**
