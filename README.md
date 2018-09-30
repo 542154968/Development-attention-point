@@ -2763,3 +2763,7 @@ table {
 - 干掉 `SCSS IntelliSense`这个插件！！！
 
 **164. 动态切换audio标签的src时 一定要通过dom添加的方式去切换**
+
+**165. 少用`overflow:scroll`**
+- PC百分百有滚动条
+- 移动端有部分机型会出现滚动条
