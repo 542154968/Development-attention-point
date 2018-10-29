@@ -2773,6 +2773,7 @@ table {
 2. 安装后配置 输入主机公有IP 端口22（linux的 3389是windows） ssh  确定
 3. 输入你的账号密码  然后安装宝塔 `yum install -y wget && wget -O install.sh http://download.bt.cn/install/install.sh && sh install.sh`
 4. 安装完后会有账号密码 记下就好 然后复制链接到网址里打开
+5. 配置的有Apache 我们可以使用它代理node `https://blog.csdn.net/gaoxuaiguoyi/article/details/50927661`
 
 **167. ftp无法上传时 可以使用ssh**
 - 输入主机地址  账号 密码 即可
