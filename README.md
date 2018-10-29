@@ -2767,3 +2767,9 @@ table {
 **165. 少用`overflow:scroll`**
 - PC百分百有滚动条
 - 移动端有部分机型会出现滚动条
+
+**166. 阿里云服务器配置过程**
+1. 下载一个putty
+2. 安装后配置 输入主机公有IP 端口22（linux的 3389是windows） ssh  确定
+3. 输入你的账号密码  然后安装宝塔 `yum install -y wget && wget -O install.sh http://download.bt.cn/install/install.sh && sh install.sh`
+4. 安装完后会有账号密码 记下就好 然后复制链接到网址里打开
