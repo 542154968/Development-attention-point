@@ -2774,6 +2774,50 @@ table {
 3. 输入你的账号密码  然后安装宝塔 `yum install -y wget && wget -O install.sh http://download.bt.cn/install/install.sh && sh install.sh`
 4. 安装完后会有账号密码 记下就好 然后复制链接到网址里打开
 5. 配置的有Apache 我们可以使用它代理node `https://blog.csdn.net/gaoxuaiguoyi/article/details/50927661`
+6. 配置的文件在 网站 设置里面 的配置文件 配置项是 
+```txt
+<VirtualHost *:80>
+    ServerAdmin webmaster@example.com
+    DocumentRoot "/www/wwwroot/www.hsrj.group"
+    ServerName f15a8819.www.hsrj.group
+    ServerAlias 47.107.116.163
+    errorDocument 404 /404.html
+    ErrorLog "/www/wwwlogs/www.hsrj.group-error_log"
+    CustomLog "/www/wwwlogs/www.hsrj.group-access_log" combined
+    
+    ProxyRequests off
+     
+    <Proxy *>
+      Order deny,allow
+      Allow from all
+    </Proxy>
+     
+    <Location ></Location>
+      ProxyPass http://127.0.0.1:3003/
+      ProxyPassReverse http://127.0.0.1:3003/
+    </Location>
+    
+    #DENY FILES
+     <Files ~ (\.user.ini|\.htaccess|\.git|\.svn|\.project|LICENSE|README.md)$>
+       Order allow,deny
+       Deny from all
+    </Files>
+    
+    #PHP
+    <FilesMatch \.php$>
+            SetHandler "proxy:unix:/tmp/php-cgi-00.sock|fcgi://localhost"
+    </FilesMatch>
+    
+    #PATH
+    <Directory "/www/wwwroot/www.hsrj.group">
+        SetOutputFilter DEFLATE
+        Options FollowSymLinks
+        AllowOverride All
+        Require all granted
+        DirectoryIndex index.php index.html index.htm default.php default.html default.htm
+    </Directory>
+</VirtualHost>
+```
 
 **167. ftp无法上传时 可以使用ssh**
 - 输入主机地址  账号 密码 即可
