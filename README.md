@@ -2821,3 +2821,55 @@ table {
 
 **167. ftp无法上传时 可以使用ssh**
 - 输入主机地址  账号 密码 即可
+
+**168. 阿里云前端上传的一段mixins**
+```javascript
+import * as ossApi from '@services/oss'
+export default {
+    mounted () {},
+    methods: {
+        // 先获取签名之类的
+        $file_getUploadUrl (data) {
+            return ossApi.getUploadUrl(data)
+        },
+        $file_upLoad (file, type = 'TRACE') {
+            return new Promise((resolve, reject) => {
+                this.$file_getUploadUrl({ type })
+                    .then(res => {
+                        res = res.data
+                        let data = new FormData()
+                        data.append('key', res.key)
+                        data.append('success_action_status', '200')
+                        data.append('OSSAccessKeyId', res.OSSAccessKeyId)
+                        data.append('Signature', res.Signature)
+                        data.append('policy', res.policy)
+                        data.append('file', file)
+
+                        this.$http
+                            .post(`${res.url}/`, data)
+                            .then(uploadRes => {
+                                resolve({
+                                    data: uploadRes.data,
+                                    status: uploadRes.status,
+                                    fileId: res.key
+                                })
+                            })
+                            .catch(err => {
+                                reject(err)
+                            })
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+            })
+        },
+        // 删除文件
+        $file_delete (fileId) {
+            return ossApi.deleteById({ fileId })
+        },
+        $file_download (fileId, type) {
+            return ossApi.getDownloadUrl({ fileId, type })
+        }
+    }
+}
+```
