@@ -2928,3 +2928,10 @@ export default {
 
 实现技巧就是利用一个代理iframe，它嵌入到子页面中，并且和父页面必须保持是同域，然后通过它充分利用上面第一种通信方式的实现原理就把子页面的数据传递给代理iframe，然后由于代理的iframe和主页面是同域的，所以主页面就可以利用同域的方式获取到这些数据。使用 window.top或者window.parent.parent获取浏览器最顶层window对象的引用。
 ```
+
+**170. vue beforeDestory另一种用法**
+```js
+this.$once('hook:beforeDestroy', function () {
+    clearTimeout(timeId)
+})
+```
