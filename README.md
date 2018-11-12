@@ -2935,3 +2935,11 @@ this.$once('hook:beforeDestroy', function () {
     clearTimeout(timeId)
 })
 ```
+
+**171. new Date() 转时间戳**
+```javascript
+let date = new Date()
+console.log(date)
+date = +date // +转时间戳
+console.log(date)
+```
