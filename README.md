@@ -2943,3 +2943,12 @@ console.log(date)
 date = +date // +转时间戳
 console.log(date)
 ```
+
+**172. 获取域名和端口**
+```javascript
+export const getBaseUrl = url => {
+    var reg = /^((\w+):\/\/([^/:]*)(?::(\d+))?)(.*)/
+    reg.exec(url)
+    return RegExp.$1
+}
+```
