@@ -2952,3 +2952,31 @@ export const getBaseUrl = url => {
     return RegExp.$1
 }
 ```
+
+**128. 拷贝文字**
+```javascript
+//复制文字
+        GlobalFunction.prototype.copyText=function(text){
+            let dom = document.createElement('input');
+            dom.value = text;
+            document.querySelector('html').appendChild(dom);
+            dom.select();
+            this.selectText(dom,0,text.length);
+            document.execCommand("Copy");
+            dom.remove();
+        }
+        //复制文字选中兼容苹果Safari
+        GlobalFunction.prototype.selectText=function (textbox, startIndex, stopIndex) {
+            if(textbox.createTextRange) {//ie
+                var range = textbox.createTextRange();
+                range.collapse(true);
+                range.moveStart('character', startIndex);//起始光标
+                range.moveEnd('character', stopIndex - startIndex);//结束光标
+                range.select();//不兼容苹果
+            }else{//firefox/chrome
+                textbox.setSelectionRange(startIndex, stopIndex);
+                textbox.focus();
+            }
+        }
+
+```
