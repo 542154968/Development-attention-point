@@ -2980,3 +2980,5 @@ export const getBaseUrl = url => {
         }
 
 ```
+
+**129. fetch是原生的 可不是插件 但是有基于fetch封装的插件 区别下 它的`护垫`是xhr**
