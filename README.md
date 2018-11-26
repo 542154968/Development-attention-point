@@ -2982,3 +2982,18 @@ export const getBaseUrl = url => {
 ```
 
 **129. fetch是原生的 可不是插件 但是有基于fetch封装的插件 区别下 它的`护垫`是xhr**
+
+**130. vuecli cssLoader stylus注意**
+```javascript
+{
+  css: {
+    loaderOptions: {
+      stylus: {
+        "resolve url": true,
+		// 这里的文件只能写方法和变量 不然每个组件都会生成style 很坑
+        import: ["./src/theme", "./src/assets/styl/utils"]
+      }
+    }
+  }
+}
+```
