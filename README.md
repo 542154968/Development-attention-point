@@ -2997,3 +2997,28 @@ export const getBaseUrl = url => {
   }
 }
 ```
+
+**131. 一些学习资料**
+```
+* https://www.pentesterlab.com/exercises/
+* http://overthewire.org/wargames/
+* http://www.hackthissite.org/
+* http://smashthestack.org/
+* http://www.win.tue.nl/~aeb/linux/hh/hh.html
+* http://www.phrack.com/
+* http://pen-testing.sans.org/blog/2012/04/26/got-meterpreter-pivot
+* http://www.offensive-security.com/metasploit-unleashed/PSExec_Pass_The_Hash
+* https://securusglobal.com/community/2013/12/20/dumping-windows-credentials/
+* https://www.netspi.com/blog/entryid/140/resources-for-aspiring-penetration-testers
+  (这个博客的其他文章也都非常优秀)
+* https://www.corelan.be/ (start at Exploit writing tutorial part 1)
+* http://websec.wordpress.com/2010/02/22/exploiting-php-file-inclusion-overview/
+一个小技巧，在大部分的系统中，apache access日志是只有root权限才可以读取的。不过你依然可以进行包含，使用/proc/self/fd/10或者apache访问日志使用的其他fd。
+* http://www.dest-unreach.org/socat/
+
+The Web Application Hacker's Handbook
+* Hacking: The Art of Exploitation
+* The Database Hacker's Handbook* The Art of Software Security Assessment* A Bug Hunter's Diary
+* Underground: Tales of Hacking, Madness, and Obsession on the Electronic Frontier
+* TCP/IP Illustrated
+```
