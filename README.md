@@ -3025,3 +3025,8 @@ The Web Application Hacker's Handbook
 
 **132. 超帅的加载动画，虽然你不会写，你可以学你可以抄啊。。。**
 - https://epic-spinners.epicmax.co/#/
+
+**133. webpakc插件 - DllPlugin**
+> (浅探webpack优化)[https://segmentfault.com/a/1190000017218108]
+
+- DllPlugin是用来干什么的呢？DllPlugin会将第三方包到一个单独文件，并且生成一个映射的json文件，打包的生成的文件就是一个依赖库，这个依赖不会随着你的业务代码改变而被重新打包，只有当它自身依赖的包发生变化时才会需要重新打包依赖库，接下来来看具体配置吧：
