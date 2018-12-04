@@ -3049,3 +3049,6 @@ The Web Application Hacker's Handbook
 	3. 使用纯静态和伪静态对于SEO(Search Engine Optimization:搜索引擎优化)没有什么本质的区别。
 	4. 使用伪静态将占用一定量的CPU占用率，大量使用会导致CPU超负荷。
 	5. 详情了解和区别可查看[静态页面、动态页面和伪静态页面的区别](https://www.cnblogs.com/software1113/p/4671384.html)，以上四条均摘自该文章
+
+**134. 从输入URL到页面加载的过程？如何由一道题完善自己的前端知识体系！**
+[从输入URL到页面加载的过程？如何由一道题完善自己的前端知识体系！](https://segmentfault.com/a/1190000013662126)
