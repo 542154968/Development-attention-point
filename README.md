@@ -3052,3 +3052,29 @@ The Web Application Hacker's Handbook
 
 **134. 从输入URL到页面加载的过程？如何由一道题完善自己的前端知识体系！**
 [从输入URL到页面加载的过程？如何由一道题完善自己的前端知识体系！](https://segmentfault.com/a/1190000013662126)
+
+**135. 缓动动画**
+> 最近在写nuxt的项目 等写完了来个总结
+
+```javascript
+// targetScroll 目标滚动距离 理由setTimeout控制 最好用 requestAnimtaionFrame
+lazyMove(targetScroll) {
+  this.request.timeId = setTimeout(() => {
+	const curScroll = window.scrollY
+	const toScroll = (targetScroll - curScroll) / 2
+	// 向上滚动  当前的距离 1000 目标距离0  下一次 就是-500
+	// 所以目标滚动距离 - 当前滚动距离是 负数
+	// 向下滚动的话 当前距离 1000  目标距离 2000 下一次 就是 +500
+	// 所以目标滚动距离 - 当前滚动距离 正数
+	// 最后我们要滚动的距离就是 当前的滚动距离 + 下一次的（正/负）滚动距离
+	// 你的目标滚动位置是不会变得 所以下次调用还是穿这个目标滚动距离 再算下一次的距离
+	if (Math.abs(curScroll - targetScroll) <= 2) {
+	  window.scrollTo(0, targetScroll)
+	  clearTimeout(this.request.timeId)
+	} else {
+	  // 下一次的滚动距离 如果是向上 那就减去 向下 那就加上
+	  window.scrollTo(0, curScroll + toScroll)
+	  this.lazyMove(targetScroll)
+	}
+  }, 30)
+```
