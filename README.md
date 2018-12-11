@@ -3085,3 +3085,28 @@ chainWebpack: config => {
 	config.externals({ BMap: "BMap" });
 }
 ```
+
+**137. nuxt设置proxy**
+> nuxt.config.js
+
+```javascript
+{
+	modules: [
+    // Doc: https://github.com/nuxt-community/axios-module#usage
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
+  ],
+  proxy: {
+    // http://localhost:9000/api/menuList => http://localhost:3000/menuList
+    '/pub': {
+      target: HOST,
+      changeOrigin: true
+    },
+    '/api': {
+      target: HOST,
+      changeOrigin: true
+    }
+  }
+}
+```
+
