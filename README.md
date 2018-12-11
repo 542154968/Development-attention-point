@@ -3078,3 +3078,10 @@ lazyMove(targetScroll) {
 	}
   }, 30)
 ```
+
+**136. vuecli3引入第三方插件 如JQ 百度地图**
+```javascript
+chainWebpack: config => {
+	config.externals({ BMap: "BMap" });
+}
+```
