@@ -3091,22 +3091,57 @@ chainWebpack: config => {
 
 ```javascript
 {
-	modules: [
+  plugins: [
+    { src: '@/plugins/element-ui', srr: true },
+    '@/plugins/i18n',
+    '@/plugins/axios'
+  ],
+
+  /*
+  ** Nuxt.js modules
+  */
+  modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
     '@nuxtjs/proxy'
   ],
+  /*
+  ** Axios module configuration
+  */
+  axios: {
+    // credentials: true,
+	// 如果你的接口有域名 就不需要baseUrl 你的baseURl一定要和你的服务器地址一致 不然首次进入会无法获取数据 这个坑搞了我好久 托马的
+    baseURL: HOST,
+    // prefix: '/pub'
+    // See https://github.com/nuxt-community/axios-module#options
+    proxy: true
+  },
   proxy: {
-    // http://localhost:9000/api/menuList => http://localhost:3000/menuList
     '/pub': {
-      target: HOST,
-      changeOrigin: true
-    },
-    '/api': {
-      target: HOST,
-      changeOrigin: true
+      target: HOST
     }
-  }
+  },
 }
 ```
+- 这是`plugins/axios`中的内容 可以参考@nuxt/axios的文档做拦截  很方便
+```javascript
+export default function({ $axios, redirect }) {
+  $axios.onRequest(config => {
+    // console.log('Making request to ' + config.url)
+  })
+  $axios.onError(error => {
+    console.log(error)
+    const code = parseInt(error.response && error.response.status)
+    if (code === 400) {
+      redirect('/400')
+    }
+  })
+
+  $axios.onResponse(response => {
+    // console.log(response)
+  })
+}
+
+```
+
 
