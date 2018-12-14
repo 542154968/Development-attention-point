@@ -3148,3 +3148,28 @@ export default function({ $axios, redirect }) {
 > [VS Code IntelliSense介绍](https://www.infoq.cn/article/CoSe1R7VL6MrAh8g-h7l?utm_medium=hao.caibaojian.com&utm_source=hao.caibaojian.com&tdsourcetag=s_pcqq_aiomsg)
 
 - IntelliCode 通过推荐常用的自动完成列表项来增强 VS Code IntelliSense，这些列表项是通过 IntelliCode 基于数千个真实的开源项目进行训练学习而生成的。目标是通过在自动完成列表的顶部放置最有可能使用的语言或 API 选项来节省开发人员的时间。
+
+
+**139. nuxt的eslint规则也太好用了**
+> 放在`.eslintrc.js`中
+
+```javascript
+module.exports = {
+  root: true,
+  env: {
+    browser: true,
+    node: true
+  },
+  parserOptions: {
+    parser: 'babel-eslint'
+  },
+  extends: ['plugin:vue/recommended', 'plugin:prettier/recommended'],
+  // required to lint *.vue files
+  plugins: ['vue', 'prettier'],
+  // add your custom rules here
+  rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+  }
+}
+```
