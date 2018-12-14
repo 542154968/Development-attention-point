@@ -3144,4 +3144,7 @@ export default function({ $axios, redirect }) {
 
 ```
 
+**138. VS Code IntelliSense AI提示API**
+> [VS Code IntelliSense介绍](https://www.infoq.cn/article/CoSe1R7VL6MrAh8g-h7l?utm_medium=hao.caibaojian.com&utm_source=hao.caibaojian.com&tdsourcetag=s_pcqq_aiomsg)
 
+- IntelliCode 通过推荐常用的自动完成列表项来增强 VS Code IntelliSense，这些列表项是通过 IntelliCode 基于数千个真实的开源项目进行训练学习而生成的。目标是通过在自动完成列表的顶部放置最有可能使用的语言或 API 选项来节省开发人员的时间。
