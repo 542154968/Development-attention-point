@@ -3173,3 +3173,130 @@ module.exports = {
   }
 }
 ```
+
+**140. Ueditor图片直传OSS**
+>  参考 (ueditor 前端直传OSS)[https://blog.csdn.net/u013684276/article/details/80143343#commentBox] 这个讲的比较全 很棒
+
+- ueditor.all.js 修改这个  好找
+```javascript
+// 大概 24566行
+
+// 干掉这一段
+
+// domUtils.on(iframe, 'load', callback);
+// form.action = utils.formatUrl(imageActionUrl + (imageActionUrl.indexOf('?') == -1 ? '?':'&') + params);
+// form.submit();
+
+// 然后自己改造下
+_ajax({
+	url: '/api/oss/getUploadUrl',
+	headers: {
+		Authorization: JSON.stringify({
+					deviceType: ,
+					// 我们项目要传token
+					token: 
+				}),
+		'Content-Type':'application/x-www-form-urlencolde'    
+	},
+	sucBack: function(res){
+		try {
+			 res = JSON.parse(res).body
+			 _sendFile(res)
+		} catch (error) {
+
+		}
+	}
+})
+// 将图片发送给oss 获取fileId
+function _sendFile(data){
+	var fData = new FormData();
+	fData.append("key", data.key);
+	fData.append("success_action_status", "200");
+	fData.append("OSSAccessKeyId", data.OSSAccessKeyId);
+	fData.append("Signature", data.Signature);
+	fData.append("policy", data.policy);
+	fData.append("file", input.files[0]);
+	_ajax({
+		url: '/api/oss/getFileId',// + data.url,
+		data: fData,
+		sucBack: function(res){
+			try {
+				res = JSON.parse(res).body
+				_getImgLink(res.fileId)
+			} catch (error) {
+				console.log(error)
+			}
+		},
+		errBack: function(err){
+			console.log(err)
+		}
+	})
+}
+
+// 根据fileId获取图片链接
+function _getImgLink(id){
+	_ajax({
+		url: '/api/oss/getImg?fileId=' + id,
+		type: 'get',
+		sucBack: function(res){
+			try {
+			// 最后这里是添加到编辑器中的  根据场景需求自己调整
+				res= JSON.parse(res).body
+				var link = res.link;
+				loader = me.document.getElementById(loadingId);
+				loader.setAttribute('src', link);
+				loader.setAttribute('_src', link);
+				loader.setAttribute('title', '');
+				loader.setAttribute('alt', '');
+				loader.removeAttribute('id');
+				domUtils.removeClasses(loader, 'loadingclass');
+			} catch (error) {
+
+			}
+
+		},
+		errBack: function(err){
+			console.log(err)
+		}
+	})
+}
+
+// ajax封装
+function _ajax(options){
+	var option = options || {}
+	option.type = options.type || 'post'
+	option.data = options.data || null
+	option.url = options.url || ''
+	option.headers = options.headers || null
+	option.data = options.data || null
+	option.sucBack = options.sucBack || null
+	option.errBack = options.errBack || null
+
+	var xhr = new XMLHttpRequest()
+
+	xhr.onerror = function(error){
+		typeof option.errBack === 'function' && option.errBack(error) 
+	}
+
+	xhr.open(option.type, option.url, true)
+
+	if(option.headers){
+		for( i in option.headers ){
+			if( option.headers.hasOwnProperty( i ) ){
+				xhr.setRequestHeader( i, option.headers[i] )
+			}
+		}
+	}
+
+	xhr.send(option.data)
+
+	xhr.onreadystatechange = function stateChange() {
+		if (xhr.readyState === 4) {
+			if (xhr.status === 304 || (xhr.status >= 200 && xhr.status < 300)) {
+				typeof option.sucBack === 'function' && option.sucBack(xhr.responseText) 
+			}
+		}
+	}
+}
+
+```
