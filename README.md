@@ -3300,3 +3300,6 @@ function _ajax(options){
 }
 
 ```
+
+**141. JS判断浏览器缩放比例是否正常**
+- 可以通过`window.innerWidth`和`window.outerWidth`来判断 `100%`比例两个数值一样
