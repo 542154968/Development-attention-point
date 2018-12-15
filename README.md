@@ -3301,7 +3301,7 @@ function _ajax(options){
 
 ```
 
-**141. JS判断浏览器缩放比例是否正常**
+**141. JS获取浏览器缩放比例**
 // 翻斗鱼的源码看到的
 ```javascript
  define("douyu/com/zoom", ["jquery", "shark/observer", "shark/util/cookie/1.0", "shark/util/storage/1.0", "douyu/context", "douyu/com/zoom-dp"], function (e, i, t, n, o, a) {
@@ -3359,4 +3359,11 @@ function _ajax(options){
             };
         e(r)
     })
+```
+- 最后提出来
+```javascript
+var getScreenScaleNum = function () { 
+	var e = 0, i = window.screen; 
+	return void 0 !== window.devicePixelRatio ? e = window.devicePixelRatio : ~this.ua.indexOf("msie") ? i.deviceXDPI && i.logicalXDPI && (e = i.deviceXDPI / i.logicalXDPI) : void 0 !== window.outerWidth && void 0 !== window.innerWidth && (e = window.outerWidth / window.innerWidth), e && (e = Math.round(100 * e)), 99 !== e && 101 !== e || (e = 100), e 
+}
 ```
