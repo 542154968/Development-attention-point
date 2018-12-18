@@ -3367,3 +3367,22 @@ var getScreenScaleNum = function () {
 	return void 0 !== window.devicePixelRatio ? e = window.devicePixelRatio : ~this.ua.indexOf("msie") ? i.deviceXDPI && i.logicalXDPI && (e = i.deviceXDPI / i.logicalXDPI) : void 0 !== window.outerWidth && void 0 !== window.innerWidth && (e = window.outerWidth / window.innerWidth), e && (e = Math.round(100 * e)), 99 !== e && 101 !== e || (e = 100), e 
 }
 ```
+
+**142. vuecli3按需引入elementui**
+- babel.config.js
+```javascript
+module.exports = {
+  presets: ["@vue/app"],
+  plugins: [
+    [
+      "component",
+      {
+        libraryName: "element-ui",
+        styleLibraryName: "theme-chalk"
+      }
+    ]
+  ]
+};
+```
+- 然后建立一个js文件 放elementui引入的组件
+- 然后mian.js 引入这个js文件
