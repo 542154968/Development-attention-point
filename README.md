@@ -3386,3 +3386,15 @@ module.exports = {
 ```
 - 然后建立一个js文件 放elementui引入的组件
 - 然后mian.js 引入这个js文件
+
+**143. 箭头函数的几种写法**
+```javascript
+    异步函数声明： async
+     function foo() {}
+    异步函数表达式： const
+     foo = async function () {};
+    异步函数定义：let
+     obj = { async foo() {} }
+    异步箭头函数： const
+     foo = async () => {};
+```	 
