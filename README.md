@@ -3406,3 +3406,53 @@ module.exports = {
 - indexOf方法有两个缺点，一是不够语义化，它的含义是找到参数值的第一个出现位置，所以要去比较是否不等于-1，表达起来不够直观。二是，它内部使用严格相等运算符（===）进行判断，这会导致对NaN的误判。摘自——es6阮一峰
 
 **146. 没事去codepen看看人家写的css3交互效果鸭**
+
+**147. 移动端长按弹窗的逻辑，不需要松开即可弹窗**
+```vue
+<script>
+export default {
+  data() {
+    return {
+    
+      // 在滚动中  就不触发点击
+      scrollStatus: false,
+      timeId: null,
+      holdTime: 1500,
+      clickTimeDate: null
+    };
+  },
+  methods: {
+    handleClickStart(item, index) {
+      this.scrollStatus = false;
+      clearTimeout(this.timeId);
+      this.timeId = setTimeout(() => {
+        this.beforeDelete(item.objectId, index);
+      }, this.holdTime);
+      this.clickTimeDate = Date.parse(new Date());
+    },
+    handleClickMove() {
+      this.scrollStatus = true;
+    },
+    handleClickEnd(item) {
+      if (this.scrollStatus === true) {
+        clearTimeout(this.timeId);
+        return;
+      }
+      const timeRange = Date.parse(new Date()) - this.clickTimeDate;
+      if (timeRange < this.holdTime) {
+        clearTimeout(this.timeId);
+        this.goDetail(item);
+      }
+    },
+    goDetail(data) {
+      if (data.website) {
+        window.open(data.website);
+      } else {
+        // this.$store.commit("setActivityContent", data.content);
+        this.$router.push({ path: "/activity/detail", query: { id: data.id } });
+      }
+    },
+  }
+};
+</script>
+```
