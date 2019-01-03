@@ -3465,3 +3465,43 @@ export default {
 - 方法：重复执行相同方法的代码将比仅执行一次的多个不同方法（由于内联缓存）的代码运行得更快。
 - 数组：避免稀疏数组，其中键值不是自增的数字，并没有存储所有元素的稀疏数组是哈希表。这种数组中的元素访问开销较高。另外，尽量避免预分配大数组。最好是按需增长。最后，不要删除数组中的元素，这会使键值变得稀疏。
 - 标记值：V8 使用 32 位表示对象和数值。由于数值是 31 位的，它使用了一位来区分它是一个对象（flag = 1）还是一个称为 SMI（SMall Integer）整数（flag = 0）。那么，如果一个数值大于 31 位，V8会将该数字装箱，把它变成一个双精度数，并创建一个新的对象来存放该数字。尽可能使用 31 位有符号数字，以避免对 JS 对象的高开销的装箱操作。
+
+**149. Vue使用百度分享组件销毁后，重新建立组件分享功能不显示或失效**
+- 使用百度分享的`init`方法
+```javascript
+/* eslint-disable */
+export default {
+  mounted() {
+  // 关键代码在这里  如果已经加载了 就init它  没有加载 就初始化
+    window._bd_share_main ? window._bd_share_main.init() : this.initShare()
+  },
+  methods: {
+    initShare() {
+      window._bd_share_config = {
+        "common": {
+          "bdSnsKey": {},
+          "bdText": "",
+          "bdMini": "2",
+          "bdMiniList": false,
+          "bdPic": "",
+          "bdStyle": "1",
+          "bdSize": "24"
+        },
+        "share": {},
+        "selectShare": {
+          "bdContainerClass": null,
+          "bdSelectMiniList": ["weixin", "tsina", "qzone"]
+        }
+      };
+      const $el = document.querySelector('#baiduShare')
+      $el && document.body.removeChild($el)
+      const s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.id = 'baiduShare'
+      s.src = ''
+      document.body.appendChild(s);
+
+    }
+  }
+}
+```
