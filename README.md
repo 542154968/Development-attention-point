@@ -3505,3 +3505,12 @@ export default {
   }
 }
 ```
+
+**150. Vue Router 新窗口打开**
+```javascript
+const routeData = this.$router.resolve({
+  path: lang ? `/${lang}/news/detail` : `news/detail`,
+  query: { id }
+})
+window.open(routeData.href, '_blank')
+```
