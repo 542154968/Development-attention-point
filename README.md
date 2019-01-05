@@ -3514,3 +3514,36 @@ const routeData = this.$router.resolve({
 })
 window.open(routeData.href, '_blank')
 ```
+
+**151. webpack按需引入组件、函数的写法**
+1.
+``javascript
+// before
+import { toast } from "./toastify";
+toast("Hello World");
+
+// after
+import("./toastify").then(module => {
+  module.toast("Hello World");
+});
+```
+
+2.
+```javascript
+syncLoadEcharts () {
+	return new Promise((resolve, reject) => {
+		require.ensure(
+			[],
+			function () {
+				echarts = require('echarts/lib/echarts')
+				require('echarts/lib/chart/line')
+				// 引入提示框和标题组件
+				require('echarts/lib/component/tooltip')
+				require('echarts/lib/component/title')
+				resolve('success')
+			},
+			'syncEcharts'
+		)
+	})
+},
+```
