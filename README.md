@@ -3548,13 +3548,19 @@ syncLoadEcharts () {
 },
 ```
 
-**152. 少用ID,会增加全局 DOM 变量**
+**152. 少用ID,会增加全局变量**
 ```html
 <!-- 全局 DOM 变量 -->
 <!-- 由于浏览器历史遗留问题，在创建带有 id 属性的 DOM 元素的时候也会创建同名的全局变量： -->
+<!-- windows下的全局变量不会被ID的全局变量覆盖 -->
 
 <div id='foo'><div>
 <scripts>
    console.log(foo)     // 打印出DOM元素
+	
+	const el = document.createElement('div')
+	el.id = 'scrollX'
+	document.body.appendChild(el)
+	window.scrollX // 0
 </scripts>
 ```
