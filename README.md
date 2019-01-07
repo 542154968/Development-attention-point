@@ -3564,3 +3564,10 @@ syncLoadEcharts () {
 	window.scrollX // 0
 </scripts>
 ```
+
+**153. 不要忘了背景色使用渐变色和纯色可以叠加的**
+- IE9不支持渐变色 然后你要使用渐变色的话可以叠加写在一起
+```css
+background-color: rgba(255, 255, 255, 1);
+background-image: linear-gradient(180deg, rgba(233, 233, 233, 1), rgba(255, 255, 255, 1));
+```
