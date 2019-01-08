@@ -3571,3 +3571,17 @@ syncLoadEcharts () {
 background-color: rgba(255, 255, 255, 1);
 background-image: linear-gradient(180deg, rgba(233, 233, 233, 1), rgba(255, 255, 255, 1));
 ```
+**154. nuxt如何针对低版本IE去提示用户**
+- nuxt根目录可以建立一个app.html,默认的内容在文章中可以找到 你可以在里面写上你要提示的内容 还有首屏加载 不过貌似不需要在slow3g模式下测试了 并没有出现
+```html
+<!DOCTYPE html>
+<html {{ HTML_ATTRS }}>
+  <head>
+    {{ HEAD }}
+  </head>
+  <body {{ BODY_ATTRS }}>
+    {{ APP }}
+  </body>
+</html>
+```
+
