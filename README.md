@@ -3586,3 +3586,5 @@ background-image: linear-gradient(180deg, rgba(233, 233, 233, 1), rgba(255, 255,
 ```
 
 **154. sourceTree 挺好用的 git版本管理工具**
+- 不要怕建利分支，多建利分支，比如一条主分支 一条开发分支 一条bug修复分支……
+- 每改一个功能用`sourceTree`提交一次，不一定推到远程，让你的代码都有记录可寻，方便维护和更改
