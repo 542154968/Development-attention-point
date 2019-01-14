@@ -3588,3 +3588,13 @@ background-image: linear-gradient(180deg, rgba(233, 233, 233, 1), rgba(255, 255,
 **154. sourceTree 挺好用的 git版本管理工具**
 - 不要怕建利分支，多建利分支，比如一条主分支 一条开发分支 一条bug修复分支……
 - 每改一个功能用`sourceTree`提交一次，不一定推到远程，让你的代码都有记录可寻，方便维护和更改
+
+**155. asiox 和 oss 上传有一个需要注意点**
+- 如果你上传提示 405  而且什么都对， 你要检查下你的`"Content-Type`
+```javascript
+if (/htkj001\.oss|rryn/.test(config.url)) {
+    config.headers["Content-Type"] = false;
+} else {
+    config.headers["Content-Type"] = "application/x-www-form-urlencoded";
+}
+```
