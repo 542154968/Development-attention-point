@@ -3619,3 +3619,22 @@ if (/htkj001\.oss|rryn/.test(config.url)) {
 ```
 
 - 大概的做法就是在页面滚动的时候, 给 添加上 .disable-hover 样式，那么在滚动停止之前, 所有鼠标事件都将被禁止。当滚动结束之后，再移除该属性。
+
+
+**158. 移动端滚动懒加载等各种**
+> (前端技术周刊 2018-12-24：移动无限加载)[https://segmentfault.com/a/1190000017893879]
+
+1. 滚动事件
+	- (移动 Web 的滚动)[http://www.alloyteam.com/2017/04/secrets-of-mobile-web-scroll-bars-and-drop-refresh/]
+	- (高性能滚动及页面渲染优化)[http://web.jobbole.com/86158/]
+	- (移动端滚动事件大起底)[https://github.com/merrier/mobile-scroll-events]
+
+2. 懒加载
+	- (Lazyload 三种实现方式)[https://zhuanlan.zhihu.com/p/25455672]
+	- (懒加载和预加载)[https://www.jianshu.com/p/4876a4fe7731]
+	
+3. 无限滚动
+	- (React 之无限滚动)[https://zhuanlan.zhihu.com/p/32075662]
+	- (Vue.js 一个超长列表无限滚动加载的解决方案)[https://juejin.im/entry/5819993fbf22ec0068aab054]
+	- (设计高性能无限滚动加载，了解高效页面秘密)[https://zhuanlan.zhihu.com/p/25767226]
+	- (设计模式之享元模式)[https://www.cnblogs.com/TomXu/archive/2012/04/09/2379774.html]
