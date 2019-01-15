@@ -3585,11 +3585,11 @@ background-image: linear-gradient(180deg, rgba(233, 233, 233, 1), rgba(255, 255,
 </html>
 ```
 
-**154. sourceTree 挺好用的 git版本管理工具**
+**155. sourceTree 挺好用的 git版本管理工具**
 - 不要怕建利分支，多建利分支，比如一条主分支 一条开发分支 一条bug修复分支……
 - 每改一个功能用`sourceTree`提交一次，不一定推到远程，让你的代码都有记录可寻，方便维护和更改
 
-**155. asiox 和 oss 上传有一个需要注意点**
+**156. asiox 和 oss 上传有一个需要注意点**
 - 如果你上传提示 405  而且什么都对， 你要检查下你的`"Content-Type`
 ```javascript
 if (/htkj001\.oss|rryn/.test(config.url)) {
@@ -3598,3 +3598,24 @@ if (/htkj001\.oss|rryn/.test(config.url)) {
     config.headers["Content-Type"] = "application/x-www-form-urlencoded";
 }
 ```
+
+**157. pointer-events: none 禁止鼠标事件**
+> (高性能滚动 scroll 及页面渲染优化)[http://web.jobbole.com/86158/]
+
+- 大部分人可能都不认识这个属性，嗯，那么它是干什么用的呢？
+
+- pointer-events 是一个 CSS 属性，可以有多个不同的值，属性的一部分值仅仅与 SVG 有关联，这里我们只关注 pointer-events: none 的情况，大概的意思就是禁止鼠标行为，应用了该属性后，譬如鼠标点击，hover 等功能都将失效，即是元素不会成为鼠标事件的 target。
+
+- 可以就近 F12 打开开发者工具面板，给 <body>标签添加上 pointer-events: none 样式，然后在页面上感受下效果，发现所有鼠标事件都被禁止了。
+
+- 那么它有什么用呢？
+
+- pointer-events: none 可用来提高滚动时的帧频。的确，当滚动时，鼠标悬停在某些元素上，则触发其上的 hover 效果，然而这些影响通常不被用户注意，并多半导致滚动出现问题。对 body 元素应用 pointer-events: none ，禁用了包括 hover 在内的鼠标事件，从而提高滚动性能。
+
+```css
+.disable-hover {
+    pointer-events: none;
+}
+```
+
+- 大概的做法就是在页面滚动的时候, 给 添加上 .disable-hover 样式，那么在滚动停止之前, 所有鼠标事件都将被禁止。当滚动结束之后，再移除该属性。
