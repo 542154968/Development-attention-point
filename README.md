@@ -3641,3 +3641,14 @@ if (/htkj001\.oss|rryn/.test(config.url)) {
 
 **159. 移动端如果时间设置成 2019/01/21 24:00:00 会报错**
 - 设置成23:59:59
+
+**160. 数组分割**
+```javascript
+let newArr = []
+const length = arr.length
+for (let i = 0; i < length; i += 3) {
+	newArr.push(arr.slice(i, i + 3))
+}
+this.dataList = newArr
+console.log(this.dataList)
+```
