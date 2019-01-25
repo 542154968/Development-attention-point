@@ -3652,3 +3652,8 @@ for (let i = 0; i < length; i += 3) {
 this.dataList = newArr
 console.log(this.dataList)
 ```
+
+**161. translate(3d)也不见得哪里都适用**
+- 大量DOM的场景下， 用translate3d做滚动的时候，火狐会出现滚动卡顿，谷歌不会 
+- 改用scrollTo做滚动完美解决这个问题
+- 值得思考
