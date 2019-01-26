@@ -3658,7 +3658,7 @@ console.log(this.dataList)
 - 改用scrollTo做滚动完美解决这个问题
 - 值得思考
 
-**162. QQ分享页面的meta标签**
+**162. html5 微数据**
 ```html
 <meta itemprop="name" content="原来科技真的可以改变生活,好炫!" />
 <meta itemprop="description" content="原来科技真的可以改变生活，好炫！" />
