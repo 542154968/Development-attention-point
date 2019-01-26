@@ -3657,3 +3657,10 @@ console.log(this.dataList)
 - 大量DOM的场景下， 用translate3d做滚动的时候，火狐会出现滚动卡顿，谷歌不会 
 - 改用scrollTo做滚动完美解决这个问题
 - 值得思考
+
+**162. QQ分享页面的meta标签**
+```html
+<meta itemprop="name" content="原来科技真的可以改变生活,好炫!" />
+<meta itemprop="description" content="原来科技真的可以改变生活，好炫！" />
+<meta itemprop="image" content="http://qqpublic.qpic.cn/qq_public_cover/0/0-10000-DB4036C9AF4028EA19729430313D4960_vsmcut/200" />
+```
