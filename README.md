@@ -3664,3 +3664,9 @@ console.log(this.dataList)
 <meta itemprop="description" content="原来科技真的可以改变生活，好炫！" />
 <meta itemprop="image" content="http://qqpublic.qpic.cn/qq_public_cover/0/0-10000-DB4036C9AF4028EA19729430313D4960_vsmcut/200" />
 ```
+
+**163. vue-cli `import` 中大小写的有意思之处**
+> 未测试是es6的规则还是vue-cli或者webpack的关系
+
+- import AppUseChart from './appUseChart' 默认当成文件夹 会查找里面的index.vue 
+- 而import AppUseChart from './AppUseChart' 会当成.vue组件
