@@ -3670,3 +3670,8 @@ console.log(this.dataList)
 
 - import AppUseChart from './appUseChart' 默认当成文件夹 会查找里面的index.vue 
 - 而import AppUseChart from './AppUseChart' 会当成.vue组件
+
+**164. git默认对文件名啥的是不区分大小写的 记得区分**
+```shell
+git config core.ignorecase false
+```
