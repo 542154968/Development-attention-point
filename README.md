@@ -3708,3 +3708,13 @@ class SomeComponent extends React.PureComponent {
 - 这里所发生的是，每当重新渲染 SomeComponent 组件(例如 do 从 true 切换到 false)时，按钮也会重新渲染，尽管每次 onClick 方法都是相同的，但是每次渲染都会被重新创建。
 
 - 每次渲染时，都会在内存中创建一个新函数(因为它是在 render 函数中创建的)，并将对内存中新地址的新引用传递给 <Button />，虽然输入完全没有变化，该 Button 组件还是会重新渲染。
+
+**167. vuecli3 给jsloader加include**
+```javascript
+config.module
+      .rule("js")
+      .include.add(resolve("test"))
+      .add(resolve("src"))
+      .add(resolve("/node_modules/element-ui/packages"))
+      .add(resolve("/node_modules/element-ui/src"));
+```
