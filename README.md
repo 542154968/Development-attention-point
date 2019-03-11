@@ -3678,3 +3678,7 @@ git config core.ignorecase false
 
 **165. react-router4  react嵌套路由实现的两种方式以及路由过渡动画的实现方式**
 - [react-router4 react嵌套路由实现的两种方式以及路由过渡动画的实现方式](https://blog.csdn.net/qq_37540004/article/details/88331990)
+
+
+**166. React或Vue中如果函数不依赖于的组件（没有 this 上下文），则可以在组件外部定义它。 组件的所有实例都将使用相同的函数引用，因为该函数在所有情况下都是相同的。**
+> [Web 性能优化：缓存 React 事件来提高性能](https://segmentfault.com/a/1190000018423895)
