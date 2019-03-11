@@ -3682,3 +3682,29 @@ git config core.ignorecase false
 
 **166. React或Vue中如果函数不依赖于的组件（没有 this 上下文），则可以在组件外部定义它。 组件的所有实例都将使用相同的函数引用，因为该函数在所有情况下都是相同的。**
 > [Web 性能优化：缓存 React 事件来提高性能](https://segmentfault.com/a/1190000018423895)
+
+- 在 JavaScript 中，函数的处理方式是相同的。如果 React 接收到具有不同内存地址的相同函数，它将重新呈现。如果 React 接收到相同的函数引用，则不会。
+```javascript
+class SomeComponent extends React.PureComponent {
+  get instructions () {
+    if (this.props.do) {
+      return 'click the button: '
+    }
+    return 'Do NOT click the button: '
+  }
+
+  render() {
+    return (
+      <div>
+        {this.instructions}
+        <Button onClick={() => alert('!')} />
+      </div>
+    )
+  }
+}
+```
+- 这是一个非常简单的组件。 有一个按钮，当它被点击时，就 alert。 instructions 用来表示是否点击了按钮，这是通过 SomeComponent 的 prop 的 do={true} 或 do={false} 来控制。
+
+- 这里所发生的是，每当重新渲染 SomeComponent 组件(例如 do 从 true 切换到 false)时，按钮也会重新渲染，尽管每次 onClick 方法都是相同的，但是每次渲染都会被重新创建。
+
+- 每次渲染时，都会在内存中创建一个新函数(因为它是在 render 函数中创建的)，并将对内存中新地址的新引用传递给 <Button />，虽然输入完全没有变化，该 Button 组件还是会重新渲染。
