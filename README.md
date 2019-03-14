@@ -3718,3 +3718,37 @@ config.module
       .add(resolve("/node_modules/element-ui/packages"))
       .add(resolve("/node_modules/element-ui/src"));
 ```
+
+**168. GOjs流程图增删编辑**
+```javascript
+// 以下方法都是通过绑定的click事件触发 
+// 增加
+function addCounter(e, obj) {
+	var node = obj.part
+	var data = node.data
+	myDiagram.model.addNodeData({
+		key: Date.parse(new Date()),
+		name: 'George V',
+		gender: 'M',
+		birthYear: '1865',
+		deathYear: '1936',
+		reign: '1910-1936',
+		parent: data.key
+	})
+	myDiagram.rebuildParts()
+}
+// 减去
+function minusCounter(e, obj) {
+	var node = obj.part
+	myDiagram.remove(node)
+	myDiagram.rebuildParts()
+}
+
+/*
+ // 编辑 通过以下任意方法获取数据列表
+  myDiagram.model.nodeDataArray
+  myDiagram.model.linkDataArray
+  //修改完成调用以下方法完成重建
+  myDiagram.rebuildParts()
+*/
+```
