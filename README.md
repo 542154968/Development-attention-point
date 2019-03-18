@@ -3761,3 +3761,6 @@ function minusCounter(e, obj) {
 - 实际使用中  使用git fetch 更安全    在merge之前可以看清楚 更新情况  再决定是否合并
 
 **170. react如果不需要刷新视图， 尽量少用setState去更改变量，因为每次setState都会去尝试刷新视图，耗费性能，可以通过变量来操作**
+> https://segmentfault.com/a/1190000018549047
+
+- setState 调用后，组件的 render 方法也会自动调用，这就是为什么你能在页面看到新数据。但是无论你 setState 修改的是什么，哪怕是页面里没有的一个数据，render 都会被触发，并且父组件渲染中会嵌套渲染自组件。
