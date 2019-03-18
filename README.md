@@ -3759,3 +3759,5 @@ function minusCounter(e, obj) {
 - git pull     从远程拉取最新版本 到本地  自动合并 merge            git pull origin master
 - git  fetch   从远程获取最新版本 到本地   不会自动合并 merge    git fetch  origin master       git log  -p master ../origin/master     - git  merge orgin/master
 - 实际使用中  使用git fetch 更安全    在merge之前可以看清楚 更新情况  再决定是否合并
+
+**170. react如果不需要刷新视图， 尽量少用setState去更改变量，因为每次setState都会去尝试刷新视图，耗费性能，可以通过变量来操作**
