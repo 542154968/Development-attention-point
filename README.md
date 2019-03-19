@@ -3764,3 +3764,15 @@ function minusCounter(e, obj) {
 > https://segmentfault.com/a/1190000018549047
 
 - setState 调用后，组件的 render 方法也会自动调用，这就是为什么你能在页面看到新数据。但是无论你 setState 修改的是什么，哪怕是页面里没有的一个数据，render 都会被触发，并且父组件渲染中会嵌套渲染自组件。
+
+**171. addEventListener的 中的 passive 可以优化滚动 如果你不需要preventDefault**
+
+- options 可选
+- 一个指定有关 listener 属性的可选参数对象。可用的选项如下：
+
+ - 1. capture:  Boolean，表示 listener 会在该类型的事件捕获阶段传播到该 EventTarget 时触发。
+   2. once:  Boolean，表示 listener 在添加之后最多只调用一次。如果是 true， listener 会在其被调用之后自动移除。
+   3. passive: Boolean，表示 listener 永远不会调用 preventDefault()。如果 listener 仍然调用了这个函数，客户端将会忽略它并抛出一个控制台警告。
+   4. mozSystemGroup: 只能在 XBL 或者是 Firefox' chrome 使用，这是个 Boolean，表示 listener 被添加到 system group。
+
+
