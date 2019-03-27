@@ -3775,4 +3775,4 @@ function minusCounter(e, obj) {
    3. passive: Boolean，表示 listener 永远不会调用 preventDefault()。如果 listener 仍然调用了这个函数，客户端将会忽略它并抛出一个控制台警告。
    4. mozSystemGroup: 只能在 XBL 或者是 Firefox' chrome 使用，这是个 Boolean，表示 listener 被添加到 system group。
 
-
+**172. @contextmenu.prevent vue中使用这个可以阻止右键菜单**
