@@ -3782,3 +3782,5 @@ function minusCounter(e, obj) {
 ```css
 filter: drop-shadow(2px 2px 4px #ccc);
 ```
+
+**174. 如果图片需要遮罩，记得把遮罩的dom放在图片dom前面 不然图片会先加载出来 而遮罩不会 会看着一瞬间没遮罩**
