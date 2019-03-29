@@ -3776,3 +3776,9 @@ function minusCounter(e, obj) {
    4. mozSystemGroup: 只能在 XBL 或者是 Firefox' chrome 使用，这是个 Boolean，表示 listener 被添加到 system group。
 
 **172. @contextmenu.prevent vue中使用这个可以阻止右键菜单**
+
+**173. png透明图片中有字，如何给这个图中的字加阴影？**
+- 用`css3`的`filter`的`drop-shadow`属性
+```css
+filter: drop-shadow(2px 2px 4px #ccc);
+```
