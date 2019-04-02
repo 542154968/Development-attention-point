@@ -3794,3 +3794,28 @@ filter: drop-shadow(2px 2px 4px #ccc);
 - 两点加单斜杠，跳转到上一级目录
 - 多个两点加单斜杠连续用，每一次“../”往上跳转一级,有几个“
 - 全路径方法：路径+项目名+文件在wbapp下的位置
+
+**177. 单页面过渡动画过渡过程要设置absolute还要有位置，这样才不会抖动**
+```css
+.ht-filter-enter-active,
+.ht-filter-leave-active {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 0.5s, filter 0.5s;
+}
+.ht-filter-enter,
+.ht-filter-leave-to {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  transform: translate3d(0, 0, 0);
+  filter: blur(8px);
+  opacity: 0;
+}
+```
