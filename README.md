@@ -3819,3 +3819,25 @@ filter: drop-shadow(2px 2px 4px #ccc);
   opacity: 0;
 }
 ```
+
+**178. 如果UI框架提供的有scss等可以修改主题的工具 尽量从那个里面修改**
+
+**179. `:first-child……`等伪类选择器必须在都是相同兄弟节点中使用**
+```html
+<body>
+	<p/>
+	<span/>
+	<span/>
+	<p/>
+</body>
+
+上面这种无效
+下面这种有效
+
+<body>
+	<p/>
+	<p/>
+	<p/>
+	<p/>
+</body>
+```
