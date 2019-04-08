@@ -3846,3 +3846,6 @@ filter: drop-shadow(2px 2px 4px #ccc);
 ```css
 box-shadow: 0 8px 20px #666; /* 第一个左右偏移 第二个上下偏移 第三个阴影的量 第四个颜色 */
 ```
+
+**181. routerview 和 key配合 很巧妙**
+- 使用得当可以避免不同路由同组件不渲染
