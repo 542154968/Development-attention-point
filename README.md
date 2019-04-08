@@ -3841,3 +3841,8 @@ filter: drop-shadow(2px 2px 4px #ccc);
 	<p/>
 </body>
 ```
+
+**180. box-shadow底部阴影**
+```css
+box-shadow: 0 8px 20px #666; /* 第一个左右偏移 第二个上下偏移 第三个阴影的量 第四个颜色 */
+```
