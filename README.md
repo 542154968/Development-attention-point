@@ -3872,3 +3872,12 @@ loadData().then(res=>{
 
 **182. 右键菜单和百度rightclick的冲突**
 - 百度rightclick调用自定义右键菜单，菜单利用document监听点击事件判断是否含有特定class来自动关闭弹窗，在火狐中打不开弹窗，因为触发点击的是svg，而svg没有特定的class  于是就在菜单中加上判断如果是右键点击的不隐藏 解决冲突
+
+**183. 横向滚动盒子的css**
+```css
+height: 200px;
+width: 100%;
+overflow-x: auto;
+overflow-y: hidden;
+white-space: nowrap;
+```
