@@ -3881,3 +3881,55 @@ overflow-x: auto;
 overflow-y: hidden;
 white-space: nowrap;
 ```
+
+**184. vscode用户代码片段的功能**
+- 在首选项中打开用户代码片段
+- 找到vue
+- 输入($0是当前鼠标位置)
+```json
+{
+  "Print to console": {
+    "prefix": "vue",
+    "body": [
+      "<template>",
+      "  <div>$0</div>",
+      "</template>",
+      "",
+      "<script>",
+      "export default {",
+      "  data () {",
+      "    return {",
+      "    };",
+      "  },",
+
+      "  computed: {},",
+      "  methods: {}",
+      "}",
+      "",
+      "</script>",
+      "<style lang=''>",
+      "</style>"
+    ],
+    "description": "Log output to console"
+  }
+}
+```
+- 然后保存这个文件
+- 新建一个vue文件，输入`vue`然后按`enter`即可
+```vue
+<template>
+  <div></div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {};
+  },
+  computed: {},
+  methods: {}
+};
+</script>
+<style lang=""></style>
+
+```
