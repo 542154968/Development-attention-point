@@ -3935,3 +3935,15 @@ export default {
 ```
 
 **185. +-等操作符的优先级大于三元运算符的优先级 不注意容易出错**
+
+**186. 火狐、IE 盒子高度写100%的时候 overflow:auto; padding有值 滚动的时候 不计算padding **
+- height 100% 改成 auto 即可 
+- 具体原因未知 猜想 ？？？ 想不明白。。。
+```css
+.ht-scroll-contain {
+    // 不要写 100%  100%在火狐和IE中会忽略padding的高度
+    height: auto;
+    width: 100%;
+    overflow: auto;
+  }
+```
