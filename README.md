@@ -3947,3 +3947,5 @@ export default {
     overflow: auto;
   }
 ```
+
+**187. Vue利用store调用不同组件的方法时，在刷新网页时可能没法同步，需要加延迟**
