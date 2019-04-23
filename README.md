@@ -3975,3 +3975,108 @@ confirmPay(data) {
         });
     }
 ```
+
+**189. 使用mqtt**
+> 只是demo代码 实际需求看情况改
+
+- 客户端
+```javascript
+const mqtt = require("mqtt");
+export default {
+  data() {
+    return {
+      client: null
+    };
+  },
+  created() {
+    this.createClient();
+  },
+  methods: {
+    createClient() {
+      console.log("create");
+      this.client = mqtt.connect("mqtt://127.0.0.1:7410", {
+        connectTimeout: 5000
+      });
+      this.client.on("connect", () => {
+       // persence 和  /hello/word 相当于监听的路由 
+        this.client.subscribe("presence", err => {
+          if (!err) {
+            this.client.publish("presence", "Hello mqtt");
+          }
+        });
+
+        this.client.subscribe("/hello/world", err => {
+          if (!err) {
+            this.client.publish("/hello/world", "Hello word");
+          }
+        });
+      });
+	// 当有消息传递过来 topic就是监听的路由
+      this.client.on("message", function(topic, message) {
+        // message is Buffer
+        console.log(topic, message.toString(), "msg");
+        // this.client.end();
+      });
+      this.client.on("error", error => {
+        // message is Buffer
+        console.log(error);
+        this.client.end();
+      });
+    }
+  }
+};
+```
+- 服务端 用的node
+```javascript
+var mosca = require('mosca')
+// 连接的数据库 这里只用模拟没连数据库
+var ascoltatore = {
+    //using ascoltatore
+    type: 'mongo',
+    url: 'mongodb://localhost:27017/mqtt',
+    pubsubCollection: 'ascoltatori',
+    mongo: {}
+}
+
+var settings = {
+    port: 1884,
+    // 直接请求1884端口不能用  要加 http 或者https(没试,看你请求链接)
+    http: {
+        port: 7410
+    }
+    //   backend: ascoltatore
+}
+
+var message = {
+    topic: '/hello/world',
+    payload: 'abcde', // or a Buffer
+    qos: 0, // 0, 1, or 2
+    retain: false // or true
+}
+
+var server = new mosca.Server(settings)
+
+server.on('clientConnected', function(client) {
+	// 推送消息
+    server.publish(message, function() {
+        console.log('done!')
+    })
+})
+
+// fired when a message is received
+server.on('published', function(packet, client) {
+    console.log('Published', packet.payload.toString())
+})
+
+// server.on('clientDisconnected', function(client) {
+//     console.log('Client Disconnected:', client.id)
+// })
+
+server.on('ready', setup)
+
+// fired when the mqtt server is ready
+function setup() {
+    console.log('Mosca server is up and running')
+}
+
+```
