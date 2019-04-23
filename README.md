@@ -4041,6 +4041,7 @@ var ascoltatore = {
 var settings = {
     port: 1884,
     // 直接请求1884端口不能用  要加 http 或者https(没试,看你请求链接)
+    // 第三方的话 开通websocket就可以访问了
     http: {
         port: 7410
     }
