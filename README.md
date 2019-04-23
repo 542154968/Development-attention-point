@@ -4081,3 +4081,5 @@ function setup() {
 }
 
 ```
+
+**190. window.URL.createObjectURL**
