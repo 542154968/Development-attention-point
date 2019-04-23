@@ -3998,7 +3998,7 @@ export default {
         connectTimeout: 5000
       });
       this.client.on("connect", () => {
-       // persence 和  /hello/word 相当于监听的路由 
+       // persence 和  /hello/word 相当于监听的路由 不在这里写 收不到信息
         this.client.subscribe("presence", err => {
           if (!err) {
             this.client.publish("presence", "Hello mqtt");
