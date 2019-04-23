@@ -3949,3 +3949,29 @@ export default {
 ```
 
 **187. Vue利用store调用不同组件的方法时，在刷新网页时可能没法同步，需要加延迟**
+
+**188. 阿里网页支付跳转**
+```javascript
+confirmPay(data) {
+      this.pageLoading = true;
+      const newTab = window.open();
+      const div = document.createElement("div");
+      aliPayApi
+        .getPayPage({
+          dePoint: data.dePoint,
+          feesSetMealBeans: this.getSendData()
+        })
+        .then(res => {
+          res = res.data;
+          div.innerHTML = res.orderInfo;
+          newTab.document.body.appendChild(div);
+          newTab.document.forms[0].submit();
+          this.pageLoading = false;
+	  
+          this.back();
+        })
+        .catch(() => {
+          this.pageLoading = false;
+        });
+    }
+```
