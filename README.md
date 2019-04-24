@@ -2762,7 +2762,7 @@ table {
 **163. vscode CPU 占用率 100%**
 - 干掉 `SCSS IntelliSense`这个插件！！！
 
-**164. 动态切换audio标签的src时 一定要通过dom添加的方式去切换**
+**164. 动态切换video，等 audio标签的src时 一定要通过dom添加的方式去切换， 然后再play 直接play貌似也行**
 
 **165. 少用`overflow:scroll`**
 - PC百分百有滚动条
