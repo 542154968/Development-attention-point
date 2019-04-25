@@ -4083,3 +4083,72 @@ function setup() {
 ```
 
 **190. window.URL.createObjectURL**
+
+**191. webpack项目中有需要根据key来引入不同大量图片的解决方案**
+- 比如我有十几二十种key，每个key对应一个图片，后端返回不同的key，我要展示不同的图片，而且如果图片不存在，那么展示一个默认图片。
+- 如果一个一个require图片进来，很麻烦，不科学，不自动，于是我想到了一种解决方案，将图片放入public文件夹（静态资源不用laoder加载）
+```javascript
+// 基础图片路径 这个是放在public文件夹下的  public/images/gateway....
+// 这里一定要用相对路径 用绝对路径的话 打包之后会受路径影响不显示 亲测
+const basicImg = "images/gateway/basic.png";
+const imgUrl = "images/gateway/";
+// 然后图片的命名与后端传来的key对应 比如 key是gateway 你的图片名字就是 gateway.png
+
+// 那么如何判断图片能否正常加载呢？  就用new Image 去构造一个图片对象
+export default {
+	methods:{
+		// 这个方法用来检测图片是否可用
+		createImg(src) {
+		      return new Promise((resolve, reject) => {
+			let img = new Image();
+			img.src = src;
+			img.onload = () => {
+			  img = null;
+			  resolve();
+			};
+			img.onerror = () => {
+			  img = null;
+			  reject(new Error("没有图片"));
+			};
+		      });
+		},
+		// 将图片生成markder 这里面有我相关的业务逻辑 
+		async createMarker(data) {
+		      const lng = data.longitude;
+		      const lat = data.latitude;
+		      let iconImg = null;
+		      const url = imgUrl + data.type + ".png";
+		      await this.createImg(url)
+			.then(() => {
+			  iconImg = url
+			})
+			.catch(() => {
+			  iconImg = basicImg;
+			});
+		      let marker = new BMap.Marker(new BMap.Point(lng, lat), {
+			icon: new BMap.Icon(iconImg, new BMap.Size(100, 100)),
+			enableClicking: true
+		      }); // 创建标注
+		      marker.htData = data;
+		      marker.removeEventListener("click", this.showTerminalWindow);
+		      marker.addEventListener("click", this.showTerminalWindow);
+		      return marker;
+		},
+		// 这里有个注意点 我踩了个坑 自己不理解async   async返回的也是个promise对象  哈哈 
+		addMarkerToMap(arr) {
+		      const newArr = arr.filter(v => {
+			return v.longitude && v.latitude;
+		      });
+		      this.markerWindow = [];
+		      newArr.forEach((v, k) => {
+		      // 一开始直接添加到map中 都是空的 async返回的也是个promise 哦！
+			this.createMarker(v)
+			  .then(markder => {
+			    this.map.addOverlay(markder);
+			  })
+			  .catch(() => {});
+		      });
+		},
+	}	
+}
+```
