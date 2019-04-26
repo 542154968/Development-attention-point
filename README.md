@@ -4084,7 +4084,7 @@ function setup() {
 
 **190. window.URL.createObjectURL**
 
-**191. webpack项目中有需要根据key来引入不同大量图片的解决方案**
+**191. 百度地图等需要根据key来引入不同大量图片的解决方案**
 - 比如我有十几二十种key，每个key对应一个图片，后端返回不同的key，我要展示不同的图片，而且如果图片不存在，那么展示一个默认图片。
 - 如果一个一个require图片进来，很麻烦，不科学，不自动，于是我想到了一种解决方案，将图片放入public文件夹（静态资源不用laoder加载）
 ```javascript
@@ -4151,4 +4151,18 @@ export default {
 		},
 	}	
 }
+```
+- 另外 如果我们需要key引入图片的话可以使用这种方式
+```vue
+<template>
+	<img :src="require(`@img/service/${item.feesStandardCode}.png`)"
+            :alt="item.feesStandardName" />
+</template>
+```
+- 或者
+```vue
+<template>
+	<div :style="{background: require(`@img/service/${item.feesStandardCode}.png`)}"
+            :alt="item.feesStandardName" />
+</template>
 ```
