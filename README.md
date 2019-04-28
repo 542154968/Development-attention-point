@@ -4294,3 +4294,4 @@ jsconfig.json 所在位置为项目根目录
 ```
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190428132454209.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
 
+**194. vueli3不一定要用chain  configureWebpack也是一样的**
