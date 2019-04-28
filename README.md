@@ -4212,17 +4212,34 @@ import Vue from 'vue'
 ```
 
 **193. vue/react使用JSDoc、jsconfig.json 完成vscode对于webpack的alias引入的js方法的提示**
-- TS有个好处就是你引入方法会告诉你什么类型返回什么类型
+> [csdn该篇文章链接](https://blog.csdn.net/qq_37540004/article/details/89602242)
+
+TS有个好处就是你引入方法会告诉你参数是什么类型返回什么类型，而我们不需要TS也可以完成这项提示任务。
+
 - 首先你需要阅读[JSDoc的文档](http://usejsdoc.org/)和[jsconfig.json](https://code.visualstudio.com/docs/languages/jsconfig)的配置，你也可以百度下中文的文档
-- 比如我的webpack的alias配置如下, common中是我的公共方法
+- 之后是写配置文件，比如我的webpack的alias配置如下, common中是我的公共方法
 ```javascript
 chainWebpack: config => {
 	 config.resolve.alias
       .set("@common", resolve("src/common"))
 }
 ```
-- 我如果在项目中使用`@common/utils`引入我需要的方法时，vscode是不会提示我引入这个js文件中有多少方法的，使用`jsconfig.json`就可以帮助`vscode`完成这项艰巨的任务
-- 方法的提示怎么做呢，首先你需要首席几个基本的 @param 等注释规范， 比如
+- 我如果在项目中使用`@common/utils`引入我需要的方法时，在不配置jsconfig.json的情况下，vscode是不会提示我引入这个js文件中有多少方法的，使用`jsconfig.json`就可以帮助`vscode`完成这项艰巨的任务
+- jsconfig的基本配置如下，这里的路径和你的alias路径相同即可
+```json
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@assets/*": ["src/assets/*"],
+      "@common/*": ["src/common/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}
+
+```
+- 方法的提示怎么编写呢？用好JSDoc就行了。
 ```javascript
 /**
  *
@@ -4237,4 +4254,43 @@ export const ht_notify_error = msg => {
 };
 ```
 - 之后你在文件中引入这个方法时就会提示这些信息了，亲自试试吧！
-- 图文版的在我的博客中 https://blog.csdn.net/qq_37540004/article/details/89602242
+
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190427152206396.png)
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190427152219234.png)
+我 alias引入的js文件中的方法也提示了
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190427153320777.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
+jsconfig.json 所在位置为项目根目录
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190427153352662.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
+
+##### 还可以自动引入，首先你需要引入utils这个文件， 比如`import {xxx} from "@common/utils"` 你在create周期里打其中一个未引入的方法，这个方法名会自动添加到{}之中
+
+##### ctrl + 鼠标点击方法也会跳转到方法所在的文件之中
+
+##### 方法描述信息可以写在一开头，不知道@description为啥不能用
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190428131824841.png)
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2019042813193982.png)
+
+##### 提示换行
+```javascript
+/**
+ * 获取当前日期的时间戳返回对应日期
+ *
+ * 1 => "2017--09-08 09:25:21"
+ *
+ * 2 => "2017-09-08"
+ *
+ * year  获取当前年份
+ *
+ * month  获取当前月份
+ *
+ * day  获取当前几号
+ * @param {Number | String} option 传入的对象
+ * @param {Date | Number | String} option.time 需要被处理的时间
+ * @param {Number | String} option.type 被处理的类型
+ * */
+```
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190428132454209.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
+
