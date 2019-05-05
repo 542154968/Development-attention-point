@@ -4295,3 +4295,8 @@ jsconfig.json 所在位置为项目根目录
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190428132454209.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
 
 **194. vueli3不一定要用chain  configureWebpack也是一样的**
+
+**195. 如何根据url链接字符串获取href、protocol、host、search、hash等属性**
+- iframe 直接把url赋值给location.href会从当前页面跳转到 url 的页面，如果我们在当前页面新建一个iframe并给它的src赋值这个 url ，似乎可以通过iframe的window.location拿到url的各个属性。
+- 我们创建了一个a元素，并给它的href赋值了 url ，可以打印出这个a元素的对象，其中就包括 url 的这些属性。
+- 利用a元素来解析 url 算是奇淫巧技吧，其实现代浏览器提供了一个创建的URL对象的构造函数—URL()，直接把url当作参数传入，就会返回一个URL对象。
