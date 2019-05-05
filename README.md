@@ -4300,3 +4300,5 @@ jsconfig.json 所在位置为项目根目录
 - iframe 直接把url赋值给location.href会从当前页面跳转到 url 的页面，如果我们在当前页面新建一个iframe并给它的src赋值这个 url ，似乎可以通过iframe的window.location拿到url的各个属性。
 - 我们创建了一个a元素，并给它的href赋值了 url ，可以打印出这个a元素的对象，其中就包括 url 的这些属性。
 - 利用a元素来解析 url 算是奇淫巧技吧，其实现代浏览器提供了一个创建的URL对象的构造函数—URL()，直接把url当作参数传入，就会返回一个URL对象。
+
+**196.  URL.createObjectURL()创建后不用了记得用URL.revokeObjectURL()释放掉 **
