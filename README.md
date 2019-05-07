@@ -4302,3 +4302,4 @@ jsconfig.json 所在位置为项目根目录
 - 利用a元素来解析 url 算是奇淫巧技吧，其实现代浏览器提供了一个创建的URL对象的构造函数—URL()，直接把url当作参数传入，就会返回一个URL对象。
 
 **196.  URL.createObjectURL()创建后不用了记得用URL.revokeObjectURL()释放掉 **
+**197.  vuerouter的路由导航一般只生效在页面级组件 **
