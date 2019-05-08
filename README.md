@@ -4303,3 +4303,4 @@ jsconfig.json 所在位置为项目根目录
 
 **196.  URL.createObjectURL()创建后不用了记得用URL.revokeObjectURL()释放掉 **
 **197.  vuerouter的路由导航一般只生效在页面级组件 **
+**198. prehooks的钩子配置 husky 可以在上传git的时候检测代码格式**
