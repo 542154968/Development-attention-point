@@ -4302,7 +4302,12 @@ jsconfig.json 所在位置为项目根目录
 - 利用a元素来解析 url 算是奇淫巧技吧，其实现代浏览器提供了一个创建的URL对象的构造函数—URL()，直接把url当作参数传入，就会返回一个URL对象。
 
 **196.  URL.createObjectURL()创建后不用了记得用URL.revokeObjectURL()释放掉 **
+
 **197.  vuerouter的路由导航一般只生效在页面级组件 **
+
 **198. prehooks的钩子配置 husky 可以在上传git的时候检测代码格式**
 > [git commit前检测husky与pre-commit](https://www.jianshu.com/p/f0d31f92bfab)
+
 **199. Function.prototype -》 ƒ () { [native code] } 它的prototype不是个标准对象**
+
+**200. vue store commit 同时触发多个的时候，只会响应一个？？什么原因 ？有时间研究下**
