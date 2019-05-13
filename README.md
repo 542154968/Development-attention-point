@@ -4315,3 +4315,5 @@ jsconfig.json 所在位置为项目根目录
 **201. 百度地图地块坐标虽然你传给后台的是百度地图获取的坐标，但是在去画地块的时候，一定要再次 new BMap.Point(lng, lat);**
 
 **202. vue keepalive的页面它的watch会一直监听！贼恐怖**
+
+**203. `text-transform`这个css属性可以更改英文的大小写**
