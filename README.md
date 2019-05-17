@@ -4382,3 +4382,23 @@ bar();
 
 **207. 阿里网页支付有的浏览器可以有的浏览器不可以**
 - 我们项目的原因是表单没有设置`acceptCharset = "UTF-8"`
+
+**208. vue多层传递数据和事件 $attrs/$listeners**
+> https://www.cnblogs.com/mengfangui/p/9995470.html
+
+- 组件传值一般是通过props传值的。inheritAttrs默认值为true，true的意思是将父组件中除了props外的属性添加到子组件的根节点上(说明，即使设置为true，子组件仍然可以通过$attr获取到props意外的属性)
+- inheritAttrs:false后（请将fatherDom.vue添加inheritAttrs:false），coo属性就不会显示在fatherDom根节点上了。但是怎么获取到coo呢？这时就通过$attrs获取到到coo。
+- 爷爷
+```vue
+<Father :datas="666" />
+```
+- 父
+```vue
+<Child v-on="$attrs" v-on="$listeners"/>
+```
+- 子
+```vue
+<div>{{datas}}</div>
+{
+props: [datas]}
+```
