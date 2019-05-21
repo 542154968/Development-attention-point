@@ -4409,3 +4409,9 @@ props: [datas]}
 ```css
 box-shadow: 30px 15px #8e1a19, 45px 15px #ac0500, 75px 15px #f73f0c, 90px 15px #fa5f27, 15px 30px #740100, 30px 30px #8e0500, 45px 30px #8e1918, 60px 30px #ca1300, 75px 30px #f34f2b, 90px 30px #df351f, 105px 30px #f77c2a, 15px 45px #4b0000, 30px 45px #690100, 45px 45px #8e0f0b, 60px 45px #bf1000, 75px 45px #f84010, 90px 45px #f04222, 105px 45px #fa5724, 15px 60px #451312, 30px 60px #5a0100, 45px 60px #840e0c, 60px 60px #a51d1a, 75px 60px #ed2805, 90px 60px #d9321e, 105px 60px #f44622, 30px 75px #3b0000, 45px 75px #5d1a1b, 60px 75px #8e1a19, 75px 75px #a80700, 90px 75px #b90a00, 45px 90px #3d0000, 60px 90px #551415, 75px 90px #670100, 60px 105px #340000;
 ```
+
+**210. 同一个浏览器多个tab页面如何登入同一个项目不同角色**
+- localstorage配合用户id方案，不行 即便可以通过用户id区分用户的token，但是一旦刷新，这个用户的id就不知道了（id用本地存储存下来也无法鉴别），除非重新登录，
+- sessionstorage 后端token没失效，用户需要重新登录，新页面打开token也失效
+- cookie和localstorage一样道理
+- 如果要做需要后端配合 静默登录
