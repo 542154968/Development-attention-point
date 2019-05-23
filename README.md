@@ -4415,3 +4415,11 @@ box-shadow: 30px 15px #8e1a19, 45px 15px #ac0500, 75px 15px #f73f0c, 90px 15px #
 - sessionstorage 后端token没失效，用户需要重新登录，新页面打开token也失效
 - cookie和localstorage一样道理
 - 如果要做需要后端配合 静默登录
+
+**211. vue extends extend minxins mixin**
+- extends  和 mixins 是用在单页面（不一定准确）中
+- extends可以继承vue文件 
+- mixins继承js文件
+- extend mixin 是全局的 具体区别和用法看文档 还是和带s的有差别的
+- extends只能继承一个  mixins可以继承多个
+- extends并不能继承template  因为 组件没暴露template 哈哈
