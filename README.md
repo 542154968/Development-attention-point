@@ -4439,3 +4439,7 @@ form={
 ```
 - 但是接口返回的没有`password`，如果你`this.form = res.data`会导致`password`无法编辑，老版本不会这样
 - 你可以给res补充上这个字段 或者用`Object.assign`
+
+**223. elementui的dlg隐藏时并不会销毁，记得在隐藏时移除一些不必要的监听**
+
+**224. 页面可以再接口获取完成之后再渲染，减少页面重绘次数，期间用loading显示**
