@@ -4428,3 +4428,14 @@ box-shadow: 30px 15px #8e1a19, 45px 15px #ac0500, 75px 15px #f73f0c, 90px 15px #
 > [&times被替换成x 的解决办法](https://www.cnblogs.com/wobeinianqing/p/7067547.html)
 
 - 将统一资源定位器中的&替换成`&amp;` 注意带上分号。
+
+**223. vue中如果接口返回的字段和你默认的字段中有缺失， 不能直接赋值，会不能修改**
+- 比如你的默认字段是
+```js
+form={
+	name:'',
+	password: ''
+}
+```
+- 但是接口返回的没有`password`，如果你`this.form = res.data`会导致`password`无法编辑，老版本不会这样
+- 你可以给res补充上这个字段 或者用`Object.assign`
