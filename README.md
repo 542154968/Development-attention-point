@@ -4427,4 +4427,4 @@ box-shadow: 30px 15px #8e1a19, 45px 15px #ac0500, 75px 15px #f73f0c, 90px 15px #
 **222. &times被替换成x 的解决办法**
 > [&times被替换成x 的解决办法](https://www.cnblogs.com/wobeinianqing/p/7067547.html)
 
-- 将统一资源定位器中的&替换成&amp; 注意带上分号。
+- 将统一资源定位器中的&替换成`&amp;` 注意带上分号。
