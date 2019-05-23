@@ -4423,3 +4423,8 @@ box-shadow: 30px 15px #8e1a19, 45px 15px #ac0500, 75px 15px #f73f0c, 90px 15px #
 - extend mixin 是全局的 具体区别和用法看文档 还是和带s的有差别的
 - extends只能继承一个  mixins可以继承多个
 - extends并不能继承template  因为 组件没暴露template 哈哈
+
+**222. &times被替换成x 的解决办法**
+> [&times被替换成x 的解决办法](https://www.cnblogs.com/wobeinianqing/p/7067547.html)
+
+- 将统一资源定位器中的&替换成&amp; 注意带上分号。
