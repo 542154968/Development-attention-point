@@ -4496,3 +4496,14 @@ function deepClone(obj) { //递归拷贝
 **232. 天地图的卫星图比较全**
 
 **233. vue的自定义指令bind在dom 不变的时候不会再触发了，可以通过移除dom去触发 虽然损失点性能**
+
+**234. 移动端返回页面不刷新解决方案**
+> [https://www.jianshu.com/p/a8ecfb73a22a](移动端点击返回键，页面不刷新解决方案)
+
+```javascript
+  // 点击浏览器返回按钮，404页面刷新
+ window.addEventListener('pageshow', function (event) {
+//event.persisted属性为true时，表示当前文档是从往返缓存中获取
+  if (event.persisted) location.reload();
+ });
+```
