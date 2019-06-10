@@ -4394,7 +4394,7 @@ bar();
 ```
 - 父
 ```vue
-<Child v-on="$attrs" v-on="$listeners"/>
+<Child v-bind="$attrs" v-on="$listeners"/>
 ```
 - 子
 ```vue
