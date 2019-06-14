@@ -4573,3 +4573,5 @@ function inherit(subType, superType) {
 
     var s = new Sub()
 ```
+
+**236. 火狐drapstart不生效可能因为你没传dataTransfer**
