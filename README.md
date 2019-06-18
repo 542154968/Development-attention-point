@@ -4575,3 +4575,33 @@ function inherit(subType, superType) {
 ```
 
 **236. 火狐drapstart不生效可能因为你没传dataTransfer**
+
+**237. fileReader可以读text文本奥！**
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        <input type="file" onchange="fileChange(event)" />
+        <textarea name="" id="textContent" cols="30" rows="10"></textarea>
+        <script>
+            function fileChange(event) {
+                var file = event.target.files[0]
+                if (file && /text/.test(file.type)) {
+                    var fileRead = new FileReader()
+                    fileRead.onload = function(result) {
+                        var $el = document.getElementById('textContent')
+                        $el.value = this.result
+                    }
+                    fileRead.readAsText(file, 'gbk')
+                }
+            }
+        </script>
+    </body>
+</html>
+```
