@@ -4609,3 +4609,4 @@ function inherit(subType, superType) {
 **238. input搜索一定要抽出来抽出来！不然让你去个首尾空格的要从axios处理，不好，又吃一个这亏**
 
 **239. 规范git提交信息，请使用commitlint**
+> [git commit 提交规范 & 规范校验](https://blog.csdn.net/y491887095/article/details/80594043)
