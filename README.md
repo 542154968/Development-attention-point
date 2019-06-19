@@ -4605,3 +4605,5 @@ function inherit(subType, superType) {
     </body>
 </html>
 ```
+
+**238. input搜索一定要抽出来抽出来！不然让你去个首尾空格的要从axios处理，不好，又吃一个这亏**
