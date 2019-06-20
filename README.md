@@ -4623,3 +4623,6 @@ function inherit(subType, superType) {
 
 如果type为feat和fix，则该 commit 将肯定出现在 Change log 之中。
 ```
+
+**240. axios设置baseurl后，会多请求一次因为啥？我发现的场景是baseURL设置成了当前域名**
+- 在源码里打印，axios-lib-core的requrest方法中，打印传来的config参数，第一次打印出来的是vue的方法，然后axios进行了merge合并，url变成了baseURL，所以就请求了这次，为啥第一次传进来的是vue？？  研究中
