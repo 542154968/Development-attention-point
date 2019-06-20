@@ -4611,6 +4611,7 @@ function inherit(subType, superType) {
 **239. 规范git提交信息，请使用commitlint**
 > [git commit 提交规范 & 规范校验](https://blog.csdn.net/y491887095/article/details/80594043)
 [如何写好 Git commit messages](https://www.cnblogs.com/cpselvis/p/6423874.html)
+[git commit 规范指南](https://www.jianshu.com/p/201bd81e7dc9?utm_source=oschina-app)
 
 ```text
 用于说明 commit 的类别，只允许使用下面7个标识。
