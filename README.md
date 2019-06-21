@@ -4631,3 +4631,6 @@ function inherit(subType, superType) {
 
 **240. axios设置baseurl后，会多请求一次因为啥？我发现的场景是baseURL设置成了当前域名**
 - 在源码里打印，axios-lib-core的requrest方法中，打印传来的config参数，第一次打印出来的是vue的方法，然后axios进行了merge合并，url变成了baseURL，所以就请求了这次，为啥第一次传进来的是vue？？  研究中
+
+**241. focus状态下的dom，按键盘的enter键会触发click事件**
+- 解决方案就是 让这个dom blur  可以通过documnet.activeElement 来获得当前focus的DOM
