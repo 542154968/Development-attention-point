@@ -4639,3 +4639,7 @@ function inherit(subType, superType) {
 **242. Object.assign 和 Object.create 的一些理解**
 - assign不继承原型 浅拷贝的__proto__是Object 而Object.create的proto指向它继承来的那个对象 从而让整个原型链串起来
 - assign可以合并 浅拷贝俩对象 而create就是继承
+
+**243. Array.prototype.methods.apply()的妙用**
+- Array.prototype.concat.apply([], [1,2,[3,4,[5,6]]]) // [1, 2, 3, 4, Array(2)] 可以铺平2维数组
+- Array.prototype.push.apply() 可以合并数组
