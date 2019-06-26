@@ -4643,3 +4643,15 @@ function inherit(subType, superType) {
 **243. Array.prototype.methods.apply()的妙用**
 - Array.prototype.concat.apply([], [1,2,[3,4,[5,6]]]) // [1, 2, 3, 4, Array(2)] 可以铺平2维数组
 - Array.prototype.push.apply() 可以合并数组
+
+**244. vue源码阅读笔记beforeMount，mounted和beforeUpdate**
+- created周期执行之后，判断是否存在el，不管el是啥，只要有值就进行下一步，执行`vm.$mount`
+- 而`$mount`根据vue的执行环境，有不同的逻辑，我看的是web执行环境的，所以`$mount`封装在了`platforms/web/index.js`，在这里判断el是否存在，不存在设置为`undefined`，之后调用`mountComponent`方法， `mountComponent`方法在`core/instance/lifecycle`
+- 我们再来看`mountComponent`方法，先把el赋值给`vm.$el`，之后判断`render`函数可有，没有的话，渲染个空dom（这就是为啥报错了渲染的是空的），如果是开发环境，报错。不管有没有报错接下来都会触发`beforeMount`周期。
+- 在之后就是设置updateComponent方法，根据是否需要性能展示，有不同的处理逻辑，但最后都会调用`vm._update`方法。
+- `vm._update`方法封装在`lifecycle.js`中的，`vm._update`接受一个vnode和服务端渲染相关的标识,看其核心，`vm.__path__`。
+- `vm.__path__`就是`Vue.prototype.__path__`，也是根据执行环境不同，有不同的处理方式，我们看的是web环境，所以在`platforms/web/runtime/index.js`中，可以看到`Vue.prototype.__patch__ = inBrowser ? patch : noop`,这个`patch`方法在`platforms/web/runtime/patch.js`中。
+- `patch.js`中做的事大概可以概括为暴露`createPatchFunction`方法，`createPatchFunction`方法使用了`event style dom-props class attrs transition ref 和directives`这些包，它的执行结果就是把vnode转换成html，其中有`scoped`的处理和`keep-alive`的处理。
+- 再回到`mountComponent`方法中，添加好`update`要做的事情之后，会创建一个`watcher`，在触发变化的时候，观察者会判断是否已经`mounted`并且没有`destoryed`组件，去执行`beforeUpdate`周期。
+- 创建好watcher之后，让服务端渲染的标示给`false`（服务端用这个干嘛的？），之后判断如果`vm.$vnode == null`,那么久代表dom已经可以操作，让`_isMounted`等于`true`，触发`mounted`周期
+- 为啥`vm.$vnode == null`？ `vm.$vnode` 表示 Vue 实例的父虚拟 Node，所以它为 Null 则表示当前是根 Vue 的实例。(摘自肥神)
