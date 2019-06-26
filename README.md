@@ -4645,6 +4645,8 @@ function inherit(subType, superType) {
 - Array.prototype.push.apply() 可以合并数组
 
 **244. vue源码阅读笔记beforeMount，mounted和beforeUpdate**
+> https://ustbhuangyi.github.io/vue-analysis/prepare/ 看肥神的课程啊
+
 - created周期执行之后，判断是否存在el，不管el是啥，只要有值就进行下一步，执行`vm.$mount`
 - 而`$mount`根据vue的执行环境，有不同的逻辑，我看的是web执行环境的，所以`$mount`封装在了`platforms/web/index.js`，在这里判断el是否存在，不存在设置为`undefined`，之后调用`mountComponent`方法， `mountComponent`方法在`core/instance/lifecycle`
 - 我们再来看`mountComponent`方法，先把el赋值给`vm.$el`，之后判断`render`函数可有，没有的话，渲染个空dom（这就是为啥报错了渲染的是空的），如果是开发环境，报错。不管有没有报错接下来都会触发`beforeMount`周期。
