@@ -4682,3 +4682,31 @@ function inherit(subType, superType) {
             }, 16.67);
           });
 ```
+
+**246. js 微任务 宏任务**
+>[这一次，彻底弄懂 JavaScript 执行机制](https://juejin.im/post/59e85eebf265da430d571f89)
+
+- 1. 同步和异步任务分别进入不同的执行"场所"，同步的进入主线程，异步的进入Event Table并注册函数。
+  2. 当指定的事情完成时，Event Table会将这个函数移入Event Queue。
+  3. 主线程内的任务执行完毕为空，会去Event Queue读取对应的函数，进入主线程执行。
+  4.上述过程会不断重复，也就是常说的Event Loop(事件循环)。
+```javascript
+let data = [];
+$.ajax({
+    url:www.javascript.com,
+    data:data,
+    success:() => {
+        console.log('发送成功!');
+    }
+})
+console.log('代码执行结束');
+
+
+// ajax进入Event Table，注册回调函数success。
+// 执行console.log('代码执行结束')。
+// ajax事件完成，回调函数success进入Event Queue。
+// 主线程从Event Queue读取回调函数success并执行。
+
+```
+- macro-task(宏任务)：包括整体代码script，setTimeout，setInterval
+- micro-task(微任务)：Promise，process.nextTick
