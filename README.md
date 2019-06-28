@@ -4667,3 +4667,18 @@ function inherit(subType, superType) {
 - 假设有10个请求，每个请求设置一个canceltoken加入到`arr`中
 - 请求结束，从数组中移除这个canceltoken
 - 如果请求数据流量的没结束，从新获取列表数据了，那么久清除`arr`中所有的请求链接
+
+
+**245. element-ui的tooltip/popover显示的时候dom变化，宽度没变**
+- 查源码 使用`updatePopper`方法即可
+```javascript
+ // 因为一开始是一个加载圈 后来填了数据 但是 tooltip没有更新dom结构 通过这个方法去更新
+          this.$nextTick(() => {
+            setTimeout(() => {
+			// popover 就是 <popover ref="popover">
+              this.$refs.popover &&
+                this.$refs.popover.updatePopper();
+				// 加延迟因为nextTick不准确 回头翻翻源码
+            }, 16.67);
+          });
+```
