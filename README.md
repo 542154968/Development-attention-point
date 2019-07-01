@@ -4710,3 +4710,6 @@ console.log('代码执行结束');
 ```
 - macro-task(宏任务)：包括整体代码script，setTimeout，setInterval
 - micro-task(微任务)：Promise，process.nextTick
+
+**247. MathMl**
+- MathML 是数学标记语言，是一种基于XML（标准通用标记语言的子集）的标准，用来在互联网上书写数学符号和公式的置标语言。
