@@ -4713,3 +4713,26 @@ console.log('代码执行结束');
 
 **247. MathMl**
 - MathML 是数学标记语言，是一种基于XML（标准通用标记语言的子集）的标准，用来在互联网上书写数学符号和公式的置标语言。
+
+**248. trigger在vue中的实现**
+```javascript
+function trigger (el, type) {
+  const e = document.createEvent('HTMLEvents')
+  e.initEvent(type, true, true)
+  el.dispatchEvent(e)
+}
+```
+
+**249. IE9 input的backspace、delete和右键操作兼容**
+- input的backspace、delete可以通过keyup解决
+- 右键复制粘贴和剪切可以通过监听document的selectionChange解决
+```javascript
+document.addEventListener('selectionchange', () => {
+    // 获取当前focus/激活的元素
+    const el = document.activeElement
+    // 如果vmodel存在  触发一下input事件  干嘛用的？
+    if (el && el.vmodel) {
+      trigger(el, 'input')
+    }
+  })
+```
