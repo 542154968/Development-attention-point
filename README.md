@@ -4736,3 +4736,28 @@ document.addEventListener('selectionchange', () => {
     }
   })
 ```
+
+**249. IE10&11 给textarea设置placeholder时的兼容**
+```javascript
+// #7138: IE10 & 11 fires input event when setting placeholder on
+    // IE10 11 或触发input事件在textarea设置placeholder的时候
+    // <textarea>... block the first input event and remove the blocker
+    // 阻塞第一个input事件然后移除立即移除阻塞来解决
+    // immediately.
+    /* istanbul ignore if */
+    if (
+      isIE && !isIE9 &&
+      el.tagName === 'TEXTAREA' &&
+      key === 'placeholder' && value !== '' && !el.__ieph
+    ) {
+      const blocker = e => {
+        // 阻止事件冒泡并且阻止相同事件的其他侦听器被调用。
+        e.stopImmediatePropagation()
+        el.removeEventListener('input', blocker)
+      }
+      el.addEventListener('input', blocker)
+      // $flow-disable-line
+      el.__ieph = true /* IE placeholder patched */
+    }
+    el.setAttribute(key, value)
+```
