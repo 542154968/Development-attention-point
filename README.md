@@ -4761,3 +4761,9 @@ document.addEventListener('selectionchange', () => {
     }
     el.setAttribute(key, value)
 ```
+
+**250. \u202D隐藏字符**
+```javascript
+"\u202D3777308808"
+// "‭3777308808"
+```
