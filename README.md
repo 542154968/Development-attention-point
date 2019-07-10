@@ -4798,3 +4798,12 @@ p.then(()=>{
 - 这个微任务执行完毕后，它又会创建一个宏任务，而p又变成了peading状态，就是第三阶段宏任务，这个微任务执行完毕之后，执行余下的微任务，但是因为p的状态是peading，并没有有所触发，所以执行第三阶段宏任务
 - **第三阶段宏任务**
 - setTiemout 打印 1，以此类推，直到第五次打印的结果为4，for循环所带来的event queue已经结束，setTimeout宏任务执行完后返回的resolve触发了微任务队列的最后一位成员，所以打印了**完成**
+
+**251. jsx中使用$attrs $listeners**
+```javascript
+ const attributes= {
+    attrs: this.$attrs,
+    on: this.$listeners
+  }
+  return (<div {...attributes}>232</div>)
+```
