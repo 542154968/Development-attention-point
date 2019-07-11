@@ -4837,3 +4837,42 @@ var simao = _new(Dog, 'simao')
 
 simao instanceof Dog // true
 ```
+
+**252. 又一个考察宏任务微任务的题**
+```javascript
+async function async1() {
+    console.log('async1 start');
+    await async2();
+    console.log('async1 end');
+}
+async function async2() {
+    console.log('async2');
+}
+console.log('script start');
+setTimeout(function() {
+    console.log('setTimeout');
+}, 0)
+async1();
+new Promise(function(resolve) {
+    console.log('promise1');
+    resolve();
+}).then(function() {
+    console.log('promise2');
+});
+console.log('script end');
+```
+- **一轮宏任务**
+- 整体执行 script  start
+- 遇到setTimeout 放入宏任务
+- 遇到async1 不要被迷惑，async只是个标识符 虽然返回的是个promise 但是这里并没有回调 还是一轮宏任务中的
+- 输出async1 start  
+- 遇到await 也不要迷惑 它等待一个promise的回调 所以可以看做 async2().then(()=>{console.log('async1 end')}) 放入微任务 这是第一个微任务
+- 所以async2正常执行 输出 async2
+- 接着执行 输出 promise1 然后变成 有了个promise的状态但是then还是微任务放入微任务队列
+- 接着输出 script end
+- 所以一轮宏任务执行完后 输出的是 script start、 async1 start、 async2、 promise1、 script end
+- **一轮微任务**
+- 第一个微任务 执行 输出 async1 end 
+- 第二个微任务 输出 promise2 
+- **二轮宏任务**
+- 输出 setTimeout
