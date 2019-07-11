@@ -4866,7 +4866,7 @@ console.log('script end');
 - 遇到setTimeout 放入宏任务
 - 遇到async1 不要被迷惑，async只是个标识符 虽然返回的是个promise 但是这里并没有回调 还是一轮宏任务中的
 - 输出async1 start  
-- 遇到await 也不要迷惑 它等待一个promise的回调 所以可以看做 async2().then(()=>{console.log('async1 end')}) 放入微任务 这是第一个微任务
+- 遇到await 也不要迷惑 它等待一个promise的回调 遇到函数直接输出 但是async2有个async，所以他是个promise对象 由于它内部没有resolve 和reject 所以可以直接执行 但是就决定了这个是个微任务 会放入微任务中执行 由于这一阶段并没有执行到 所以会阻塞 他的执行结果 所以可以看做 async2().then(()=>{console.log('async1 end')}) 放入微任务 这是第一个微任务
 - 所以async2正常执行 输出 async2
 - 接着执行 输出 promise1 然后变成 有了个promise的状态但是then还是微任务放入微任务队列
 - 接着输出 script end
