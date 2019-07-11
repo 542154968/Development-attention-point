@@ -4876,3 +4876,17 @@ console.log('script end');
 - 第二个微任务 输出 promise2 
 - **二轮宏任务**
 - 输出 setTimeout
+
+
+**253. vue过滤用户输入的对应值**
+```javascript
+const decodingMap = {
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&amp;': '&',
+  '&#10;': '\n',
+  '&#9;': '\t',
+  '&#39;': "'"
+}
+```
