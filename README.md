@@ -4902,3 +4902,47 @@ const decodingMap = {
 4. 在页面中找到 meta 中的编码，改为`utf-8`
 5. 将导航部分使用`nav`标签包裹，删除多余的`dom`
 6. 引入`index.css`,`index.js`即可(自己写的样式和滚动逻辑之类的)
+
+**256. nodejs调用tiny的接口压图片**
+```javascript
+const fs = require("fs");
+const path = require("path");
+const tinify = require("tinify");
+// 在这里填入key  免费的一个月只有500张 别想用我的 hhh
+tinify.key = "";
+
+// root是文件目录
+const root = "./index.files/",
+  exts = [".jpg", ".png"],
+  max = 5200000; // 5MB == 5242848.754299136
+
+fileList(root);
+
+// 获取文件列表
+function fileList(folder) {
+  fs.readdir(folder, (err, files) => {
+    if (err) console.error(err);
+    files.forEach(file => {
+      fileFilter(folder + file);
+    });
+  });
+}
+
+// 过滤文件格式，返回所有jpg,png图片
+function fileFilter(file) {
+  fs.stat(file, (err, stats) => {
+    if (err) return console.error(err);
+    if (
+      // 必须是文件，小于5MB，后缀 jpg||png
+      stats.size <= max &&
+      stats.isFile() &&
+      exts.includes(path.extname(file))
+    ) {
+      const source = tinify.fromFile(file);
+      source.toFile(file);
+    }
+    if (stats.isDirectory()) fileList(file + "/");
+  });
+}
+
+```
