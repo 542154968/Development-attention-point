@@ -5027,3 +5027,6 @@ function getPercentWithPrecision (valueList, idx, precision) {
 
 **258. nodebb wss报错解决**
 https://blog.csdn.net/qq_37540004/article/details/99058160
+
+**259. vscode快捷操作**
+- https://code.visualstudio.com/docs/getstarted/tips-and-tricks#vscode
