@@ -563,9 +563,9 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
           var y = vertex.y + 75;
           var skinIndex = Math.floor(y / 75);
           var skinWeight = (y % 75) / 75;
-
+          // 当前这个点 受那几个骨骼控制 规定最多4个
           skinIndices.push(skinIndex, skinIndex + 1, 0, 0);
-          // 让控制权重对半分
+          // 设置四个点的控制权重
           skinWeights.push(0.5, 0.5, 0, 0);
         }
 
