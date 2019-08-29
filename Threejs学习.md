@@ -522,7 +522,7 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
         container = document.createElement("div");
         document.body.appendChild(container);
 
-        // 创建相机
+        // 创建相机 正交摄像机
         camera = new THREE.PerspectiveCamera(
           60,
           window.innerWidth / window.innerHeight,
@@ -542,8 +542,8 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
         var light = new THREE.AmbientLight(0x404040);
         scene.add(light);
         // 添加三维坐标轴辅助
-        var axesHelper = new THREE.AxesHelper(300);
-        scene.add(axesHelper);
+        // var axesHelper = new THREE.AxesHelper(300);
+        // scene.add(axesHelper);
 
         var geometry = new THREE.BoxBufferGeometry(150, 150, 150);
         var material = new THREE.MeshBasicMaterial({
@@ -553,32 +553,69 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
           //   wireframe: true
         });
 
+        var skinIndices = [];
+        var skinWeights = [];
+        var vertex = new THREE.Vector3();
+        var position = geometry.attributes.position;
+        // 将定点加入到骨骼列表中 骨骼和定点对应起来
+        for (let i = 0, l = position.length; i < l; i++) {
+          vertex.fromBufferAttribute(position, i);
+          var y = vertex.y + 75;
+          var skinIndex = Math.floor(y / 75);
+          var skinWeight = (y % 75) / 75;
+
+          skinIndices.push(skinIndex, skinIndex + 1, 0, 0);
+          // 让控制权重对半分
+          skinWeights.push(0.5, 0.5, 0, 0);
+        }
+
+        geometry.addAttribute(
+          "skinIndex",
+          new THREE.Uint16BufferAttribute(skinIndices, 4)
+        );
+        geometry.addAttribute(
+          "skinWeight",
+          new THREE.Float32BufferAttribute(skinWeights, 4)
+        );
+
         // 必须用这种mesh
         var cube = new THREE.SkinnedMesh(geometry, material);
+
         // 创建骨骼
         // root是根节点 相当于起始位置
         var root = new THREE.Bone();
         var child = new THREE.Bone();
+        var son = new THREE.Bone();
         // 为啥要加到root里面  猜想是连起来 这个几个骨骼是一体的
+        // root就是骨骼开始的地方  如 起始是 -75 要射到150 才能到定点
         root.add(child);
+        root.add(son);
+
         // 设置骨骼位置
-        child.position.y = 100;
-        root.position.y = 50;
+
+        root.position.set(0, 0, 0);
+        child.position.set(0, 50, 0);
+        son.position.set(75, -75, 75);
+
         // 形成骨架
-        var skeleton = new THREE.Skeleton([root, child]);
+        skeleton = new THREE.Skeleton([root, child, son]);
         // 模型中加入骨骼 为啥是 0  母鸡 猜想是从头开始放入
         cube.add(skeleton.bones[0]);
-        // 绑定骨骼
         cube.bind(skeleton);
+
+        // 绑定骨骼
+
         // 这里就可以操作骨骼做动作了 变形之类的
-        skeleton.bones[0].rotation.x = -0.1;
-        skeleton.bones[1].rotation.y = 45;
-        // console.log(skeleton.bones[0]);
+        skeleton.bones[0].position.y = 0;
+        skeleton.bones[1].rotation.y = 70;
+        skeleton.bones[2].rotation.y = 0;
+
+        console.log(skeleton.bones);
 
         // 开启辅助 看看骨骼
         var helper = new THREE.SkeletonHelper(cube);
         // 骨骼宽度  改了没啥用 ??? 文档错了？？
-        helper.material.linewidth = 100;
+        helper.material.linewidth = 40;
         scene.add(helper);
 
         // 将模型添加到长江中
@@ -598,9 +635,14 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
 
         renderer.setSize(window.innerWidth, window.innerHeight);
       }
-
+      //   var angle = 0;
       function animate() {
         controls.update();
+        // skeleton.bones[1].position.z++;
+        // angle++;
+
+        // skeleton.bones[2].rotation.y = (angle / 180) * Math.PI;
+        // skeleton.bones[1].rotation.y = (-angle / 180) * Math.PI;
         renderer.render(scene, camera);
 
         requestAnimationFrame(animate);
