@@ -460,3 +460,153 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
 </html>
 
 ```
+
+## THREEJS 骨骼功能
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>three.js webgl - loaders - 3DS loader</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <style>
+      body {
+        font-family: Monospace;
+        background-color: #000;
+        color: #fff;
+        margin: 0px;
+        overflow: hidden;
+      }
+      #info {
+        color: #fff;
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 100;
+        display: block;
+      }
+      #info a,
+      .button {
+        color: #f00;
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="info">
+      <a href="http://threejs.org" target="_blank" rel="noopener">three.js</a>
+      - 3DS loader
+    </div>
+
+    <script src="../build/three.js"></script>
+    <script src="js/controls/TrackballControls.js"></script>
+    <script src="js/controls/OrbitControls.js"></script>
+    <script src="js/loaders/TDSLoader.js"></script>
+    <script src="js/loaders/STLLoader.js"></script>
+
+    <script>
+      var container, controls;
+      var camera, scene, renderer;
+
+      init();
+      animate();
+
+      function init() {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        // 创建相机
+        camera = new THREE.PerspectiveCamera(
+          60,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000
+        );
+        // 相机位置
+        camera.position.z = 300;
+        camera.position.x = 150;
+        camera.position.y = 150;
+        // 添加控制器 这里使用的是轨道控制器
+        controls = new THREE.OrbitControls(camera);
+        // 创建场景
+        scene = new THREE.Scene();
+
+        // 添加光源
+        var light = new THREE.AmbientLight(0x404040);
+        scene.add(light);
+        // 添加三维坐标轴辅助
+        var axesHelper = new THREE.AxesHelper(300);
+        scene.add(axesHelper);
+
+        var geometry = new THREE.BoxBufferGeometry(150, 150, 150);
+        var material = new THREE.MeshBasicMaterial({
+          color: 0x00ff00,
+          // ！！！！ 必须开启这个 蒙皮
+          skinning: true
+          //   wireframe: true
+        });
+
+        // 必须用这种mesh
+        var cube = new THREE.SkinnedMesh(geometry, material);
+        // 创建骨骼
+        // root是根节点 相当于起始位置
+        var root = new THREE.Bone();
+        var child = new THREE.Bone();
+        // 为啥要加到root里面  猜想是连起来 这个几个骨骼是一体的
+        root.add(child);
+        // 设置骨骼位置
+        child.position.y = 100;
+        root.position.y = 50;
+        // 形成骨架
+        var skeleton = new THREE.Skeleton([root, child]);
+        // 模型中加入骨骼 为啥是 0  母鸡 猜想是从头开始放入
+        cube.add(skeleton.bones[0]);
+        // 绑定骨骼
+        cube.bind(skeleton);
+        // 这里就可以操作骨骼做动作了 变形之类的
+        skeleton.bones[0].rotation.x = -0.1;
+        skeleton.bones[1].rotation.y = 45;
+        // console.log(skeleton.bones[0]);
+
+        // 开启辅助 看看骨骼
+        var helper = new THREE.SkeletonHelper(cube);
+        // 骨骼宽度  改了没啥用 ??? 文档错了？？
+        helper.material.linewidth = 100;
+        scene.add(helper);
+
+        // 将模型添加到长江中
+        scene.add(cube);
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        window.addEventListener("resize", resize, false);
+      }
+
+      function resize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      function animate() {
+        controls.update();
+        renderer.render(scene, camera);
+
+        requestAnimationFrame(animate);
+      }
+    </script>
+  </body>
+</html>
+
+```
