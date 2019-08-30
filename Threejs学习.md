@@ -564,10 +564,12 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
         // 将定点加入到骨骼列表中 骨骼和定点对应起来
         for (let i = 0, l = position.length; i < l; i++) {
           vertex.fromBufferAttribute(position, i);
+
           var y = vertex.y + 75;
           var skinIndex = Math.floor(y / 75);
           var skinWeight = (y % 75) / 75;
           // 当前这个点 受那几个骨骼控制 规定最多4个
+          // skinIndex是骨骼的index 上面那个只是算出来index
           skinIndices.push(skinIndex, skinIndex + 1, 0, 0);
           // 设置四个点的控制权重
           skinWeights.push(0.5, 0.5, 0, 0);
@@ -614,14 +616,11 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
         // skeleton.bones[1].rotation.y = 70;
         // skeleton.bones[2].rotation.y = 0;
 
-        console.log(skeleton.bones);
-
         // 开启辅助 看看骨骼
         var helper = new THREE.SkeletonHelper(cube);
         // 骨骼宽度  改了没啥用 ??? 文档错了？？
         helper.material.linewidth = 40;
         scene.add(helper);
-
         // 将模型添加到长江中
         scene.add(cube);
 
@@ -647,6 +646,261 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
 
         skeleton.bones[2].rotation.y = (angle / 180) * Math.PI;
         skeleton.bones[1].rotation.y = (-angle / 180) * Math.PI;
+        renderer.render(scene, camera);
+
+        requestAnimationFrame(animate);
+      }
+    </script>
+  </body>
+</html>
+```
+
+## THREEJS 加载OBJ模型 添加骨骼demo
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>three.js webgl - loaders - 3DS loader</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <style>
+      body {
+        font-family: Monospace;
+        background-color: #000;
+        color: #fff;
+        margin: 0px;
+        overflow: hidden;
+      }
+      #info {
+        color: #fff;
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 100;
+        display: block;
+      }
+      #info a,
+      .button {
+        color: #f00;
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="info">
+      <a href="http://threejs.org" target="_blank" rel="noopener">three.js</a>
+      - 3DS loader
+    </div>
+
+    <script src="../build/three.js"></script>
+    <script src="js/controls/TrackballControls.js"></script>
+    <script src="js/controls/OrbitControls.js"></script>
+    <script src="js/loaders/TDSLoader.js"></script>
+    <script src="js/loaders/STLLoader.js"></script>
+    <script src="js/loaders/OBJLoader.js"></script>
+
+    <script>
+      var container, controls;
+      var camera, scene, renderer;
+      var skeleton = [];
+
+      init();
+      animate();
+
+      function init() {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        camera = new THREE.PerspectiveCamera(
+          60,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000
+        );
+        camera.position.z = 400;
+        camera.position.x = 400;
+        camera.position.y = 400;
+        // 轨迹球控制器
+        // controls = new THREE.TrackballControls(camera);
+        controls = new THREE.OrbitControls(camera);
+
+        scene = new THREE.Scene();
+        // 创建一个虚拟的球形网格 Mesh 的辅助对象来模拟 半球形光源 HemisphereLight.
+        scene.add(new THREE.HemisphereLight());
+        // 平行光
+        // var directionalLight = new THREE.DirectionalLight(0xffeedd);
+        // directionalLight.position.set(0, 0, 200);
+
+        var light = new THREE.AmbientLight(0x404040);
+        scene.add(light);
+
+        var axesHelper = new THREE.AxesHelper(300);
+        scene.add(axesHelper);
+
+        //SkeletonHelper可以用线显示出骨架，帮助我们调试骨架，可有可无
+
+        //3ds files dont store normal maps
+        // var loader = new THREE.TextureLoader()
+        // var normal = loader.load(
+        //     'models/3ds/portalgun/textures/normal.jpg'
+        // )
+
+        // var loader = new THREE.TDSLoader()
+        // loader.setResourcePath('models/3ds/portalgun/textures/')
+        // loader.load('models/3ds/zc/xcq.3ds', function(object) {
+        //     // console.log(object)
+        //     object.traverse(function(child) {
+        //         if (child instanceof THREE.Mesh) {
+        //             // child.material.normalMap = normal
+        //             child.material.color = new THREE.Color('#eb6120')
+        //             // console.log(child.material)
+        //         }
+        //     })
+        //     object.rotation.x = 200
+        //     object.rotation.y = 0
+        //     object.rotation.z = 180
+
+        //     scene.add(object)
+        // })
+
+        // var loader = new THREE.STLLoader();
+        // loader.load(
+        //   "./models/stl/ht/controller.STL",
+        //   function(geometry) {
+        //     //加载纹理 stl没有纹理
+
+        //     var material = new THREE.MeshStandardMaterial({
+        //       // color: 0xff5533
+        //       // skinning: true
+        //       // map: texture
+        //     });
+        //     var mesh = new THREE.Mesh(geometry, material);
+        //     mesh.position.set(0, 0, 0);
+
+        //     console.log(mesh);
+        //     scene.add(mesh);
+        //   },
+        //   function(err) {
+        //     console.log(err);
+        //   },
+        //   function(err) {
+        //     console.log(err);
+        //   }
+        // );
+
+        var loader = new THREE.OBJLoader();
+        var texture = new THREE.TextureLoader().load("textures/colors.png");
+        var materialScene = new THREE.MeshBasicMaterial({
+          skinning: true,
+          map: texture
+        });
+
+        loader.load(
+          "./models/obj/tree.obj",
+          function(object) {
+            object.traverse(function(child) {
+              // console.log(child, "child");
+              if (child.isMesh) {
+                var geometry = child.geometry;
+
+                var skinIndices = [];
+                var skinWeights = [];
+                var vertex = new THREE.Vector3();
+                var position = geometry.attributes.position;
+                // 将定点加入到骨骼列表中 骨骼和定点对应起来
+                for (let i = 0, l = position.count; i < l; i++) {
+                  // 当前这个点 受那几个骨骼控制 规定最多4个
+                  if (i <= 2) {
+                    skinIndices.push(0, 1, 0, 0);
+                  } else {
+                    skinIndices.push(0, 0, 0, 0);
+                  }
+                  // 设置四个点的控制权重
+                  skinWeights.push(0.5, 0.5, 0, 0);
+                }
+
+                geometry.addAttribute(
+                  "skinIndex",
+                  new THREE.Uint16BufferAttribute(skinIndices, 4)
+                );
+                geometry.addAttribute(
+                  "skinWeight",
+                  new THREE.Float32BufferAttribute(skinWeights, 4)
+                );
+
+                var root = new THREE.Bone();
+                var child = new THREE.Bone();
+                root.add(child);
+
+                root.position.set(0, 0, 0);
+                child.position.set(
+                  -0.31415700912475586,
+                  0.8964679837226868,
+                  -0.11074800044298172
+                );
+
+                skeleton = new THREE.Skeleton([root, child]);
+                var cube = new THREE.SkinnedMesh(geometry, materialScene);
+                // 模型中加入骨骼 为啥是 0  母鸡 猜想是从头开始放入
+                cube.add(skeleton.bones[0]);
+                cube.bind(skeleton);
+                cube.scale.multiplyScalar(200);
+                scene.add(cube);
+
+                var helper = new THREE.SkeletonHelper(cube);
+                // 骨骼宽度  改了没啥用 ??? 文档错了？？
+                helper.material.linewidth = 40;
+                scene.add(helper);
+              }
+            });
+            object.position.set(0, -0, -0);
+            object.scale.multiplyScalar(200);
+
+            // scene.add(object);
+          },
+          function(process) {},
+          function(error) {
+            console.log(error);
+          }
+        );
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        window.addEventListener("resize", resize, false);
+      }
+
+      function resize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+      var angle = 0;
+      function animate() {
+        // skeleton.bones[1].position.z++;
+        angle++;
+
+        if (
+          skeleton &&
+          Array.isArray(skeleton.bones) &&
+          skeleton.bones.length > 0
+        ) {
+          // console.log(skeleton);
+          // skeleton.bones[2].rotation.y = (angle / 180) * Math.PI;
+          skeleton.bones[1].rotation.y = (-angle / 180) * Math.PI;
+        }
+
+        controls.update();
         renderer.render(scene, camera);
 
         requestAnimationFrame(animate);
