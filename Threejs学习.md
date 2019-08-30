@@ -546,10 +546,14 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
         // scene.add(axesHelper);
 
         var geometry = new THREE.BoxBufferGeometry(150, 150, 150);
+        var texture = new THREE.TextureLoader().load(
+          "textures/land_ocean_ice_cloud_2048.jpg"
+        );
         var material = new THREE.MeshBasicMaterial({
-          color: 0x00ff00,
+          //   color: 0x00ff00,
           // ！！！！ 必须开启这个 蒙皮
-          skinning: true
+          skinning: true,
+          map: texture
           //   wireframe: true
         });
 
@@ -606,9 +610,9 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
         // 绑定骨骼
 
         // 这里就可以操作骨骼做动作了 变形之类的
-        skeleton.bones[0].position.y = 0;
-        skeleton.bones[1].rotation.y = 70;
-        skeleton.bones[2].rotation.y = 0;
+        // skeleton.bones[0].position.y = 0;
+        // skeleton.bones[1].rotation.y = 70;
+        // skeleton.bones[2].rotation.y = 0;
 
         console.log(skeleton.bones);
 
@@ -635,14 +639,14 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
 
         renderer.setSize(window.innerWidth, window.innerHeight);
       }
-      //   var angle = 0;
+      var angle = 0;
       function animate() {
         controls.update();
         // skeleton.bones[1].position.z++;
-        // angle++;
+        angle++;
 
-        // skeleton.bones[2].rotation.y = (angle / 180) * Math.PI;
-        // skeleton.bones[1].rotation.y = (-angle / 180) * Math.PI;
+        skeleton.bones[2].rotation.y = (angle / 180) * Math.PI;
+        skeleton.bones[1].rotation.y = (-angle / 180) * Math.PI;
         renderer.render(scene, camera);
 
         requestAnimationFrame(animate);
