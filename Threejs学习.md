@@ -910,3 +910,265 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
 </html>
 
 ```
+
+## THREEJS 全景图点击demo
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>全景图demo</title>
+        <style lang="">
+            #canvas {
+                height: 640px;
+                width: 1280px;
+                margin: 0 auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="canvas"></div>
+        <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+        <script src="three.js"></script>
+        <script>
+            function Tcanvas() {
+                if (!(this instanceof Tcanvas)) {
+                    return new Tcanvas()
+                }
+                var requesAnimationFrame =
+                    window.requestAnimationFrame ||
+                    window.mozRequestAnimationFrame ||
+                    window.webkitRequestAnimationFrame ||
+                    window.msRequestAnimationFrame
+                window.requestAnimationFrame = requesAnimationFrame
+
+                this.ctxHeight = 0
+                this.ctxWidth = 0
+                this.renderer = null
+                this.scene = null
+                this.camera = null
+                this.cube = null
+                this.ballMesh = null
+                this.tagObject = null
+                this.tags = []
+                this.init()
+            }
+            Tcanvas.prototype = {
+                constructor: Tcanvas,
+                init: function() {
+                    this.initCanvas()
+                    this.initScene()
+                    this.initCamera()
+                    this.initLight()
+                    this.initMesh()
+                    this.initClick()
+                },
+                // 创建canvas 和 渲染器
+                initCanvas: function() {
+                    var body = document.getElementById('canvas')
+                    this.ctxHeight = body.clientHeight
+                    this.ctxWidth = body.clientWidth
+                    var renderer = new THREE.WebGLRenderer()
+                    renderer.setSize(body.clientWidth, body.clientHeight)
+                    renderer.setClearColor(0x000000)
+                    body.appendChild(renderer.domElement)
+                    this.renderer = renderer
+                },
+                // 创建场景
+                initScene: function() {
+                    var scene = new THREE.Scene()
+                    this.scene = scene
+                },
+                // 创建环境光
+                initLight: function() {
+                    var light = new THREE.AmbientLight(0xffffff, 1)
+                    // light.position.set( 100, 100, 100 )
+                    this.scene.add(light)
+                },
+                // 创建透视投影相机
+                initCamera: function() {
+                    var camera = new THREE.PerspectiveCamera(60, 2 / 1, 1, 1000)
+                    camera.position.set(0, 0, 0)
+                    camera.lookAt(new THREE.Vector3(0, 0, 500))
+                    this.scene.add(camera)
+                    this.camera = camera
+                },
+                // 创建正交投影色相头
+                // initCamera: function(){
+                //     var camera = new THREE.OrthographicCamera( -50, 50, 25, -25, 0.1, 10000 );
+                //     camera.position.set( 100, 100, 100 );
+                //     camera.lookAt( new THREE.Vector3(0, 0, 0) )
+                //     this.scene.add( camera );
+                //     this.camera = camera;
+                // },
+                // 创建球体
+                initMesh: function() {
+                    var _this = this,
+                        materials = [],
+                        loader = new THREE.TextureLoader(),
+                        texture = loader.load('images/fish.jpg', function(obj) {
+                            _this.renderer.render(_this.scene, _this.camera)
+                            return obj
+                        }),
+                        cube = new THREE.Mesh(
+                            // 形状
+                            // new THREE.CubeGeometry(10, 10, 10),
+                            new THREE.SphereGeometry(50, 32, 32),
+                            // 材质
+                            new THREE.MeshPhongMaterial({
+                                // color: 0xff0000,
+                                side: THREE.DoubleSide,
+                                map: texture
+                            })
+                        ),
+                        cube3D = new THREE.Object3D()
+                    this.tagObject = new THREE.Object3D()
+                    cube3D.add(cube)
+                    this.scene.add(cube3D)
+                    this.cube = [cube3D]
+
+                    rotates()
+                    function rotates() {
+                        requestAnimationFrame(rotates)
+                        cube3D.rotateY(Math.PI / 1440)
+                        // cube3D.rotateX(Math.PI/720)
+                        _this.tags.forEach(function(tagMesh) {
+                            tagMesh.updateTag()
+                        })
+                        _this.renderer.render(_this.scene, _this.camera)
+                    }
+                },
+                isOffScreen(obj, camera) {
+                    var frustum = new THREE.Frustum() //Frustum用来确定相机的可视区域
+                    var cameraViewProjectionMatrix = new THREE.Matrix4()
+                    cameraViewProjectionMatrix.multiplyMatrices(
+                        camera.projectionMatrix,
+                        camera.matrixWorldInverse
+                    ) //获取相机的法线
+                    frustum.setFromMatrix(cameraViewProjectionMatrix) //设置frustum沿着相机法线方向
+
+                    return !frustum.intersectsObject(obj)
+                },
+                toScreenPosition(obj, camera) {
+                    var vector = new THREE.Vector3()
+                    var widthHalf = 0.5 * this.renderer.context.canvas.width
+                    var heightHalf = 0.5 * this.renderer.context.canvas.height
+
+                    obj.updateMatrixWorld()
+                    vector.setFromMatrixPosition(obj.matrixWorld)
+                    vector.project(camera)
+
+                    vector.x = vector.x * widthHalf + widthHalf
+                    vector.y = -(vector.y * heightHalf) + heightHalf
+
+                    return {
+                        x: vector.x,
+                        y: vector.y
+                    }
+                },
+                // 点击事件交互
+                initClick: function() {
+                    var _this = this,
+                        dom = this.renderer.domElement,
+                        raycaster = new THREE.Raycaster()
+                    dom.onclick = function(event) {
+                        // var mouse = {};
+                        // mouse.x = ( (event.clientX - dom.getBoundingClientRect().left) / dom.offsetWidth ) * 2 - 1;
+                        // mouse.y = - ( (event.clientY - dom.getBoundingClientRect().top) / dom.offsetHeight ) * 2 + 1;
+                        // var vector = new THREE.Vector3(mouse.x, mouse.y, 0.5).unproject(_this.camera),
+                        // // 在视点坐标系中形成射线,射线的起点向量是照相机， 射线的方向向量是照相机到点击的点，这个向量应该归一标准化。
+                        //     raycaster = new THREE.Raycaster( _this.camera.position, vector.sub(_this.camera.position).normalize() ),
+                        // // 射线和模型求交，选中一系列直线
+                        //     intersects = raycaster.intersectObjects(_this.cube);
+
+                        // console.log(intersects)
+                        // console.log( vector )
+                        var mouse = {}
+                        mouse.x =
+                            ((event.clientX -
+                                dom.getBoundingClientRect().left) /
+                                dom.offsetWidth) *
+                                2 -
+                            1
+                        mouse.y =
+                            -(
+                                (event.clientY -
+                                    dom.getBoundingClientRect().top) /
+                                dom.offsetHeight
+                            ) *
+                                2 +
+                            1
+                        raycaster.setFromCamera(mouse, _this.camera)
+
+                        var intersects = raycaster.intersectObjects(
+                            _this.cube[0].children
+                        )
+                        if (intersects.length <= 0) {
+                            return false
+                        }
+                        // intersects[0].point  就是当前点击的点
+                        var activePoint = intersects[0].point
+                        console.log(activePoint)
+
+                        // var tagMesh = new THREE.Mesh(
+                        //     new THREE.SphereGeometry(1),
+                        //     new THREE.MeshBasicMaterial({ color: 0xffff00 })
+                        // )
+                        // tagMesh.position.copy(activePoint)
+                        // _this.tagObject.add(tagMesh)
+
+                        // var tagElement = document.createElement('div')
+                        // tagElement.innerHTML =
+                        //     '<span>标记' +
+                        //     ~~(Math.random() * 100000) +
+                        //     '</span>'
+                        // tagElement.style.background = '#00ff00'
+                        // tagElement.style.position = 'absolute'
+                        // tagElement.addEventListener('click', function(evt) {
+                        //     alert(tagElement.innerText)
+                        // })
+
+                        // tagMesh.updateTag = function() {
+                        //     if (_this.isOffScreen(tagMesh, _this.camera)) {
+                        //         tagElement.style.display = 'none'
+                        //     } else {
+                        //         tagElement.style.display = 'block'
+                        //         var position = _this.toScreenPosition(
+                        //             tagMesh,
+                        //             _this.camera
+                        //         )
+                        //         tagElement.style.left = position.x + 'px'
+                        //         tagElement.style.top = position.y + 'px'
+                        //     }
+                        // }
+                        // tagMesh.updateTag()
+                        // _this.tags.push(tagMesh)
+                        // document
+                        //     .getElementById('canvas')
+                        //     .appendChild(tagElement)
+
+                        var points = []
+                        points.push(new THREE.Vector3(0, 0, 0))
+                        points.push(intersects[0].point)
+                        var mat = new THREE.MeshBasicMaterial({
+                            color: 0xff0000,
+                            transparent: true,
+                            opacity: 0.5
+                        })
+                        var sphereGeometry = new THREE.SphereGeometry(100)
+                        var raycasterCubeMesh
+                        raycasterCubeMesh = new THREE.Mesh(sphereGeometry, mat)
+                        raycasterCubeMesh.position.copy(intersects[0].point)
+                        _this.scene.add(raycasterCubeMesh)
+                        var activePoint = intersects[0].point
+                    }
+                }
+            }
+            Tcanvas()
+        </script>
+    </body>
+</html>
+
+```
