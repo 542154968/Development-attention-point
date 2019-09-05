@@ -5030,3 +5030,16 @@ https://blog.csdn.net/qq_37540004/article/details/99058160
 
 **259. vscode快捷操作**
 - https://code.visualstudio.com/docs/getstarted/tips-and-tricks#vscode
+
+**260. 多个await命令后面的异步操作，如果不存在继发关系，最好让它们同时触发。**
+```javascript
+// 写法一
+let [foo, bar] = await Promise.all([getFoo(), getBar()]);
+
+// 写法二
+let fooPromise = getFoo();
+let barPromise = getBar();
+let foo = await fooPromise;
+let bar = await barPromise;
+
+```
