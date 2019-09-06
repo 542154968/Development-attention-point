@@ -5043,3 +5043,13 @@ let foo = await fooPromise;
 let bar = await barPromise;
 
 ```
+
+**261. encodeURI encodeURIComponent**
+- 最大区别 符号的转变 URI一般只改空格
+```javascript
+encodeURIComponent('http://127.0.0.1:5501/examples/webgl_loader_3ds_demo.html ' )
+// "http%3A%2F%2F127.0.0.1%3A5501%2Fexamples%2Fwebgl_loader_3ds_demo.html%20"
+
+encodeURI('http://127.0.0.1:5501/examples/webgl_loader_3ds_demo.html ' )
+// "http://127.0.0.1:5501/examples/webgl_loader_3ds_demo.html%20"
+```
