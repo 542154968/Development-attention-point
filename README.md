@@ -5053,3 +5053,6 @@ encodeURIComponent('http://127.0.0.1:5501/examples/webgl_loader_3ds_demo.html ' 
 encodeURI('http://127.0.0.1:5501/examples/webgl_loader_3ds_demo.html ' )
 // "http://127.0.0.1:5501/examples/webgl_loader_3ds_demo.html%20"
 ```
+
+**262. Threejs 模型重叠闪动问题  **
+[threejs- z-fighting 问题（模型的重叠部位便不停的闪烁起来。这便是Z-Fighting问题）](https://www.cnblogs.com/lst619247/p/9098845.html?tdsourcetag=s_pcqq_aiomsg)
