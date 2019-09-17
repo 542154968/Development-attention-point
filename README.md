@@ -5056,3 +5056,6 @@ encodeURI('http://127.0.0.1:5501/examples/webgl_loader_3ds_demo.html ' )
 
 **262. Threejs 模型重叠闪动问题  **
 [threejs- z-fighting 问题（模型的重叠部位便不停的闪烁起来。这便是Z-Fighting问题）](https://www.cnblogs.com/lst619247/p/9098845.html?tdsourcetag=s_pcqq_aiomsg)
+
+**263. 在使用新语法的时候，看下自己的babel是否支持转这个新语法**
+- 可看这个帖子 https://segmentfault.com/a/1190000020392040，这个坑还是有必要踩一下。
