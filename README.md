@@ -5059,3 +5059,21 @@ encodeURI('http://127.0.0.1:5501/examples/webgl_loader_3ds_demo.html ' )
 
 **263. 在使用新语法的时候，看下自己的babel是否支持转这个新语法**
 - 可看这个帖子 https://segmentfault.com/a/1190000020392040，这个坑还是有必要踩一下。
+
+**264. Vue如果模板展示的含有插槽，写在插槽外的部分是不会被渲染的**
+```vue
+<template>
+	<HtTable :showTitle="false">
+		<template v-slot:tableContain>
+			<UpdateBottomAdvDlg
+        		:visible.sync="dlg.visible"
+        		:id="dlg.id"
+        		:datas="dlg.datas"
+      			></UpdateBottomAdvDlg>
+    		</template>
+		
+		// 如果这里没插槽 写在这里的话 就不会被渲染
+		
+	</HtTable>
+</template>
+```
