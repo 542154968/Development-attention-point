@@ -5080,3 +5080,7 @@ encodeURI('http://127.0.0.1:5501/examples/webgl_loader_3ds_demo.html ' )
 
 **265. 基本类型和基本包装类型**
 https://www.cnblogs.com/runhua/p/9588769.html
+
+
+**266. ES5的继承和ES6的继承有什么区别？**
+https://segmentfault.com/a/1190000020391424#articleHeader5
