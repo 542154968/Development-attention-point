@@ -5084,3 +5084,15 @@ https://www.cnblogs.com/runhua/p/9588769.html
 
 **266. ES5的继承和ES6的继承有什么区别？**
 https://segmentfault.com/a/1190000020391424#articleHeader5
+
+**267. es5构造函数和es6类区别**
+https://www.jianshu.com/p/209decedfaf6
+```
+    ES5的构造函数的原型上的属性和方法可以遍历/ES6 不能够遍历
+    ES6的类必须通过new调用，构造函数则可以不用
+    类不存在变量提升
+    ES6的类没有私有方法和私有属性（正在提议中）
+    class多了一个静态方法（static）,里面的this指向的是类本身，静态方法可以被子类继承
+    ES6的静态属性和静态方法
+    ES6 类多了一个new Target 可以判定new 的构造函数
+```
