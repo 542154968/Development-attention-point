@@ -5096,3 +5096,6 @@ https://www.jianshu.com/p/209decedfaf6
     ES6的静态属性和静态方法
     ES6 类多了一个new Target 可以判定new 的构造函数
 ```
+
+**268. input file 选择文件的时候类型的坑**
+- 部分机型不支持`accept=".jpg .png "`之类的写法，会提示无可用操作，尽量改成`image/*`
