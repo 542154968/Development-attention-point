@@ -5099,3 +5099,6 @@ https://www.jianshu.com/p/209decedfaf6
 
 **268. input file 选择文件的时候类型的坑**
 - 部分机型不支持`accept=".jpg .png "`之类的写法，会提示无可用操作，尽量改成`image/*`
+
+**269. html video标签视频铺满解决方案**
+- 目前就使用`object-fit` 不过IE兼容性不好
