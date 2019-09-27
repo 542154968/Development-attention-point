@@ -5102,3 +5102,5 @@ https://www.jianshu.com/p/209decedfaf6
 
 **269. html video标签视频铺满解决方案**
 - 目前就使用`object-fit` 不过IE兼容性不好
+
+**270. threejs 法向量值小数不精确很多位 可以等比放大解决**
