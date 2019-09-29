@@ -5104,3 +5104,5 @@ https://www.jianshu.com/p/209decedfaf6
 - 目前就使用`object-fit` 不过IE兼容性不好
 
 **270. threejs 法向量值小数不精确很多位 可以等比放大解决**
+
+**271. threejs 加载3D地图思路应该是使用geojson**
