@@ -1623,3 +1623,5 @@ element.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle()
 ## 实现地图 使用geojson  介绍链接
 
 https://www.oschina.net/translate/geojson-spec
+// 一些资料
+https://www.iteye.com/blog/ningandjiao-2159894
