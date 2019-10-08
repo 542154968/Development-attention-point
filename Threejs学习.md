@@ -1771,7 +1771,7 @@ https://www.iteye.com/blog/ningandjiao-2159894
 ```
 
 ## 实现局部辉光 和 切换显示某个局部辉光
-> 核心是 UnrealBloomPass
+> 核心是 UnrealBloomPass 现存问题 加载的模型使用这个方法时 如果遍历设置layer 渲染会卡 
 
 ```html
 <!DOCTYPE html>
@@ -1862,7 +1862,7 @@ https://www.iteye.com/blog/ningandjiao-2159894
 
       var params = {
         exposure: 1,
-        bloomStrength: 1.5,
+        bloomStrength: 20,
         bloomThreshold: 0,
         bloomRadius: 0
       };
@@ -1888,7 +1888,7 @@ https://www.iteye.com/blog/ningandjiao-2159894
         100
       );
       camera.position.set(-5, 2.5, -3.5);
-      camera.layers.enable(1);
+      camera.layers.enable(0);
       scene.add(camera);
 
       controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -1922,11 +1922,21 @@ https://www.iteye.com/blog/ningandjiao-2159894
       new THREE.GLTFLoader().load("models/gltf/PrimaryIonDrive.glb", function(
         gltf
       ) {
+        // 应该不是这种方式渲染的 不然好卡
+        // function deepLayers(obj) {
+        //   if (Array.isArray(obj.children) && obj.children.length > 0) {
+        //     for (var l = obj.children.length, i = 0; i < l; i++) {
+        //       var item = obj.children[i];
+        //       item.type === "Mesh" ? item.layers.enable(1) : deepLayers(item);
+        //       item.type === "Mesh" && console.log(item);
+        //     }
+        //   }
+        // }
         var model = gltf.scene;
-        model.layers.enable(2);
+        // model.layers.enable(1);
+        // deepLayers(model);
 
         scene.add(model);
-        console.log(model);
 
         // Mesh contains self-intersecting semi-transparent faces, which display
         // z-fighting unless depthWrite is disabled.
@@ -1936,39 +1946,45 @@ https://www.iteye.com/blog/ningandjiao-2159894
         mixer = new THREE.AnimationMixer(model);
         var clip = gltf.animations[0];
         mixer.clipAction(clip.optimize()).play();
-
+        console.log(model, gltf);
         animate();
       });
 
-      var objBack = new THREE.Mesh(
-        new THREE.BoxGeometry(5, 5, 1),
-        new THREE.MeshBasicMaterial({ color: "red", wireframe: false })
-      );
-      objBack.position.z = -2.25;
-      objBack.layers.enable(1);
-      console.log(objBack);
-      scene.add(objBack);
+      (function() {
+        var objBack = new THREE.Mesh(
+          new THREE.BoxGeometry(5, 5, 1),
+          new THREE.MeshBasicMaterial({ color: "red", wireframe: false })
+        );
+        objBack.position.z = -2.25;
+        objBack.layers.enable(2);
+        scene.add(objBack);
+      })();
 
-      var gui = new dat.GUI();
+      (function() {
+        var material = new THREE.LineBasicMaterial({ color: "#DC143C" });
+        var geometry = new THREE.Geometry();
 
-      gui.add(params, "exposure", 0.1, 2).onChange(function(value) {
-        renderer.toneMappingExposure = Math.pow(value, 4.0);
-      });
+        geometry.vertices.push(new THREE.Vector3(5, 0, 1));
+        geometry.vertices.push(new THREE.Vector3(0, 5, 1));
+        //线构造
+        var line = new THREE.Line(geometry, material);
 
-      gui.add(params, "bloomThreshold", 0.0, 1.0).onChange(function(value) {
-        bloomPass.threshold = Number(value);
-      });
+        line.layers.enable(3);
+        scene.add(line);
+      })();
 
-      gui.add(params, "bloomStrength", 0.0, 3.0).onChange(function(value) {
-        bloomPass.strength = Number(value);
-      });
-
-      gui
-        .add(params, "bloomRadius", 0.0, 1.0)
-        .step(0.01)
-        .onChange(function(value) {
-          bloomPass.radius = Number(value);
+      (function() {
+        var spriteMap = new THREE.TextureLoader().load("textures/colors.png");
+        var spriteMaterial = new THREE.SpriteMaterial({
+          map: spriteMap,
+          color: 0xffffff
         });
+        var sprite = new THREE.Sprite(spriteMaterial);
+        sprite.layers.enable(4);
+        sprite.position.set(0, 0, -5);
+
+        scene.add(sprite);
+      })();
 
       window.onresize = function() {
         var width = window.innerWidth;
@@ -1992,23 +2008,45 @@ https://www.iteye.com/blog/ningandjiao-2159894
         // composer.render();
 
         // 如果只高亮一部分 就下面的代码
-        // 原理就是 清空所有的  只显示当前根据camera标记的结构
+        // 原理就是 根据摄像机设置的layers 显示不同层次的layers layer就是层次
 
         // 关闭自动清除缓存
         renderer.autoClear = false;
         // 清除缓存
         renderer.clear();
-        // 设置当前高亮的部位 建立关系
-        camera.layers.set([1, 2]);
+        // 设置当前高亮的部位 建立关系 显示哪个
+        camera.layers.set(1);
         // 渲染
         composer.render();
-        // 清除深度缓存
+
+        // 清除深度缓存 显示没有添加亮度的模型 设置为0
         renderer.clearDepth();
+        camera.layers.set(0);
         renderer.render(scene, camera);
       }
+
+      var gui = new dat.GUI();
+
+      gui.add(params, "exposure", 0.1, 2).onChange(function(value) {
+        renderer.toneMappingExposure = Math.pow(value, 4.0);
+      });
+
+      gui.add(params, "bloomThreshold", 0.0, 1.0).onChange(function(value) {
+        bloomPass.threshold = Number(value);
+      });
+
+      gui.add(params, "bloomStrength", 0.0, 20.0).onChange(function(value) {
+        bloomPass.strength = Number(value);
+      });
+
+      gui
+        .add(params, "bloomRadius", 0.0, 1.0)
+        .step(0.01)
+        .onChange(function(value) {
+          bloomPass.radius = Number(value);
+        });
     </script>
   </body>
 </html>
-
 
 ```
