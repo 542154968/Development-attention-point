@@ -5106,3 +5106,7 @@ https://www.jianshu.com/p/209decedfaf6
 **270. threejs 法向量值小数不精确很多位 可以等比放大解决**
 
 **271. threejs 加载3D地图思路应该是使用geojson**
+
+**272. vue3.0项目构建用到的两个工具 rollup 和 lerna**
+- rollup 类似于webpack的功能 https://www.rollupjs.com/guide/introduction/
+- lerna 是管理package的工具 https://juejin.im/post/5a989fb451882555731b88c2
