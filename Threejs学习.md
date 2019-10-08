@@ -1923,8 +1923,10 @@ https://www.iteye.com/blog/ningandjiao-2159894
         gltf
       ) {
         var model = gltf.scene;
+        model.layers.enable(2);
 
         scene.add(model);
+        console.log(model);
 
         // Mesh contains self-intersecting semi-transparent faces, which display
         // z-fighting unless depthWrite is disabled.
@@ -1944,6 +1946,7 @@ https://www.iteye.com/blog/ningandjiao-2159894
       );
       objBack.position.z = -2.25;
       objBack.layers.enable(1);
+      console.log(objBack);
       scene.add(objBack);
 
       var gui = new dat.GUI();
@@ -1986,23 +1989,26 @@ https://www.iteye.com/blog/ningandjiao-2159894
 
         stats.update();
         // 如果整个场景都高亮 用下面整个
-        composer.render();
+        // composer.render();
 
         // 如果只高亮一部分 就下面的代码
         // 原理就是 清空所有的  只显示当前根据camera标记的结构
 
-        // renderer.autoClear = false;
-        // renderer.clear();
-
-        // camera.layers.set(1);
-        // composer.render();
-
-        // renderer.clearDepth();
-        // camera.layers.set(0);
-        // renderer.render(scene, camera);
+        // 关闭自动清除缓存
+        renderer.autoClear = false;
+        // 清除缓存
+        renderer.clear();
+        // 设置当前高亮的部位 建立关系
+        camera.layers.set([1, 2]);
+        // 渲染
+        composer.render();
+        // 清除深度缓存
+        renderer.clearDepth();
+        renderer.render(scene, camera);
       }
     </script>
   </body>
 </html>
+
 
 ```
