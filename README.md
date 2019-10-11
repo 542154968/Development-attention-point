@@ -5110,3 +5110,6 @@ https://www.jianshu.com/p/209decedfaf6
 **272. vue3.0项目构建用到的两个工具 rollup 和 lerna**
 - rollup 类似于webpack的功能 https://www.rollupjs.com/guide/introduction/
 - lerna 是管理package的工具 https://juejin.im/post/5a989fb451882555731b88c2
+
+**273. 清除微信浏览器缓存土方法**
+- 退出微信号重登 hhhhhhhh
