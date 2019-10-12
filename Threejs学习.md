@@ -2391,3 +2391,18 @@ https://blog.csdn.net/u014529917/article/details/80322034
 </html>
 
 ```
+
+## 精灵
+- 精灵总是朝着相机 ， 可以用canvas作为材质贴图
+```javascript
+var textured = new THREE.CanvasTexture(canvasDom);
+var spriteMaterial = new THREE.SpriteMaterial({
+  color: 0xffffff,
+  map: textured
+});
+var sprite = new THREE.Sprite(spriteMaterial);
+sprite.position.set(x, y, z);
+scene.add(sprite);
+```
+
+## 点击位置是raycaster的 intersectObjects的point属性
