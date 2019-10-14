@@ -2406,3 +2406,5 @@ scene.add(sprite);
 ```
 
 ## 点击位置是raycaster的 intersectObjects的point属性
+
+## 针对浏览器目前最合适的模型是 gltf
