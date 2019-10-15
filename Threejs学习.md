@@ -2408,3 +2408,484 @@ scene.add(sprite);
 ## 点击位置是raycaster的 intersectObjects的point属性
 
 ## 针对浏览器目前最合适的模型是 gltf
+
+## 城市发光demo
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>three.js webgl - OBJLoader + MTLLoader</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <style>
+      body {
+        font-family: Monospace;
+        background-color: #000;
+        color: #fff;
+        margin: 0px;
+        overflow: hidden;
+      }
+      #info {
+        color: #fff;
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 100;
+        display: block;
+      }
+      #info a,
+      .button {
+        color: #f00;
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="info">
+      <a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> -
+      OBJLoader + MTLLoader
+    </div>
+
+    <script src="../build/three.js"></script>
+
+    <script src="js/loaders/DDSLoader.js"></script>
+    <script src="js/loaders/MTLLoader.js"></script>
+    <script src="js/loaders/OBJLoader.js"></script>
+    <script src="js/controls/OrbitControls.js"></script>
+
+    <script src="js/libs/stats.min.js"></script>
+
+    <script src="js/postprocessing/EffectComposer.js"></script>
+    <script src="js/postprocessing/RenderPass.js"></script>
+    <script src="js/postprocessing/ShaderPass.js"></script>
+    <script src="js/shaders/CopyShader.js"></script>
+    <script src="js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="js/postprocessing/UnrealBloomPass.js"></script>
+
+    <script src="js/libs/dat.gui.min.js"></script>
+
+    <script>
+      var container, stats;
+
+      var camera, scene, renderer;
+
+      var composer;
+
+      var mouseX = 0,
+        mouseY = 0;
+
+      var windowHalfX = window.innerWidth / 2;
+      var windowHalfY = window.innerHeight / 2;
+
+      var params = {
+        exposure: 1,
+        // bloomStrength: 1.7,
+        // bloomThreshold: 0.17,
+        bloomStrength: 1.9,
+        bloomThreshold: 0.3,
+        bloomRadius: 0,
+        light: 0.1
+      };
+
+      init();
+      animate();
+
+      function init() {
+        container = document.createElement("div");
+        // document.body.appendChild(container);
+
+        stats = new Stats();
+        container.appendChild(stats.dom);
+
+        camera = new THREE.PerspectiveCamera(
+          45,
+          window.innerWidth / window.innerHeight,
+          1,
+          1000
+        );
+        camera.position.z = 70;
+        camera.position.x = 50;
+        camera.position.y = 10;
+
+        // scene
+
+        scene = new THREE.Scene();
+
+        function createCubeMap() {
+          var path = "textures/cube/MilkyWay/";
+          var format = ".jpg";
+
+          // var urls = [
+          //   path + "dark-s_nx" + format,
+          //   path + "dark-s_ny" + format,
+          //   path + "dark-s_nz" + format,
+          //   path + "dark-s_px" + format,
+          //   path + "dark-s_py" + format,
+          //   path + "dark-s_pz" + format
+          // ];
+
+          var path = "textures/cube/skyboxsun25deg/";
+          var urls = [
+            "px" + format,
+            "nx" + format,
+            "py" + format,
+            "ny" + format,
+            "pz" + format,
+            "nz" + format
+          ];
+
+          return new THREE.CubeTextureLoader()
+            .setPath("textures/cube/skyboxsun25deg/")
+            .load(urls);
+        }
+        var skymap = new THREE.TextureLoader().load("textures/sky.jpg");
+        scene.background = skymap;
+
+        scene.add(new THREE.AmbientLight(0x404040));
+
+        pointLight = new THREE.PointLight(0xffffff, 0.3);
+        camera.add(pointLight);
+        scene.add(camera);
+        // scene.layers.enable(0);
+        console.log(scene);
+
+        // var axesHelper = new THREE.AxesHelper(999);
+        // scene.add(axesHelper);
+        // model
+
+        //
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+        container.appendChild(renderer.domElement);
+        document.body.appendChild(container);
+
+        var renderScene = new THREE.RenderPass(scene, camera);
+
+        var bloomPass = new THREE.UnrealBloomPass(
+          new THREE.Vector2(window.innerWidth, window.innerHeight),
+          1.5,
+          0.4,
+          0.85
+        );
+        bloomPass.renderToScreen = true;
+        bloomPass.renderToScreen = true;
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
+        bloomPass.threshold = params.bloomThreshold;
+        bloomPass.strength = params.bloomStrength;
+        bloomPass.radius = params.bloomRadius;
+
+        composer = new THREE.EffectComposer(renderer);
+        composer.setSize(window.innerWidth, window.innerHeight);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+
+        var gui = new dat.GUI();
+
+        gui.add(params, "exposure", 0.1, 2.0).onChange(function(value) {
+          renderer.toneMappingExposure = Math.pow(value, 4.0);
+        });
+
+        gui.add(params, "bloomThreshold", 0.0, 1.0).onChange(function(value) {
+          bloomPass.threshold = Number(value);
+        });
+
+        gui.add(params, "bloomStrength", 0.0, 20.0).onChange(function(value) {
+          bloomPass.strength = Number(value);
+        });
+        gui.add(params, "light", 0.0, 1.0).onChange(function(value) {
+          bloomPass.light = Number(value);
+        });
+
+        gui
+          .add(params, "bloomRadius", 0.0, 1.0)
+          .step(0.01)
+          .onChange(function(value) {
+            bloomPass.radius = Number(value);
+          });
+
+        var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+        window.addEventListener("resize", onWindowResize, false);
+
+        var onProgress = function(xhr) {
+          if (xhr.lengthComputable) {
+            var percentComplete = (xhr.loaded / xhr.total) * 100;
+            console.log(Math.round(percentComplete, 2) + "% downloaded");
+          }
+        };
+
+        var onError = function(error) {
+          console.log(error);
+        };
+
+        THREE.Loader.Handlers.add(/\.dds$/i, new THREE.DDSLoader());
+
+        new THREE.MTLLoader()
+          // .setPath("models/obj/city_test/")
+          .load("models/obj/city_test/city.mtl", function(materials) {
+            materials.preload();
+
+            new THREE.OBJLoader()
+              .setMaterials(materials)
+              .setPath("models/obj/city_test/")
+              .load(
+                "city.obj",
+                function(object) {
+                  var envmap = new THREE.TextureLoader().load(
+                    "textures/start.jpg"
+                  );
+                  object.traverse(function(child) {
+                    if (child.isMesh) {
+                      var map = child.material.map;
+                      if (map) {
+                        // var material = new THREE.MeshStandardMaterial();
+                        // material.map = map;
+                        // child.material = material;
+                      }
+                      child.name !== "Lumian" &&
+                        (child.material.envMap = envmap);
+                      // : (child.material.lights = false);
+
+                      console.log(child);
+                    }
+                  });
+                  // object.scale.multiplyScalar(0.01);
+                  var box = new THREE.Box3();
+                  box.expandByObject(object);
+                  //   box.center();
+                  //   console.log(object, box);
+                  scene.add(object);
+                  // var helper = new THREE.Box3Helper(box, 0xffff00);
+
+                  //   console.log(helper);
+                  // scene.add(helper);
+                },
+                onProgress,
+                onError
+              );
+          });
+
+        // new THREE.MTLLoader()
+        //   .setPath("models/obj/office/")
+        //   .load("office.mtl", function(materials) {
+        //     materials.preload();
+
+        //     new THREE.OBJLoader()
+        //       .setMaterials(materials)
+        //       .setPath("models/obj/office")
+        //       .load(
+        //         "office.obj",
+        //         function(object) {
+        //           object.position.y = -95;
+        //           scene.add(object);
+        //         },
+        //         onProgress,
+        //         onError
+        //       );
+        //   });
+      }
+
+      (function() {
+        var curve = new THREE.CatmullRomCurve3(
+          [
+            new THREE.Vector3(47.10700316031783, 0, 50.00392295363325),
+            new THREE.Vector3(
+              28.39535834470089,
+              -0.14640000462532043,
+              29.43589692671117
+            ),
+            new THREE.Vector3(13.93325620903433, 0, 50.00535041311768),
+            new THREE.Vector3(7.933800220489502, 0, 35.03493346525874)
+          ],
+          false /*是否闭合*/
+        );
+        var tubeGeometry = new THREE.TubeGeometry(curve, 100, 0.6, 50, false);
+        var textureLoader = new THREE.TextureLoader();
+        var texture = textureLoader.load(
+          "models/obj/city_test/SanFran_roadDiffuse_repeat.jpg"
+        );
+        // 设置阵列模式为 RepeatWrapping
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        // 设置x方向的偏移(沿着管道路径方向)，y方向默认1
+        // 等价texture.repeat= new THREE.Vector2(20,1)
+        texture.repeat.x = 20;
+        var tubeMaterial = new THREE.MeshPhongMaterial({
+          map: texture,
+          transparent: true
+        });
+        // console.log(tubeMaterial, texture);
+        var tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
+        // scene.add(tube);
+
+        var textured = new THREE.TextureLoader().load("textures/warning.png");
+        var spriteMaterial = new THREE.SpriteMaterial({
+          // color: 0xffffff,
+          map: textured
+        });
+        var sprite = new THREE.Sprite(spriteMaterial);
+        sprite.position.set(
+          25.729931791092394,
+          10.179400757773436,
+          36.07142388020101
+        );
+        console.log(sprite);
+        sprite.scale.x = 10;
+        sprite.scale.y = 5;
+
+        scene.add(sprite);
+      })();
+
+      function createSprite(x, y, z) {
+        console.log(x, y, z);
+        function CreateCanvas() {
+          this.canvas = document.createElement("canvas");
+          this.canvas.width = 200;
+          this.canvas.height = 111;
+          this.ctx = this.canvas.getContext("2d");
+          this.ctx.font = "16pt Arial";
+          this.ctx.fillStyle = "white";
+          this.ctx.fillRect(
+            10,
+            10,
+            this.canvas.width - 20,
+            this.canvas.height - 20
+          );
+          this.ctx.fillStyle = "black";
+          this.ctx.textAlign = "center";
+          this.ctx.textBaseline = "middle";
+          this.ctx.fillText(
+            "123123",
+            this.canvas.width / 2,
+            this.canvas.height / 2
+          );
+          // document.body.appendChild(this.canvas);
+        }
+        CreateCanvas.prototype.destroy = function() {
+          this.canvas = null;
+          this.ctx = null;
+        };
+        CreateCanvas.prototype.get = function() {
+          return this.canvas;
+        };
+        var textObj = new CreateCanvas();
+        var textured = new THREE.CanvasTexture(textObj.get());
+        var spriteMaterial = new THREE.SpriteMaterial({
+          color: 0xffffff,
+          map: textured
+        });
+        var sprite = new THREE.Sprite(spriteMaterial);
+        sprite.position.set(x, y, z);
+
+        scene.add(sprite);
+      }
+
+      function onWindowResize() {
+        windowHalfX = window.innerWidth / 2;
+        windowHalfY = window.innerHeight / 2;
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        // renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        composer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      function onDocumentMouseMove(event) {
+        mouseX = (event.clientX - windowHalfX) / 2;
+        mouseY = (event.clientY - windowHalfY) / 2;
+      }
+
+      //
+
+      function animate() {
+        requestAnimationFrame(animate);
+        stats.update();
+        composer.render();
+        // render();
+        // 关闭自动清除缓存;
+        // renderer.autoClear = false;
+        // // 清除缓存
+        // renderer.clear();
+        // // 设置当前高亮的部位 建立关系 显示哪个
+        // camera.layers.set(0);
+        // // 渲染
+        // composer.render();
+
+        // // 清除深度缓存 显示没有添加亮度的模型 设置为0
+        // renderer.clearDepth();
+        // camera.layers.set(0);
+        // renderer.render(scene, camera);
+      }
+
+      function render() {
+        renderer.render(scene, camera);
+      }
+
+      var raycaster = new THREE.Raycaster();
+      var mouse = new THREE.Vector2();
+
+      window.addEventListener("click", onTouchMove);
+      window.addEventListener("touchstart", onTouchMove);
+
+      function onTouchMove(event) {
+        var x, y;
+
+        if (event.changedTouches) {
+          x = event.changedTouches[0].pageX;
+          y = event.changedTouches[0].pageY;
+        } else {
+          x = event.clientX;
+          y = event.clientY;
+        }
+
+        mouse.x = (x / window.innerWidth) * 2 - 1;
+        mouse.y = -(y / window.innerHeight) * 2 + 1;
+
+        checkIntersection();
+      }
+
+      function addSelectedObject(object) {
+        selectedObjects = [];
+        selectedObjects.push(object);
+      }
+
+      function checkIntersection() {
+        raycaster.setFromCamera(mouse, camera);
+        var intersects = raycaster.intersectObjects([scene], true);
+        if (intersects.length > 0) {
+          var selectedObject = intersects[0].object;
+          var point = intersects[0].point;
+          var face = intersects[0].face;
+          console.log(intersects[0]);
+          if (selectedObject.parent && selectedObject.parent.type === "Group") {
+            // selectedObject.material.color = new THREE.Color(0xffaaff);
+
+            const position = selectedObject.geometry.boundingSphere.center;
+            // createSprite(point.x, point.y + 1, point.z);
+            // selectedObject.position.x = 1000000;
+          }
+          //   typeof selectedObject.scale === "function" && selectedObject.scale(2);
+          // addSelectedObject(selectedObject);
+          // outlinePass.selectedObjects = selectedObjects;
+        } else {
+          // outlinePass.selectedObjects = [];
+        }
+      }
+    </script>
+  </body>
+</html>
+
+```
