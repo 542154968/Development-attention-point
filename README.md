@@ -5113,3 +5113,5 @@ https://www.jianshu.com/p/209decedfaf6
 
 **273. 清除微信浏览器缓存土方法**
 - 退出微信号重登 hhhhhhhh
+
+**274. shift + esc 可以查看谷歌内存占用的信息**
