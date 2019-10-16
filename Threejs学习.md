@@ -2891,3 +2891,6 @@ scene.add(sprite);
 ```
 
 ## 加载的模型是黑色的没有报404 一切都正常 看看是不是material的颜色设置的是黑色的 - - 
+
+
+## 环境贴图一定要用CubeTextureLoader
