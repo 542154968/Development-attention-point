@@ -2409,7 +2409,7 @@ scene.add(sprite);
 
 ## 针对浏览器目前最合适的模型是 gltf
 
-## 城市发光demo
+## 地图模型发光demo
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -2494,6 +2494,8 @@ scene.add(sprite);
         light: 0.1
       };
 
+      var group = new THREE.Object3D();
+
       init();
       animate();
 
@@ -2518,33 +2520,6 @@ scene.add(sprite);
 
         scene = new THREE.Scene();
 
-        function createCubeMap() {
-          var path = "textures/cube/MilkyWay/";
-          var format = ".jpg";
-
-          // var urls = [
-          //   path + "dark-s_nx" + format,
-          //   path + "dark-s_ny" + format,
-          //   path + "dark-s_nz" + format,
-          //   path + "dark-s_px" + format,
-          //   path + "dark-s_py" + format,
-          //   path + "dark-s_pz" + format
-          // ];
-
-          var path = "textures/cube/skyboxsun25deg/";
-          var urls = [
-            "px" + format,
-            "nx" + format,
-            "py" + format,
-            "ny" + format,
-            "pz" + format,
-            "nz" + format
-          ];
-
-          return new THREE.CubeTextureLoader()
-            .setPath("textures/cube/skyboxsun25deg/")
-            .load(urls);
-        }
         var skymap = new THREE.TextureLoader().load("textures/sky.jpg");
         scene.background = skymap;
 
@@ -2553,19 +2528,14 @@ scene.add(sprite);
         pointLight = new THREE.PointLight(0xffffff, 0.3);
         camera.add(pointLight);
         scene.add(camera);
-        // scene.layers.enable(0);
-        console.log(scene);
-
-        // var axesHelper = new THREE.AxesHelper(999);
-        // scene.add(axesHelper);
-        // model
-
         //
 
-        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer = new THREE.WebGLRenderer({ antialias: false });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.toneMapping = THREE.ReinhardToneMapping;
+        // renderer.toneMapping = THREE.ReinhardToneMapping;
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
         container.appendChild(renderer.domElement);
         document.body.appendChild(container);
 
@@ -2578,9 +2548,6 @@ scene.add(sprite);
           0.85
         );
         bloomPass.renderToScreen = true;
-        bloomPass.renderToScreen = true;
-        renderer.gammaInput = true;
-        renderer.gammaOutput = true;
         bloomPass.threshold = params.bloomThreshold;
         bloomPass.strength = params.bloomStrength;
         bloomPass.radius = params.bloomRadius;
@@ -2614,8 +2581,9 @@ scene.add(sprite);
             bloomPass.radius = Number(value);
           });
 
-        var controls = new THREE.OrbitControls(camera, renderer.domElement);
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
+        console.log(controls);
         window.addEventListener("resize", onWindowResize, false);
 
         var onProgress = function(xhr) {
@@ -2629,11 +2597,38 @@ scene.add(sprite);
           console.log(error);
         };
 
-        THREE.Loader.Handlers.add(/\.dds$/i, new THREE.DDSLoader());
+        function createCubeMap() {
+          // var path = "textures/cube/MilkyWay/";
+          var format = ".jpg";
+
+          // var urls = [
+          //   path + "dark-s_nx" + format,
+          //   path + "dark-s_ny" + format,
+          //   path + "dark-s_nz" + format,
+          //   path + "dark-s_px" + format,
+          //   path + "dark-s_py" + format,
+          //   path + "dark-s_pz" + format
+          // ];
+
+          var path = "textures/cube/skyboxsun25deg/";
+          var urls = [
+            "px" + format,
+            "nx" + format,
+            "py" + format,
+            "ny" + format,
+            "pz" + format,
+            "nz" + format
+          ];
+
+          return new THREE.CubeTextureLoader()
+            .setPath("textures/")
+            .load(new Array(6).fill("start.jpg"));
+        }
 
         new THREE.MTLLoader()
-          // .setPath("models/obj/city_test/")
-          .load("models/obj/city_test/city.mtl", function(materials) {
+          .setPath("models/obj/city_test/")
+          .load("city.mtl", function(materials) {
+            console.log(materials);
             materials.preload();
 
             new THREE.OBJLoader()
@@ -2642,34 +2637,26 @@ scene.add(sprite);
               .load(
                 "city.obj",
                 function(object) {
-                  var envmap = new THREE.TextureLoader().load(
-                    "textures/start.jpg"
-                  );
                   object.traverse(function(child) {
                     if (child.isMesh) {
-                      var map = child.material.map;
-                      if (map) {
-                        // var material = new THREE.MeshStandardMaterial();
-                        // material.map = map;
-                        // child.material = material;
-                      }
-                      child.name !== "Lumian" &&
-                        (child.material.envMap = envmap);
+                      child.material.envMap = createCubeMap();
+                      // child.material.emissive = child.material.color;
+                      // child.material.emissiveMap = child.material.map;
+                      // var map = child.material.map;
+                      // if (map) {
+                      // var material = new THREE.MeshStandardMaterial();
+                      // material.map = map;
+                      // child.material = material;
+                      // }
+                      // /city/i.test(child.name) &&
+                      //   (child.material.envMap = createCubeMap());
+                      // console.log(child);
                       // : (child.material.lights = false);
-
-                      console.log(child);
+                      // console.log(child);
                     }
                   });
-                  // object.scale.multiplyScalar(0.01);
-                  var box = new THREE.Box3();
-                  box.expandByObject(object);
-                  //   box.center();
-                  //   console.log(object, box);
-                  scene.add(object);
-                  // var helper = new THREE.Box3Helper(box, 0xffff00);
-
-                  //   console.log(helper);
-                  // scene.add(helper);
+                  // object.position.set(23, 11, 37);
+                  group.add(object);
                 },
                 onProgress,
                 onError
@@ -2677,17 +2664,18 @@ scene.add(sprite);
           });
 
         // new THREE.MTLLoader()
-        //   .setPath("models/obj/office/")
-        //   .load("office.mtl", function(materials) {
+        //   .setPath("models/obj/TO_TO/")
+        //   .load("sky.mtl", function(materials) {
         //     materials.preload();
 
         //     new THREE.OBJLoader()
         //       .setMaterials(materials)
-        //       .setPath("models/obj/office")
+        //       .setPath("models/obj/TO_TO/")
         //       .load(
-        //         "office.obj",
+        //         "sky.obj",
         //         function(object) {
-        //           object.position.y = -95;
+        //           console.log(object);
+        //           // object.position.y = -95;
         //           scene.add(object);
         //         },
         //         onProgress,
@@ -2740,56 +2728,12 @@ scene.add(sprite);
           10.179400757773436,
           36.07142388020101
         );
-        console.log(sprite);
+        // console.log(sprite);
         sprite.scale.x = 10;
         sprite.scale.y = 5;
 
-        scene.add(sprite);
+        group.add(sprite);
       })();
-
-      function createSprite(x, y, z) {
-        console.log(x, y, z);
-        function CreateCanvas() {
-          this.canvas = document.createElement("canvas");
-          this.canvas.width = 200;
-          this.canvas.height = 111;
-          this.ctx = this.canvas.getContext("2d");
-          this.ctx.font = "16pt Arial";
-          this.ctx.fillStyle = "white";
-          this.ctx.fillRect(
-            10,
-            10,
-            this.canvas.width - 20,
-            this.canvas.height - 20
-          );
-          this.ctx.fillStyle = "black";
-          this.ctx.textAlign = "center";
-          this.ctx.textBaseline = "middle";
-          this.ctx.fillText(
-            "123123",
-            this.canvas.width / 2,
-            this.canvas.height / 2
-          );
-          // document.body.appendChild(this.canvas);
-        }
-        CreateCanvas.prototype.destroy = function() {
-          this.canvas = null;
-          this.ctx = null;
-        };
-        CreateCanvas.prototype.get = function() {
-          return this.canvas;
-        };
-        var textObj = new CreateCanvas();
-        var textured = new THREE.CanvasTexture(textObj.get());
-        var spriteMaterial = new THREE.SpriteMaterial({
-          color: 0xffffff,
-          map: textured
-        });
-        var sprite = new THREE.Sprite(spriteMaterial);
-        sprite.position.set(x, y, z);
-
-        scene.add(sprite);
-      }
 
       function onWindowResize() {
         windowHalfX = window.innerWidth / 2;
@@ -2808,7 +2752,7 @@ scene.add(sprite);
         mouseY = (event.clientY - windowHalfY) / 2;
       }
 
-      //
+      scene.add(group);
 
       function animate() {
         requestAnimationFrame(animate);
