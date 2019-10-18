@@ -5115,3 +5115,6 @@ https://www.jianshu.com/p/209decedfaf6
 - 退出微信号重登 hhhhhhhh
 
 **274. shift + esc 可以查看谷歌内存占用的信息**
+
+**275. Unable to preventDefault inside passive event listener due to target being treated as passive.**
+- 关于passive event listener的一次踩坑 https://juejin.im/post/5ad804c1f265da504547fe68
