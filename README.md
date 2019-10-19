@@ -5120,3 +5120,5 @@ https://www.jianshu.com/p/209decedfaf6
 - 关于passive event listener的一次踩坑 https://juejin.im/post/5ad804c1f265da504547fe68
 
 **276. Threejs的精灵用不了动态gif图**
+
+**277. Threejs 的css3Drender可以使用dom渲染到3d场景里面 有空学习下写个demo **
