@@ -5122,3 +5122,4 @@ https://www.jianshu.com/p/209decedfaf6
 **276. Threejs的精灵用不了动态gif图**
 
 **277. Threejs 的css3Drender可以使用dom渲染到3d场景里面 有空学习下写个demo **
+> http://www.mamicode.com/info-detail-2771330.html
