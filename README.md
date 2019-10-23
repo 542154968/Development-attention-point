@@ -5123,3 +5123,7 @@ https://www.jianshu.com/p/209decedfaf6
 
 **277. Threejs 的css3Drender可以使用dom渲染到3d场景里面 有空学习下写个demo **
 > http://www.mamicode.com/info-detail-2771330.html
+
+**278. ckplayer不显示控制栏在ckplayerjs的step的第29个**
+!!!什么神仙配置
+``` setup: '1,1,1,1,1,2,0,1,0,0,0,1,200,0,2,1,0,1,1,1,1,10,3,0,0,2,3000,0,'+showControl +',2,0,1,1,1,1,1,1,250,0,90,0,0,0',```
