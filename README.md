@@ -5131,3 +5131,6 @@ https://www.jianshu.com/p/209decedfaf6
 **279. 当dom已经全屏的时候，如果需要video再全屏，怎么解决**
 - 将video 铺满全屏即可。。。。阻止video的全屏事件或者控制条的显示 自己盖一个上去
 - 为什么要这样，因为如果不手动铺满，让video全屏的话，退出全屏 dom的全屏也会没有了 影响体验
+
+**280. threejs使用EffectComposer无法透明显示背景**
+- 可以给背景加到scene.background里 但是会受到辉光效果影响 还在找后续解决放案
