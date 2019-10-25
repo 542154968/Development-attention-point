@@ -5134,3 +5134,9 @@ https://www.jianshu.com/p/209decedfaf6
 
 **280. threejs使用EffectComposer无法透明显示背景**
 - 可以给背景加到scene.background里 但是会受到辉光效果影响 还在找后续解决放案
+- outlinepass 同样有这个问题 https://github.com/mrdoob/three.js/issues/16483 outlinepass的解决方案是把源码里的
+```javascript
+var currentBackground = this.renderScene.background; 改成
+var currentBackground = new THREE.Color( 0xff0000 ); 或者改成透明图片
+```
+
