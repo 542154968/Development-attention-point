@@ -2896,3 +2896,8 @@ map_Kd test_vt.bmp
 
 ## three.js开发obj格式文件压缩库——Draco简析 
 https://blog.csdn.net/weixin_36065510/article/details/79967837?utm_source=blogxgwz1
+
+
+## 使用obj2gltf 将obj转gltf
+1. 安装 npm install obj2gltf -D
+2. obj2gltf  -i ./examples/models/obj/hanchuan/city.obj -o city_test.obj
