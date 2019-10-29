@@ -2892,3 +2892,7 @@ d 1
 # 为漫反射指定颜色纹理文件
 map_Kd test_vt.bmp
 ```
+
+
+## three.js开发obj格式文件压缩库——Draco简析 
+https://blog.csdn.net/weixin_36065510/article/details/79967837?utm_source=blogxgwz1
