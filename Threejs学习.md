@@ -2900,4 +2900,10 @@ https://blog.csdn.net/weixin_36065510/article/details/79967837?utm_source=blogxg
 
 ## 使用obj2gltf 将obj转gltf
 1. 安装 npm install obj2gltf -D
-2. obj2gltf  -i ./examples/models/obj/hanchuan/city.obj -o city_test.obj
+2. obj2gltf  -i ./examples/models/obj/hanchuan/city.obj -o city_test.obj --unlit --separate
+- --unlit 用这个参数转化的可以设置环境贴图
+- --separate 这个参数是把图片提出来
+
+
+## 使用gltf-pipeline压缩gltf
+node gltf-pipeline.js -i  ../../../gltf/city.gltf  -o  ../../../examples/models/obj/hanchuan/city_small1.gltf -d --separate
