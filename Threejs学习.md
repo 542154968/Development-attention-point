@@ -2907,3 +2907,31 @@ https://blog.csdn.net/weixin_36065510/article/details/79967837?utm_source=blogxg
 
 ## 使用gltf-pipeline压缩gltf
 node gltf-pipeline.js -i  ../../../gltf/city.gltf  -o  ../../../examples/models/obj/hanchuan/city_small1.gltf -d --separate
+
+## bloompass 和 dof 混合使用
+```javascript
+var bokehPass = new THREE.BokehPass(scene, camera, {
+  focus: 300,
+  aperture: 0.025,
+  maxblur: 1.0,
+  width: width,
+  height: height
+});
+
+
+// effectCopy
+var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+
+bokehPass.renderToScreen = true;
+effectCopy.renderToScreen = true;
+
+composer = new THREE.EffectComposer(renderer);
+composer.renderTarget1.stencilBuffer = true;
+composer.renderTarget2.stencilBuffer = true;
+composer.setSize(window.innerWidth, window.innerHeight);
+
+composer.addPass(renderScene);
+composer.addPass(bloomPass);
+composer.addPass(effectCopy);
+composer.addPass(bokehPass);
+```
