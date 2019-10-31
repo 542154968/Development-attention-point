@@ -2935,3 +2935,48 @@ composer.addPass(bloomPass);
 composer.addPass(effectCopy);
 composer.addPass(bokehPass);
 ```
+
+## composer 使用两个scene
+```javascript
+renderer = new THREE.WebGLRenderer({
+          antialias: true,
+          alpha: true
+        });
+        renderer.autoClear = false;
+        renderer.setClearColor(0xffffff, 0);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        // renderer.toneMapping = THREE.ReinhardToneMapping;
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
+        container.appendChild(renderer.domElement);
+        document.body.appendChild(container);
+
+        /*-----------------------------------后期特效核心--------------------------------------*/
+        var clearMask = new THREE.ClearMaskPass();
+
+        // 遮罩场景部分
+
+        sceneBG = new THREE.Scene();
+        // sceneBG.background = new THREE.Color("green");
+        sceneBG.add(new THREE.AmbientLight(0xffffff));
+        var width = window.innerWidth || 2;
+        var height = window.innerHeight || 2;
+        cameraOrtho = new THREE.OrthographicCamera(
+          -width,
+          width,
+          height,
+          -height,
+          -10000,
+          10000
+        );
+        cameraOrtho.position.z = 70;
+        sceneBG.add(cameraOrtho);
+        var renderBackground = new THREE.RenderPass(sceneBG, cameraOrtho);
+        // 这个很重要奥  composer的渲染顺序从上到下 谁在后后渲染谁 如果不设置关闭清理 那么前一个场景会被清理掉 所以要把自动清理关闭 就能保留city的scene了
+        renderBackground.clear = false;
+        var bgMask = new THREE.MaskPass(sceneBG, cameraOrtho);
+
+        // bloompass场景部分
+        var renderScene = new THREE.RenderPass(scene, camera);
+```
