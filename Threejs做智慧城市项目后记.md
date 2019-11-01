@@ -190,19 +190,21 @@ function animate() {
 1. 模型加载后，不显示也不报错？
 检查场景是否正常渲染了，如果正常渲染模型的位置在哪里，摄像机在哪里，摄像机是否对着模型，灯光是否配置，模型是否太大或者太小了，超出了摄像机的摄影范围……
 2. 模型可以正常加载，但是贴图不显示？
-首先检查`network`是否报`404`错误，如果报错，一般都是`mtl`贴图文件（看起来像是`雪碧图`那种）没给你，或者路径配置的不是`相对路径`，如果贴图没错误，模型是**黑色的**，在`mtl`文件中可以更改`ka`或`kd`的三个值（对应`rgb`），黑色的时候，看不到贴图。一般这样一通操作之后，就能看到了模型了
+首先检查`network`是否报`404`错误，如果报错，一般都是`mtl`贴图文件（看起来像是`雪碧图`那种）没给你，或者路径配置的不是`相对路径`，如果贴图没错误，模型是**黑色的**，在`mtl`文件中可以更改`ka`或`kd`的三个值（对应`rgb`），或者打印出模型属性，在`material.color`中更改点色值或别的属性。黑色的时候，看不到贴图。一般这样一通操作之后，就能看到了模型了
 3. 模型文件太大了，浏览器在渲染的时候进程被完全卡死！要等待几十秒之久！天呐！
-这个问题比较棘手，但很好解决。`ThreeJs`官方推荐`gltf`格式的模型在浏览器中渲染，因为它是为浏览器而生的，性能好，体积小。我们项目中使用的模型文件，一开始是`Obj`和`Mtl`的，达到**25MB**大小，在`vue`项目中渲染会阻塞浏览器**46s**，原生`html`+`js`的项目中好些，几秒时间就行了，我怀疑是我写法的问题，但是我测试仅仅是加载模型渲染到场景，并没有多余操作和数据绑定，还是一样，阻塞进程，一度导致我怀疑人生？？？黑人问号脸。那么如何将`Obj模型`转换为`gltf`模型，还能再优化吗？进入下一章节！对了对了，`Obj`模型也是可以压缩的，而且`ObjLoader2`加载会快一点
+这个问题看起来比较棘手，其实很好解决。`ThreeJs`官方推荐`gltf`格式的模型在浏览器中渲染，因为它是为浏览器而生的，性能好，体积小。我们项目中使用的模型文件，一开始是`Obj`和`Mtl`的，达到**25MB**大小，在`vue`项目中渲染会阻塞浏览器**46s**，原生`html`+`js`的项目中好些，几秒时间就行了，我怀疑是我写法的问题，但是我测试仅仅是加载模型渲染到场景，并没有多余操作和数据绑定，还是一样，阻塞进程，一度导致我怀疑人生？？？黑人问号脸。那么如何将`Obj模型`转换为`gltf`模型，还能再优化吗？进入下一章节！对了对了，`Obj`模型也是可以压缩的，而且`ObjLoader2`加载会快一点
 
 ## Obj模型转Gltf模型并压缩Gltf模型，性能爆炸提升！
 > 真的很牛逼 模型加贴图从 25mb 减小到了1.8mb 上效果图
 
-1.这是不加贴图和`mtl`的`obj`文件 已经达到了**22.5MB**！![在这里插入图片描述](https://img-blog.csdnimg.cn/2019110119221657.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
+1.这是不加贴图和`mtl`的`obj`文件 已经达到了**22.5MB**！
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2019110119221657.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
 
 2. 这是`obj`转`gltf`之后的文件，贴图转成了`base64`包含在了`gltf`文件中，可通过配置项提取出文件，稍后介绍
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191101192412472.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
 
-3. 这是经过`gltf`压缩处理之后的贴图+模型的文件大小![在这里插入图片描述](https://img-blog.csdnimg.cn/20191101192519351.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
+3. 这是经过`gltf`压缩处理之后的贴图+模型的文件大小
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191101192519351.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
 
 
 
