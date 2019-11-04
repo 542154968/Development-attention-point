@@ -10,6 +10,7 @@
 3. 有一定`ThreeJs`的基础 俗话说得好 万丈高楼平地起嘛 如果没有这方面基础的同学也不要急 推荐一本书`《WebGL编程指南》`，有基础也有提高 很棒
 4. 本文所示代码大部分只是思路 我也是第一次上手用`ThreeJs`处理模型并应用到项目中，可能有少许不足之处，还望各路大神指正教导
 5. 项目进行一半的时候，因为没经验，我发现让建模看着地图建模的思路是不对的，应该让他们利用`geoJson`作为地理数据，去建模，建造出来的更精确，而且可以利用地理坐标和世界坐标去关联（猜想），利于项目开发，毕竟第一次，这个锅我背了。
+6. `Threejs`的文档是不全的，很多`控制器`，`loader`，`后期处理`都没有文档，要自己多看看`Threejs`的`examples`，很多效果都可以基于`Demo`去实现。
 
 ## HTML部分
 ```html
@@ -111,6 +112,7 @@ function animate() {
    // 这个方法低版本浏览器兼容不好 可以从github上找些兼容库 如果要兼容低版本浏览器
    requestAnimationFrame(animate);
    // 渲染我们的场景  摄像机啪啪啪的拍和录
+   // 由于把renderer autoClear  关闭了 所以我们要在渲染函数中手动清除
    renderer.clear();
    renderer.render(scene, camera);
  }
@@ -197,14 +199,12 @@ function animate() {
 ## Obj模型转Gltf模型并压缩Gltf模型，性能爆炸提升！
 > 真的很牛逼 模型加贴图从 25mb 减小到了1.8mb 上效果图
 
-1.这是不加贴图和`mtl`的`obj`文件 已经达到了**22.5MB**！
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2019110119221657.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
+1.这是不加贴图和`mtl`的`obj`文件 已经达到了**22.5MB**！![在这里插入图片描述](https://img-blog.csdnimg.cn/2019110119221657.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
 
 2. 这是`obj`转`gltf`之后的文件，贴图转成了`base64`包含在了`gltf`文件中，可通过配置项提取出文件，稍后介绍
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191101192412472.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
 
-3. 这是经过`gltf`压缩处理之后的贴图+模型的文件大小
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20191101192519351.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
+3. 这是经过`gltf`压缩处理之后的贴图+模型的文件大小![在这里插入图片描述](https://img-blog.csdnimg.cn/20191101192519351.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
 
 
 
@@ -276,7 +276,6 @@ node gltf-pipeline.js -i  ../../../gltf/city.gltf  -o  ../../../examples/models/
  		// 载入出错时候
 	  };
 
-	  // 加载Mtl贴图文件
       var loader = new THREE.GLTFLoader();
       // 这个是Threejs解析draco压缩之后的解析器 
       // 它从这里读取解析器JS
@@ -299,3 +298,225 @@ node gltf-pipeline.js -i  ../../../gltf/city.gltf  -o  ../../../examples/models/
 这时候的场景，应该是这样的，很丑吧哈哈哈，没关系没关系，我们可以为它美容，不过在此之前，我们先来试着转动这个模型，看看性能怎么样。
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191101195828942.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
 ## OrbitControls——轨道控制器
+```javascript
+var controls
+
+function init(){
+	// 省略创建场景部分
+	controls = new THREE.OrbitControls(camera, renderer.domElement);
+}
+```
+它的常用参数在源码中可以找到，也可以百度/goggle一下中文翻译的，不做太多介绍，这是其中一段源码。
+```javascript
+// Set to false to disable this control
+	this.enabled = true;
+
+	// "target" sets the location of focus, where the object orbits around
+	this.target = new THREE.Vector3();
+
+	// How far you can dolly in and out ( PerspectiveCamera only )
+	this.minDistance = 0;
+	this.maxDistance = Infinity;
+
+	// How far you can zoom in and out ( OrthographicCamera only )
+	this.minZoom = 0;
+	this.maxZoom = Infinity;
+
+	// How far you can orbit vertically, upper and lower limits.
+	// Range is 0 to Math.PI radians.
+	this.minPolarAngle = 0; // radians
+	this.maxPolarAngle = Math.PI; // radians
+
+	// How far you can orbit horizontally, upper and lower limits.
+	// If set, must be a sub-interval of the interval [ - Math.PI, Math.PI ].
+	this.minAzimuthAngle = - Infinity; // radians
+	this.maxAzimuthAngle = Infinity; // radians
+
+	// Set to true to enable damping (inertia)
+	// If damping is enabled, you must call controls.update() in your animation loop
+	this.enableDamping = false;
+	this.dampingFactor = 0.25;
+
+	// This option actually enables dollying in and out; left as "zoom" for backwards compatibility.
+	// Set to false to disable zooming
+	this.enableZoom = true;
+	this.zoomSpeed = 1.0;
+
+	// Set to false to disable rotating
+	this.enableRotate = true;
+	this.rotateSpeed = 1.0;
+
+	// Set to false to disable panning
+	this.enablePan = true;
+	this.panSpeed = 1.0;
+	this.screenSpacePanning = false; // if true, pan in screen-space
+	this.keyPanSpeed = 7.0;	// pixels moved per arrow key push
+
+	// Set to true to automatically rotate around the target
+	// If auto-rotate is enabled, you must call controls.update() in your animation loop
+	this.autoRotate = false;
+	this.autoRotateSpeed = 2.0; // 30 seconds per round when fps is 60
+
+	// Set to false to disable use of the keys
+	this.enableKeys = true;
+
+	// The four arrow keys
+	this.keys = { LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40 };
+
+	// Mouse buttons
+	this.mouseButtons = { LEFT: THREE.MOUSE.LEFT, MIDDLE: THREE.MOUSE.MIDDLE, RIGHT: THREE.MOUSE.RIGHT };
+
+	// for reset
+	this.target0 = this.target.clone();
+	this.position0 = this.object.position.clone();
+	this.zoom0 = this.object.zoom;
+
+	//
+	// public methods
+	//
+
+	this.getPolarAngle = function () {
+```
+- 初始化这个控制器之后，就可以操作模型旋转放大缩小了。它的原理就是控制**摄像机和模型**的距离，同理也可以控制**模型与摄像机**的距离去实现移动放大缩小等功能，可以自己尝试一下。一个比较有趣的操作是在`function animate(){}`中，设置`camera.lookAt=scene.position`效果也很不错。
+- `ThreeJs`中内置了很多有趣的控制器，用法和效果都可以从`ThreeJs`的`examples`中找到，记得看看。
+
+## Stats——轨道控制器
+玩过`LOL`，大型单机游戏的同学都知道，如果`帧率`不好，画面看起来就会**卡顿**，影响体验，这也为什么用`requestAnimationFrame`去作为渲染调用的原因之一，它的性能比`函数递归`和`setInterval`实现渲染调用好很多。那么我们如何去检测我们的场景渲染的性能怎么样呢？就可以使用`Stats`
+```javascript
+// <script src="js/libs/stats.min.js"></script> 不要忘了引入进来
+var stats;
+
+function init(){
+	// 省略创建场景部分
+	stats = new Stats();
+	container.appendChild(stats.dom);
+}
+
+function animatie(){
+	stats.update();
+	// 省略renderer
+}
+```
+- 初始化之后在页面左上角会看到，这个原理还没研究过，有机会翻翻源码看看。 
+- ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191104091446471.png)
+- 如果实在vue/react等单页面环境中，可以通过`process.env.NODE_ENV`控制开发环境再显示这个。
+- 这样一来，我们在开发调试的时候，就能很直观的看出效果了。
+
+## 给scene添加自定义背景
+>若不为空，在渲染场景的时候将设置背景，且背景总是首先被渲染的。 可以设置一个用于的“clear”的Color（颜色）、一个覆盖canvas的Texture（纹理），或是一个CubeTexture。默认值为null。 
+
+- 实验结果是，`TextureLoader`、`CubeTexture`和`SphereGeometry`都可以作为背景图，简单介绍下这三者。 
+
+1. TextureLoader 一张图，背景看起来是静止不动的
+2. CubeTexture 立方纹理 图片是分割成6块 相当于摄像机和模型在一个正方体盒子中 背景随着摄像机转动而转动
+3. SphereGeometry 一张图 全景图原理 相当于摄像机和模型在一个圆球盒子中 背景随着摄像机转动而转动
+4. 不太理解可以百度下`threejs全景图原理`，不做过多叙述
+
+```javascript
+function init(){
+	// 省略其余代码
+	// ....
+	// 添加一张静止的背景图
+	scene.background = new THREE.TextureLoader().load("你的背景图")
+	// ....
+}
+```
+5. 之后效果大概是这样的，我们的世界里有了天空，其实这里用`CubeTexture`或者`SphereGeometry`效果更好
+6. ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191104102332302.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
+
+## 设置模型环境贴图和材质颜色
+细心的同学会发现，河流和楼上会有星星点点的光，这是怎么实现的呢？答案就是`环境贴图`。
+> [环境贴图](http://www.twinklingstar.cn/2014/1322/environment-mapping/)
+简单的讲，环境贴图就像把物体的表面化作一面镜子，可以反射出你为它赋予的图片。
+
+如何设置环境贴图呢？回到我们加载模型的部分。核心就是创建`立方纹理`然后设置某个模型的`material`的`envMap`为这个立方纹理。 环境贴图的使用限制受纹理影响，有一部分纹理加不上环境贴图。
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Threejs-city-model-show</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <style>
+      body {
+        color: #fff;
+        margin: 0px;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script src="../build/three.min.js"></script>
+    <!-- 引入我们可爱的加载器 -->
+    <script src="js/loaders/GLTFLoader.js"></script>
+    <script src="js/loaders/DRACOLoader.js"></script>
+    <script>
+	  /* 省略创建场景部分的代码 */
+
+	 // 创建一个立方纹理
+	 var envMap = new THREE.CubeTextureLoader()
+            .setPath("textures/")
+            .load(new Array(6).fill("start.jpg"));
+
+      var loader = new THREE.GLTFLoader();
+      // 这个是Threejs解析draco压缩之后的解析器 
+      // 它从这里读取解析器JS
+      THREE.DRACOLoader.setDecoderPath("js/libs/draco/gltf/");
+      // 将Draco解析器和GltfLoader绑定在一起
+      loader.setDRACOLoader(new THREE.DRACOLoader());
+      loader.load(
+        "models/obj/hanchuan/city_small1.gltf",
+        function(gltf) {
+         // gltf.scene 拿到这个可以处理模型
+         gltf.scene.traverse(function(child) {
+            if (child.isMesh) {
+              /* 这些都是DEMO  具体看你模型调整 下节介绍通过鼠标点击确定模型所属对象 然后去调试模型 */
+			  // 这些名称都可以通过打印看出 console.log(child)
+
+			  // 比如我想给这些加上环境贴图 就可以这样写
+              /hai|city|liubianxing/i.test(child.name) &&
+                (child.material.envMap = envMap);
+              
+              if (/city/i.test(child.name)) {
+                // 更改模型颜色
+                child.material.color = new THREE.Color(6, 6, 5);
+                // 更改模型环境贴图影响  0-1
+                child.material.reflectivity = 0.9;
+              }
+              
+			  // 更改模型位置
+              /lumian|hai/i.test(child.name) && (child.position.y = 0.5);
+              
+              // ...
+            }
+          });
+          
+          scene.add(gltf.scene)
+        },
+        onProgress,
+        onError
+      );
+      
+	</script>
+  </body>
+</html> 
+```
+
+## Raycaster 光线投射
+> 光线投射用于进行鼠标拾取（在三维空间中计算出鼠标移过了什么物体）。
+
+- 打印出所有的child不好定位是哪块模型，有没有更快的方法？ 
+- 您好，有的。
+- [通过 THREE.Raycaster 实现模型选中与信息显示](https://blog.csdn.net/ithanmang/article/details/80897888)，点击打印出当前点击的模型，在它的属性中修改颜色，位置等，可以直接更新效果，调试更方便
+- 到此，经过我们的美化之后，效果就是这样了。还缺了点什么，道路咋不发光啊，看着没光效，不炫酷！
+- ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191104105606238.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
+
+## 利用EffectComposer进行后期处理
+
+
+
+
