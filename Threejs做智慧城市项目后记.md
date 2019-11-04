@@ -9,8 +9,10 @@
 2. 城市模型一份 最好是`gltf`模型，`obj`模型也没问题，我会介绍如何转化与压缩 PS:为什么只有这俩，因为我写这个项目只用到了这俩，处理的经验也是针对这俩的，我项目中所用的模型是公司所有暂不能提供。
 3. 有一定`ThreeJs`的基础 俗话说得好 万丈高楼平地起嘛 如果没有这方面基础的同学也不要急 推荐一本书`《WebGL编程指南》`，有基础也有提高 很棒
 4. 本文所示代码大部分只是思路 我也是第一次上手用`ThreeJs`处理模型并应用到项目中，可能有少许不足之处，还望各路大神指正教导
-5. 项目进行一半的时候，因为没经验，我发现让建模看着地图建模的思路是不对的，应该让他们利用`geoJson`作为地理数据，去建模，建造出来的更精确，而且可以利用地理坐标和世界坐标去关联（猜想），利于项目开发，毕竟第一次，这个锅我背了。
-6. `Threejs`的文档是不全的，很多`控制器`，`loader`，`后期处理`都没有文档，要自己多看看`Threejs`的`examples`，很多效果都可以基于`Demo`去实现。
+5. 项目进行一半的时候，因为没经验，我发现让建模看着地图建模的思路是不对的，应该让他们利用`geoJson`作为地理数据，去建模，建造出来的更精确，而且可以利用地理坐标和世界坐标去关联（猜想），利于项目开发，毕竟第一次，这个锅我背了
+6. `Threejs`的文档是不全的，很多`控制器`，`loader`，`后期处理`都没有文档，要自己多看看`Threejs`的`examples`，很多效果都可以基于`Demo`去实现
+7. 单页面应用一定要清除`ThreeJs` `new`的对象，避免内存泄露
+8. 后期处理对显卡有一定要求
 
 ## HTML部分
 ```html
@@ -92,6 +94,7 @@ function init(){
       alpha: true
     });
     // 把自动清除颜色缓存关闭 这个如果不关闭 后期处理这块会不能有效显示
+    // 书上的描述是 如果不这样做，每次调用效果组合器的render()函数时，之前渲染的场景会被清理掉。通过这种方法，我们只会在render循环开始时，把所有东西清理一遍。
     renderer.autoClear = false;
     // 背景透明 配合 alpha
     renderer.setClearColor(0xffffff, 0);
@@ -515,8 +518,272 @@ function init(){
 - 到此，经过我们的美化之后，效果就是这样了。还缺了点什么，道路咋不发光啊，看着没光效，不炫酷！
 - ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191104105606238.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
 
-## 利用EffectComposer进行后期处理
+## 利用EffectComposer（效果组合器）进行后期处理
+这一块的基础建议好好看看`《THREE.JS开发指南》`这本书。如果需要多个`pass`，要学会使用`MaskPass`和`clearPass`。这一块因为不熟悉，我在添加效果的时候花费了很大量的时间，尤其是`Threejs`内置的`pass`效果没有文档，甚至你都不知道内置了多少种效果...`《THREE.JS开发指南》`这本书介绍的比较全面，用法也很详细。
 
+## 利用EffectComposer进行后期处理——辉光(bloompass)
+### 如何设置后期处理？
+1. 创建一个`EffectComposer`对象，然后在该对象上添加后期处理通道。
+2. 配置该对象，使它可以渲染我们的场景，并用额外的后期处理步骤
+3. 在`render`循环中，使用`EffectComposer`渲染场景、应用通道，并输出结果
 
+### 几个引用介绍
+- `EffectComposer`效果组合器，每个通道会按照其加入`EffectComposer`的顺序执行。
+- `RenderPass`该通道在指定的场景和相机的基础上渲染出一个新的场景。一般在第一个加入到`Composer`中，它会渲染场景，但是不会将渲染结果输出到屏幕上。
+-  `ShaderPass`使用该通道可以传入一个自定义的着色器，用来生成高级的、自定义的后期处理通道
+- `BloomPass`该通道会使明亮区域渗入较暗的区域，模拟相机照到过多亮光的情形
+- `CopyShader`它不会添加任何特殊效果，只是将最后一个通道的结果复制到屏幕上，`BloomPass`无法直接添加到屏幕上，需要借助这个`Shader`，其实使用`bloompass.renderToScreen = true`是可以添加的，但是后续再加处理效果会无效，所以一定要借用这个`Shader`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Threejs-city-model-show</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <style>
+      body {
+        color: #fff;
+        margin: 0px;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- 省略其他引入的 -->
+    <!-- 引入Effect -->
+    <script src="js/postprocessing/EffectComposer.js"></script>
+    <!-- 引入Effect配套的render -->
+    <script src="js/postprocessing/RenderPass.js"></script>
+    <script src="js/postprocessing/ShaderPass.js"></script>
+    <!-- 引入各种需要的shader -->
+    <script src="js/shaders/CopyShader.js"></script>
+    <script src="js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="js/postprocessing/UnrealBloomPass.js"></script>
+    <script>
+      var clock;
+	  /* 省略创建场景部分的代码 */
+	  // 初始化renderPass
+	  var renderScene = new THREE.RenderPass(scene, camera);
+	
+	  // 初始化bloomPass 
+	  var bloomPass = new THREE.UnrealBloomPass(
+	    // 没研究过这些参数的意义 会提上日程
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        1.5,
+        0.4,
+        0.85
+      );
+      // 一些参数 可以调整看效果
+      bloomPass.threshold = 0.36;
+      bloomPass.strength = 0.6;
+      bloomPass.radius = 0;
+
+	  // effectCopy
+      var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+      // 让effectCopy渲染到屏幕上 没这句不会再屏幕上渲染
+      effectCopy.renderToScreen = true;
+	  
+	  // 初始化 composer
+	  var composer = new THREE.EffectComposer(renderer);
+	  // 模版缓冲（stencil buffer） https://blog.csdn.net/silangquan/article/details/46608915
+      composer.renderTarget1.stencilBuffer = true;
+      composer.renderTarget2.stencilBuffer = true;
+      composer.setSize(window.innerWidth, window.innerHeight);
+      composer.addPass(renderScene);
+	  composer.addPass(bloomPass);
+      composer.addPass(effectCopy);
+
+	  // 修改animate
+	  function animate() {
+        requestAnimationFrame(animate);
+        var delt = clock.getDelta();
+        stats.update();
+        renderer.clear();
+        // 删除renderer使用composerrender去渲染
+        // renderer.render(scene, camera);
+        
+		// 没理解透这个delt的作用 ？？？
+        composer.render(delt);
+      }
+	</script>
+  </body>
+</html> 
+```
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191104131726358.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)这样 辉光效果就出来了。还不够还不够，让我们加上`FocusShaper`，让它看起来像聚焦在中心一样（突出中心）。
+1. **颜色越亮，发光效果越强**
+2. **辉光受环境贴图影响**
+
+### 为场景添加聚焦效果——FocusShader
+
+我们要引入`FocusShader`。
+- `FocusShader`是一个简单的着色器，其结果是中央区域渲染的比较锐利，单周围比较模糊。
+- ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191104133026907.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Threejs-city-model-show</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <style>
+      body {
+        color: #fff;
+        margin: 0px;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- 省略其他引入的 -->
+    <!-- 引入Effect -->
+    <script src="js/postprocessing/EffectComposer.js"></script>
+    <!-- 引入Effect配套的render -->
+    <script src="js/postprocessing/RenderPass.js"></script>
+    <script src="js/postprocessing/ShaderPass.js"></script>
+    <!-- 引入各种需要的shader -->
+    <script src="js/shaders/CopyShader.js"></script>
+    <script src="js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="js/postprocessing/UnrealBloomPass.js"></script>
+    <!-- focusShader 相对于bloompass新加的 -->
+    <script src="js/shaders/FocusShader.js"></script>
+    <script>
+      var clock;
+	  /* 省略创建场景部分的代码 */
+	
+	 // 创建focusShader 相对于bloompass新加的
+	 var focusShader = new THREE.ShaderPass(THREE.FocusShader);
+     focusShader.uniforms["screenWidth"].value = window.innerWidth;
+     focusShader.uniforms["screenHeight"].value = window.innerHeight;
+     focusShader.uniforms["sampleDistance"].value = 1.07;
+
+	  // 初始化renderPass
+	  var renderScene = new THREE.RenderPass(scene, camera);
+	
+	  // 初始化bloomPass 
+	  var bloomPass = new THREE.UnrealBloomPass(
+	    // 没研究过这些参数的意义 会提上日程
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        1.5,
+        0.4,
+        0.85
+      );
+      // 一些参数 可以调整看效果
+      bloomPass.threshold = 0.36;
+      bloomPass.strength = 0.6;
+      bloomPass.radius = 0;
+
+	  // effectCopy
+      var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+      // 让effectCopy渲染到屏幕上 没这句不会再屏幕上渲染
+      effectCopy.renderToScreen = true;
+	  
+	  // 初始化 composer
+	  var composer = new THREE.EffectComposer(renderer);
+	  // 模版缓冲（stencil buffer） https://blog.csdn.net/silangquan/article/details/46608915
+      composer.renderTarget1.stencilBuffer = true;
+      composer.renderTarget2.stencilBuffer = true;
+      composer.setSize(window.innerWidth, window.innerHeight);
+      composer.addPass(renderScene);
+	  composer.addPass(bloomPass);
+	  // 相对于bloompass新加的
+	  composer.addPass(focusShader);
+      composer.addPass(effectCopy);
+
+	  // 修改animate
+	  function animate() {
+        requestAnimationFrame(animate);
+        var delt = clock.getDelta();
+        stats.update();
+        renderer.clear();
+        // 删除renderer使用composerrender去渲染
+        // renderer.render(scene, camera);
+        
+		// 没理解透这个delt的作用 ？？？
+        composer.render(delt);
+      }
+	</script>
+  </body>
+</html> 
+```
+
+模型的渲染和后期处理就到此就全部结束了。
+
+## Sprite精灵的应用
+> 精灵是一个总是面朝着摄像机的平面，通常含有使用一个半透明的纹理。
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191104140230366.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
+```javascript
+ var textured = new THREE.TextureLoader().load("textures/warning.png");
+ var spriteMaterial = new THREE.SpriteMaterial({
+   // color: 0xffffff,
+   map: textured
+ });
+ var sprite = new THREE.Sprite(spriteMaterial);
+ sprite.position.set(
+   25.729931791092394,
+   10.179400757773436,
+   36.07142388020101
+ );
+ // console.log(sprite);
+ sprite.scale.x = 10;
+ sprite.scale.y = 5;
+
+ scene.add(sprite);
+```
+
+这张图火灾预警的图其实就是一张透明的png图片，精灵可以用`canvas贴图`，你可以自己编写`canvas`渲染在指定点上，也可以使用`CSS3DRenderer`去实现。
+
+## Group
+通常的情况下`Threejs`里的模型是要分组的。在处理交互起来，有分组会更加清晰明了，就像模块拆分一样。
+```javascript
+var group = new THREE.Group();
+```
+
+## 区域、路线、移动等功能实现逻辑
+1. 不规则区域可以用`ShapeGeometry`创建，使用可以设置透明的`material`比较好。`material`设置`transparent:true`可以支持透明
+2. 移动就是更改模型位置，很简单`model.position.set(x,y,z)`
+3. 画线，`line`、`lineLoop`、`CubicBezierCurve3`等`Threejs`提供的画线方法
+4. 路线循环流动效果可以创建一个`管道`，然后增加一个路径一样的`贴图`，设置`wrap`为重复，在`animate`中不断更改`texture.offset`即可
+
+## VUE/React等单页面注意点
+由于单页面中，`Threejs`创建的任何材质，模型，贴图……只要`new`的你在页面组件即将销毁的周期中，都要调用下`dispose`方法清除，不然可能**内存泄漏**。
+```javascript
+beforeDestory(){
+	this.camera.dispose();
+    this.scene.dispose();
+
+    this.ambientLight.dispose();
+
+    this.pointLight.dispose();
+
+    this.renderer.dispose();
+    this.renderScene.dispose();
+    this.bloomPass.dispose();
+
+    this.composer.dispose();
+    this.controls.dispose();
+    this.group.dispose();
+    this.fog.dispose();
+
+    this.envMap.dispose();
+    this.skymap.dispose();
+
+    this.cubeLoader.dispose();
+    this.gltfLoader.dispose();
+    this.dracoLoader.dispose();
+    this.textureLoader.dispose();
+    this.spriteMaterial.dispose();
+    this.sprite.dispose();
+}
+```
 
 
