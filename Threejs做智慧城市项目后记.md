@@ -755,34 +755,18 @@ var group = new THREE.Group();
 4. 路线循环流动效果可以创建一个`管道`，然后增加一个路径一样的`贴图`，设置`wrap`为重复，在`animate`中不断更改`texture.offset`即可
 
 ## VUE/React等单页面注意点
-由于单页面中，`Threejs`创建的任何材质，模型，贴图……只要`new`的你在页面组件即将销毁的周期中，都要调用下`dispose`方法清除，不然可能**内存泄漏**。
+由于单页面中，`Threejs`创建的任何材质，模型，贴图……只要含有`dispose`方法的，你在页面组件即将销毁的周期中，都要调用下`dispose`方法清除，不然可能**内存泄漏**。
 ```javascript
 beforeDestory(){
-	this.camera.dispose();
-    this.scene.dispose();
-
-    this.ambientLight.dispose();
-
-    this.pointLight.dispose();
-
-    this.renderer.dispose();
-    this.renderScene.dispose();
-    this.bloomPass.dispose();
-
-    this.composer.dispose();
-    this.controls.dispose();
-    this.group.dispose();
-    this.fog.dispose();
-
+	this.bloomPass.dispose();
     this.envMap.dispose();
     this.skymap.dispose();
-
-    this.cubeLoader.dispose();
-    this.gltfLoader.dispose();
     this.dracoLoader.dispose();
-    this.textureLoader.dispose();
     this.spriteMaterial.dispose();
-    this.sprite.dispose();
+    this.sphereGeometry.dispose();
+    this.meshBasicMaterial.dispose();
+    this.scene.dispose();
+    this.controls.dispose();
 }
 ```
 
