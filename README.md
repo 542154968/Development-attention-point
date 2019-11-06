@@ -5140,3 +5140,6 @@ var currentBackground = this.renderScene.background; 改成
 var currentBackground = new THREE.Color( 0xff0000 ); 或者改成透明图片
 ```
 - 新版本的有个demo https://threejs.org/examples/?q=selective#webgl_postprocessing_unreal_bloom_selective 选择某个地方辉光的 可以研究下
+
+**281. 为什么有些链接打开是预览图片而有些是下载**
+- 主要原因 `Content-Type`和`Content-Disposition`
