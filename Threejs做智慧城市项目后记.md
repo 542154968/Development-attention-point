@@ -13,6 +13,7 @@
 6. `Threejs`的文档是不全的，很多`控制器`，`loader`，`后期处理`都没有文档，要自己多看看`Threejs`的`examples`，很多效果都可以基于`Demo`去实现
 7. 单页面应用一定要清除`ThreeJs` `new`的对象，避免内存泄露
 8. 后期处理对显卡有一定要求
+9. 最好一次渲染，不要多次渲染
 
 ## HTML部分
 ```html
@@ -237,6 +238,7 @@ node gltf-pipeline.js -i  ../../../gltf/city.gltf  -o  ../../../examples/models/
 `--separate`就是将贴图文件提取出来，不提可以不加
 
 这样，我们就完成了`gltf`模型的转化和压缩，性能暴增！秒开！ 
+在我们最终的模型中，obj模型**297Mb**，转gltf之后还有**150Mb**左右，最终经过压缩，还有**7.3Mb**!
 
 ## Gltf模型的加载
 抛弃了`Obj`和`Mtl`之后，我们的加载器也要做一下改变
@@ -754,6 +756,7 @@ var group = new THREE.Group();
 3. 画线，`line`、`lineLoop`、`CubicBezierCurve3`等`Threejs`提供的画线方法
 4. 路线循环流动效果可以创建一个`管道`，然后增加一个路径一样的`贴图`，设置`wrap`为重复，在`animate`中不断更改`texture.offset`即可
 
+
 ## VUE/React等单页面注意点
 由于单页面中，`Threejs`创建的任何材质，模型，贴图……只要含有`dispose`方法的，你在页面组件即将销毁的周期中，都要调用下`dispose`方法清除，不然可能**内存泄漏**。
 ```javascript
@@ -767,6 +770,17 @@ beforeDestory(){
     this.meshBasicMaterial.dispose();
     this.scene.dispose();
     this.controls.dispose();
+	
+	/*
+	const data = this.$data;
+    for (let i in data) {
+      if (data.hasOwnProperty(i)) {
+        if (data[i] && typeof data[i].dispose == "function") {
+          data[i].dispose();
+        }
+      }
+    }
+	*/
 }
 ```
 
