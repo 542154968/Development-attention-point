@@ -784,4 +784,19 @@ beforeDestory(){
 }
 ```
 
+## 模型发光还带线的效果怎么做？
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2019110913531145.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
+```javascript
+var lineMaterial = new THREE.LineBasicMaterial({
+  // 线的颜色
+  color: "blue",
+  transparent: true,
+  opacity: 0.8,
+  depthFunc: THREE.AlwaysDepth
+});
+scene.add(
+  new THREE.LineSegments(模型geometry, lineMaterial)
+);
+// 之后把模型设置下透明度就成了
 
+```
