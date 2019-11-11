@@ -619,6 +619,7 @@ function init(){
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191104131726358.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)这样 辉光效果就出来了。还不够还不够，让我们加上`FocusShaper`，让它看起来像聚焦在中心一样（突出中心）。
 1. **颜色越亮，发光效果越强**
 2. **辉光受环境贴图影响**
+3. **模型可以通过`map`贴图来更改亮度，比如暗色的贴图，它反光就会很软**
 
 ### 为场景添加聚焦效果——FocusShader
 
