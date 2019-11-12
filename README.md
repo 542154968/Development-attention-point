@@ -5145,3 +5145,6 @@ var currentBackground = new THREE.Color( 0xff0000 ); 或者改成透明图片
 > https://stackoverflow.com/questions/20508788/do-i-need-content-type-application-octet-stream-for-file-download
 
 - 主要原因 `Content-Type`和`Content-Disposition`
+
+**282. threejs css2dRender 移动的时候抖动**
+- 只需在translate改变的div中加上transform translateZ(0)
