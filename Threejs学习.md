@@ -2980,3 +2980,17 @@ renderer = new THREE.WebGLRenderer({
         // bloompass场景部分
         var renderScene = new THREE.RenderPass(scene, camera);
 ```
+
+
+## OpenGL GLSL介绍
+- OpenGL深度介绍博客——http://www.twinklingstar.cn/category/opengl/
+- GLSL中文手册
+- GLSL中文手册——https://blog.csdn.net/hk_shao/article/details/82084274
+-GLSL程序展示
+- 效果参见本文开头图片
+-    3D河豚鱼——https://blog.csdn.net/hk_shao/article/details/82084361
+-    火焰效果——https://blog.csdn.net/hk_shao/article/details/82084411
+-    3D海洋——https://blog.csdn.net/hk_shao/article/details/82084448
+-    生命游戏（元胞自动机）——https://blog.csdn.net/hk_shao/article/details/82084481
+- 国外着色器（Shader）源码分享网站
+- Shadertoy——https://www.shadertoy.com/
