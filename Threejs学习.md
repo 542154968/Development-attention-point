@@ -2994,3 +2994,6 @@ renderer = new THREE.WebGLRenderer({
 -    生命游戏（元胞自动机）——https://blog.csdn.net/hk_shao/article/details/82084481
 - 国外着色器（Shader）源码分享网站
 - Shadertoy——https://www.shadertoy.com/
+
+
+## https://thebookofshaders.com/01/?lan=ch
