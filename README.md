@@ -5148,3 +5148,32 @@ var currentBackground = new THREE.Color( 0xff0000 ); 或者改成透明图片
 
 **282. threejs css2dRender 移动的时候抖动**
 - 只需在translate改变的div中加上transform translateZ(0)
+
+**283. 一次触发拼多多移动端登录按钮可用的经历**
+- 群里有个小伙伴问
+```text
+小白请教个问题：
+比如这个网站http://mobile.yangkeduo.com/login.html
+给手机号那个input执行js赋值document.getElementById('user-mobile').value='15888888888';
+然后再手动触发各种事件blur，change等，都没有效果
+发送按钮一直是灰色，而且通过查看表元素，并没有真正修改value的值，请教大家什么原因，该怎么实现呢？
+```
+- 翻阅源码后，该网站用的react编写的，触发的事件被react的事件管理
+- 先根据input的id 在控制台搜源码，发现该dom只绑定了change和blur事件，change又找到了
+```javascript
+{
+	key: "handlePhoneChange",
+	value: function(t) {
+	    this.phoneNumber = t.target.value && t.target.value.trim(),
+	    this.clearError()
+}
+```
+- 遂猜测t是event对象（明摆着）
+- 接着查该dom的属性，发现了`__reactEventHandlers$vn2qg9nk8zg` 里面有`onChange`
+- 于是将`__reactEventHandlers$vn2qg9nk8zg`保存为全局变量`temp1`
+```javascript
+const $dom  =document.getElementById('user-mobile')
+ $dom.value = '123456789'
+temp1.onChange({target: $dom})
+```
+- 一番操作，获取验证码按钮不经过手动触发点亮了
