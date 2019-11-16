@@ -801,3 +801,40 @@ scene.add(
 // 之后把模型设置下透明度就成了
 
 ```
+
+## 坐标转换 经纬度转墨卡托
+- 先把经纬度转墨卡托坐标 然后由于墨卡托坐标比较大，找到地图模型的中心点，墨卡托转Threejs的坐标时，减去这个中心点，之后就能画出一样的点或区域，之后再将z轴（y）取反
+- x+对应东，z+对应南
+- z算出来还得取个反
+- 根据坐标系适当调整
+```javascript
+function lonlatToMercator(lon, lat, height) {
+        var z = height ? height : 0;
+        var x = (lon / 180.0) * 20037508.3427892;
+        var y = (Math.PI / 180.0) * lat;
+        var tmp = Math.PI / 4.0 + y / 2.0;
+        y = (20037508.3427892 * Math.log(Math.tan(tmp))) / Math.PI;
+        return { x: x, y: y, z: z };
+      }
+
+// 找到地图的中心对应的经纬度坐标
+var center = lonlatToMercator(113.82909, 30.6549, 1);
+
+function lonlatToThree(lon, lat, height) {
+  var z = height ? height : 0;
+  var x = (lon / 180.0) * 20037508.3427892;
+  var y = (Math.PI / 180.0) * lat;
+  var tmp = Math.PI / 4.0 + y / 2.0;
+  y = (20037508.3427892 * Math.log(Math.tan(tmp))) / Math.PI;
+  var result = {
+    x: x - center.x,
+    y: y - center.y,
+    z: z - center.z
+  };
+  // x 越大越远
+  // 因为比地图大了 可以让地图整体放大或缩小 然后偏移到大概位置
+  return [result.x / 100 + 17, -result.y / 100 + 33];
+  // [-result.x / 100 - 14, -result.y / 100 - 35];
+}
+console.log(lonlatToThree(113.84411, 30.65231));
+```
