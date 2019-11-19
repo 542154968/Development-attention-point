@@ -838,3 +838,49 @@ function lonlatToThree(lon, lat, height) {
 }
 console.log(lonlatToThree(113.84411, 30.65231));
 ```
+
+## antialias开启后，渲染还有锯齿怎么办？
+使用`SSAA`、`FXAA`、`SMAA`等抗锯齿后处理。任选其一即可。
+```javascript
+initFxaaPass() {
+	let fxaaPass = new ShaderPass(FXAAShader);
+	const pixelRatio = this.renderer.getPixelRatio();
+	fxaaPass.material.uniforms["resolution"].value.x =
+	  1 / (this.width * pixelRatio);
+	fxaaPass.material.uniforms["resolution"].value.y =
+	  1 / (this.height * pixelRatio);
+	fxaaPass.renderToScreen = true;
+	this.fxaaPass= fxaaPass;
+},
+```
+```javascript
+initSmaaShader() {
+	const pixelRatio = this.renderer.getPixelRatio();
+	this.smaaPass = new SMAAPass(
+	  this.width * pixelRatio,
+	  this.height * pixelRatio
+	);
+	this.smaaShader.renderToScreen = true;
+},
+```
+```javascript
+initSsaaShader() {
+	this.ssaaRenderPass = new SSAARenderPass(this.scene, this.camera);
+	this.ssaaRenderPass.unbiased = false;
+	this.ssaaRenderPass.sampleLevel = 2;
+},
+```
+利用`EffectComposer`应用某个效果
+```javascript
+initEffectComposer() {
+	const composer = new EffectComposer(this.renderer);
+	composer.setSize(this.width, this.height);
+	composer.addPass(this.renderScene);
+	composer.addPass(this.ssaaRenderPass);
+	composer.addPass(this.bloomPass);
+	composer.addPass(this.focusShader);
+	composer.addPass(this.effectCopy);
+	
+	this.composer = composer;
+},
+```
