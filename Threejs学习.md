@@ -2998,3 +2998,30 @@ renderer = new THREE.WebGLRenderer({
 
 ## https://thebookofshaders.com/01/?lan=ch
 ## https://www.shadertoy.com/
+
+## 渐变色实现
+```javascript
+var geometry = new THREE.CylinderBufferGeometry(2, 2, 4, 32, 1, true);
+      var count = geometry.attributes.position.count;
+      geometry.addAttribute(
+        "color",
+        new THREE.BufferAttribute(new Float32Array(count * 3), 3)
+      );
+      var colors = geometry.attributes.color;
+
+      for (var i = 0; i < count; i++) {
+        colors.setXYZ(i, 0.1 * i, 0, 0);
+      }
+
+      var material = new THREE.MeshBasicMaterial({
+        // color: 0xffff00,
+        // map: texture,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.1,
+        flatShading: true,
+        vertexColors: THREE.VertexColors,
+        shininess: 0
+      });
+      var cylinder = new THREE.Mesh(geometry, material);
+```
