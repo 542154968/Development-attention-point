@@ -788,6 +788,7 @@ beforeDestory(){
 ## 模型发光还带线的效果怎么做？
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/2019110913531145.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
 ```javascript
+
 var lineMaterial = new THREE.LineBasicMaterial({
   // 线的颜色
   color: "blue",
@@ -795,7 +796,7 @@ var lineMaterial = new THREE.LineBasicMaterial({
   opacity: 0.8,
   depthFunc: THREE.AlwaysDepth
 });
-scene.add(
+模型.add(
   new THREE.LineSegments(模型geometry, lineMaterial)
 );
 // 之后把模型设置下透明度就成了
@@ -887,7 +888,9 @@ initEffectComposer() {
 
 
 ## 光柱效果如何实现
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20191121113247645.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)1. 准备一张渐变灰色`png`图片, 类似如下图
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191121132817119.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
+
+1. 准备一张渐变灰色`png`图片, 类似如下图
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191121113318385.png)我在这 ↑
 2. 代码部分
 ```javascript
@@ -935,7 +938,7 @@ export default {
         true
       );
     },
-    initOctahedron(color, name) {
+    initOctahedron(color) {
       let geometry = this.octahedronBufferGeometry;
       let material = new THREE.MeshBasicMaterial({
         color,
@@ -944,16 +947,12 @@ export default {
       });
       let lineMaterial = new THREE.LineBasicMaterial({
         color,
-        transparent: true,
-        opacity: 1
+        depthFunc: THREE.AlwaysDepth
       });
       let octahedron = new THREE.Mesh(geometry, material);
       let line = new THREE.LineSegments(geometry, lineMaterial);
-      octahedron.name = name;
-      line.name = name;
       octahedron.add(line);
       octahedron.position.z = -8;
-      octahedron.userData.type = "ring";
       return octahedron;
     },
     initRing(color) {
@@ -970,17 +969,16 @@ export default {
       cylinder.position.z = -2;
       return cylinder;
     },
-    initGateway(data = { color: "#54C41D", name: "Z01191111001", x: 0, z: 0 }) {
+    initGateway(data = { color: "#54C41D",x: 0, z: 0 }) {
       let group = new THREE.Group();
-      let octahedron = this.initOctahedron(data.color, data.name);
-      let ring = this.initRing(data.color, data.name);
+      let octahedron = this.initOctahedron(data.color);
+      let ring = this.initRing(data.color);
       group.add(ring);
       group.add(octahedron);
       group.rotation.x = (Math.PI / 180) * 90;
       group.position.y = 0.2;
       group.position.x = data.x;
       group.position.z = data.z;
-      group.name = data.name;
       this.gatewayGroup.add(group);
     }
   }
