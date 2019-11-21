@@ -884,3 +884,106 @@ initEffectComposer() {
 	this.composer = composer;
 },
 ```
+
+
+## 光柱效果如何实现
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191121113247645.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)1. 准备一张渐变灰色`png`图片, 类似如下图
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191121113318385.png)我在这 ↑
+2. 代码部分
+```javascript
+import * as THREE from "three";
+
+const scaleSpeed = 0.01;
+
+export default {
+  data(){
+    return {
+      // ...  
+    }
+  },
+  created(){
+    this.loadRangeMap()
+  },
+  beforeDestory(){
+      // ...
+  },
+  methods: {
+    initRingAnimate() {
+      Array.isArray(this.gatewayGroup.children) &&
+        this.gatewayGroup.children.forEach(v => {
+          Array.isArray(v.children) &&
+            v.children.forEach(item => {
+              if (item.userData.type === "ring") {
+                item.rotation.z = item.rotation.z + scaleSpeed;
+              }
+            });
+        });
+    },
+    loadRangeMap() {
+      this.rangeMap = this.textureLoader.load(require("../images/range.png"));
+    },
+    initOctahedronBufferGeometry() {
+      this.octahedronBufferGeometry = new THREE.OctahedronBufferGeometry();
+    },
+    initCylinderBufferGeometry() {
+      this.cylinderBufferGeometry = new THREE.CylinderBufferGeometry(
+        2,
+        2,
+        14,
+        12,
+        1,
+        true
+      );
+    },
+    initOctahedron(color, name) {
+      let geometry = this.octahedronBufferGeometry;
+      let material = new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.3
+      });
+      let lineMaterial = new THREE.LineBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 1
+      });
+      let octahedron = new THREE.Mesh(geometry, material);
+      let line = new THREE.LineSegments(geometry, lineMaterial);
+      octahedron.name = name;
+      line.name = name;
+      octahedron.add(line);
+      octahedron.position.z = -8;
+      octahedron.userData.type = "ring";
+      return octahedron;
+    },
+    initRing(color) {
+      let geometry = this.cylinderBufferGeometry;
+      let material = new THREE.MeshBasicMaterial({
+        color,
+        map: this.rangeMap,
+        side: THREE.DoubleSide,
+        transparent: true,
+        depthWrite: false
+      });
+      let cylinder = new THREE.Mesh(geometry, material);
+      cylinder.rotation.x = (Math.PI / 180) * -90;
+      cylinder.position.z = -2;
+      return cylinder;
+    },
+    initGateway(data = { color: "#54C41D", name: "Z01191111001", x: 0, z: 0 }) {
+      let group = new THREE.Group();
+      let octahedron = this.initOctahedron(data.color, data.name);
+      let ring = this.initRing(data.color, data.name);
+      group.add(ring);
+      group.add(octahedron);
+      group.rotation.x = (Math.PI / 180) * 90;
+      group.position.y = 0.2;
+      group.position.x = data.x;
+      group.position.z = data.z;
+      group.name = data.name;
+      this.gatewayGroup.add(group);
+    }
+  }
+};
+
+```
