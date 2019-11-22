@@ -5182,3 +5182,7 @@ temp1.onChange({target: $dom})
 - https://blog.csdn.net/rrrrroy_Ha/article/details/89374211
 
 **285. undefined.xxx || ''这种形式还是会报错 - -**
+
+**286. threejs在单页面应用中，占用的内存很难清除**
+- 能调用dispose的调用dispose
+- 很多层的要遍历remove掉
