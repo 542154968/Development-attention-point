@@ -5186,3 +5186,6 @@ temp1.onChange({target: $dom})
 **286. threejs在单页面应用中，占用的内存很难清除**
 - 能调用dispose的调用dispose
 - 很多层的要遍历remove掉
+
+**287. canvas点击获取图片颜色值核心代码**
+`ctx.getImageData()`
