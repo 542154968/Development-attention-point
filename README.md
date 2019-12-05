@@ -5189,3 +5189,10 @@ temp1.onChange({target: $dom})
 
 **287. canvas点击获取图片颜色值核心代码**
 `ctx.getImageData()`
+
+**288. cesium的渲染回调是个好东西很方便**
+```javascript
+new CallbackProperty(() => {  
+   return xxxx;
+}, false),
+```
