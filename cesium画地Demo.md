@@ -791,3 +791,325 @@
 </html>
 
 ```
+
+
+## 生成地块代码
+```javascript
+// lnglat {lng:xx,lat:xx} [lng,lat,lng,lat]
+function InitPolygon(viewer, lnglat, data) {
+  this.startLngLat = lnglat;
+  this.viewer = viewer;
+  this.entities = viewer.entities;
+  this.points = [];
+  this.pointGroup = null;
+  this.data = data;
+  this.polygon = null;
+  this.handle = null;
+  this.isMoving = false;
+  this.pointMoved = false;
+  this.activePointIndex = null;
+  this._init();
+}
+InitPolygon.prototype = {
+  constructor: InitPolygon,
+  setEditStatus(status) {
+    this._removeEventListener();
+    if (status) {
+      this._createPoints();
+      this._addEventListener();
+    } else {
+      this._deletePoints();
+    }
+  },
+  // _checkLngLat: function(){
+  //   var lnglat = this.startLngLat;
+  //   if(){}
+  // },
+  _init() {
+    this._initPointGroup();
+    this._formatPoints();
+    // this._createPoints();
+    this._createPolygon();
+    this._initHandler();
+    // this._addEventListener();
+  },
+  _initPointGroup() {
+    this.pointGroup = new PointPrimitiveCollection();
+    this.viewer.scene.primitives.add(this.pointGroup);
+  },
+  _initHandler() {
+    this.handler = new ScreenSpaceEventHandler(this.viewer.scene.canvas);
+  },
+  _formatPoints() {
+    var lnglat = this.startLngLat;
+    if (Array.isArray(lnglat)) {
+      this.points = Cartesian3.fromDegreesArray(lnglat);
+    } else {
+      this.points = Cartesian3.fromDegreesArray([
+        lnglat.lng,
+        lnglat.lat,
+        lnglat.lng + 0.01,
+        lnglat.lat,
+        lnglat.lng,
+        lnglat.lat + 0.01
+      ]);
+    }
+  },
+  // [{}] || [[]] => [1,2,3,4,56,78]
+  // _formatArr(arr){
+  //   var newArr = []
+  //   newArr.forEach(v=>{
+
+  //     if(Array.isArray(v)){
+
+  //     }else if(){}
+  //   })
+  // },
+  _deletePoints() {
+    this.pointGroup.removeAll();
+  },
+  // 创建点
+  _createPoint(position, index) {
+    this.pointGroup.add({
+      name: "point",
+      position: position,
+      userData: { index: index },
+      point: {
+        //点
+        pixelSize: 10,
+        color: Color.WHITE,
+        outlineColor: Color.WHITE,
+        heightReference: HeightReference.CLAMP_TO_GROUND
+      }
+    });
+  },
+  // 创建多个点
+  _createPoints() {
+    this._deletePoints();
+    this.points.forEach((v, k) => {
+      this._createPoint(v, k);
+    });
+  },
+  // 创建面
+  _createPolygon: function() {
+    var that = this;
+    var baseColor = Color.fromCssColorString(that.data.color);
+    this.polygon = this.entities.add({
+      name: "polygon",
+      userData: that.userData,
+      position: new CallbackProperty(function() {
+        var firstPoint = that.points[0];
+        var lastPoint = that.points[that.points.length - 1];
+        return new Cartesian3(
+          (firstPoint.x + lastPoint.x) / 2,
+          (firstPoint.y + lastPoint.y) / 2,
+          (firstPoint.z + lastPoint.z) / 2
+        );
+      }, false), //that.points[0], // Cesium.Cartesian3.fromDegrees(lnglat.lng, lnglat.lat),
+      polygon: {
+        hierarchy: new CallbackProperty(function() {
+          return new PolygonHierarchy(that.points);
+        }, false),
+        perPositionHeight: 1000,
+        // 不加height 没有outline  加height 就遮盖其他的了
+        height: 0,
+        // 先转成颜色对象 再加透明度
+        material: Color.fromAlpha(baseColor, 0.4), //Color.RED.withAlpha(0.5)
+        outline: true,
+        outlineColor: Color.fromAlpha(baseColor, 1)
+      },
+      label: {
+        //文字标签
+        showBackground: true,
+        text: that.data.name,
+        font: "14pt monospace",
+        eyeOffset: new Cartesian3(0.0, 200.0, 0.0),
+        pixelOffset: new Cartesian2(50, 15)
+        // horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+        // verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+        // style: Cesium.LabelStyle.FILL_AND_OUTLINE
+      }
+    });
+    // console.log(this.entities, this.polygon);
+  },
+  _removeEventListener() {
+    document.removeEventListener("mouseup", this._onLeftMouseUp.bind(this));
+    this.handler.removeInputAction(ScreenSpaceEventType.LEFT_UP);
+    this.handler.removeInputAction(ScreenSpaceEventType.LEFT_DOWN);
+    this.handler.removeInputAction(ScreenSpaceEventType.MOUSE_MOVE);
+  },
+  _addEventListener() {
+    this.handler.setInputAction(
+      this._onLeftMouseUp.bind(this),
+      ScreenSpaceEventType.LEFT_UP
+    );
+    document.addEventListener("mouseup", this._onLeftMouseUp.bind(this));
+
+    this.handler.setInputAction(
+      this._onLeftMouseDown.bind(this),
+      ScreenSpaceEventType.LEFT_DOWN
+    );
+
+    this.handler.setInputAction(
+      this._onMouseMove.bind(this),
+      ScreenSpaceEventType.MOUSE_MOVE
+    );
+  },
+  _onLeftMouseDown(event) {
+    var position = event.position;
+    var pickedFeature = this.viewer.scene.pick(position);
+    // console.log(pickedFeature);
+    if (pickedFeature && pickedFeature.primitive instanceof PointPrimitive) {
+      // 禁止旋转
+      this.viewer.scene.screenSpaceCameraController.enableRotate = false;
+
+      this.isMoving = true;
+      this.activePointIndex = pickedFeature.primitive._index;
+      // console.log(this.pointGroup.get(pickedFeature.primitive._index));
+      // this.activePoint = pickedFeature.id;
+    }
+  },
+  _onMouseMove(event) {
+    if (this.isMoving) {
+      var position = event.endPosition;
+      var worldPosition = this.viewer.scene.globe.pick(
+        this.viewer.camera.getPickRay(position),
+        this.viewer.scene
+      );
+      var index = this.activePointIndex;
+      var curPosition = this.points[index];
+      if (
+        Math.abs(curPosition.x - worldPosition.x) > 0.5 ||
+        Math.abs(curPosition.y - worldPosition.y) > 0.5
+      ) {
+        this.pointMoved = true;
+        this.pointGroup.get(index).position = worldPosition;
+        this.points.splice(index, 1, worldPosition);
+        // this._updatePolygon(index, worldPosition);
+      } else {
+        this.pointMoved = false;
+      }
+    }
+  },
+  _onLeftMouseUp() {
+    if (this.isMoving) {
+      this.viewer.scene.screenSpaceCameraController.enableRotate === false &&
+        (this.viewer.scene.screenSpaceCameraController.enableRotate = true);
+      this.isMoving = false;
+      this.pointMoved && this._addPointsWithActivePoint();
+    }
+  },
+  // _updatePolygon: function() {
+  //   this.polygon.polygon.hierarchy.setValue(
+  //     new Cesium.PolygonHierarchy(this.points)
+  //   );
+  // },
+  _addPointsWithActivePoint() {
+    var index = this.activePointIndex;
+    var point = this.points[index];
+    // 0 1 2
+    // 3
+    var prevPoint = this._isFirstPoint(index)
+      ? this.points[this.points.length - 1]
+      : this.points[index - 1];
+    // 4
+    var nextPoint = this._isLastPoint(index)
+      ? this.points[0]
+      : this.points[index + 1];
+    // 0 3 1 4 2
+    var prevAddPoint = new Cartesian3(
+      (point.x + prevPoint.x) / 2,
+      (point.y + prevPoint.y) / 2,
+      (point.z + prevPoint.z) / 2
+    );
+    var nextAddPoint = new Cartesian3(
+      (point.x + nextPoint.x) / 2,
+      (point.y + nextPoint.y) / 2,
+      (point.z + nextPoint.z) / 2
+    );
+    this.points.splice(index, 0, prevAddPoint);
+    this.points.splice(index + 2, 0, nextAddPoint);
+    this._createPoints();
+  },
+  _isLastPoint(index) {
+    return index === this.points.length - 1;
+  },
+  _isFirstPoint(index) {
+    return index === 0;
+  },
+  destory() {
+    this._deletePoints();
+    this._removeEventListener();
+    this.entities.remove(this.polygon);
+    this.entities.remove(this.pointGroup);
+    this.handler.destroy();
+
+    this.points = [];
+    this.data = {};
+  }
+};
+```
+
+## 生成模型位置代码
+```javascript
+function InitModel(opts = { viewer: null, data: {} }) {
+  this.data = opts.data || {};
+  this.lnglatArr = [opts.data.longitude, opts.data.latitude];
+  this.viewer = opts.viewer;
+  this.entities = this.viewer.entities;
+  this.model = null;
+  this.scenePosition = { x: 0, y: 0 };
+  this._init();
+}
+InitModel.prototype = {
+  constructor: InitModel,
+  _init() {
+    this._initModel();
+  },
+  _initModel() {
+    let position = Cartesian3.fromDegrees(...this.lnglatArr);
+    let deg = 0;
+    this.model = this.entities.add({
+      name: "model",
+      position: new CallbackProperty(() => {
+        this._positionUpdated(position);
+        return position;
+      }, false),
+      orientation: new CallbackProperty(() => {
+        const heading = Math.toRadians(deg++);
+        const pitch = 0;
+        const roll = 0;
+        const hpr = new HeadingPitchRoll(heading, pitch, roll);
+        const orientation = Transforms.headingPitchRollQuaternion(
+          position,
+          hpr
+        );
+        deg >= 360 && (deg = 0);
+        return orientation;
+      }, false),
+      userData: this.data,
+      model: {
+        uri: "glTF/Duck.gltf",
+        minimumPixelSize: 128,
+        maximumScale: 20000
+      }
+
+      // label: {
+      //   //文字标签
+      //   showBackground: true,
+      //   text: that.data.name,
+      //   font: "14pt monospace",
+      //   eyeOffset: new Cartesian3(0.0, 200.0, 0.0),
+      //   pixelOffset: new Cartesian2(50, 15)
+      // }
+    });
+  },
+  _positionUpdated(position) {
+    let scenePosition = SceneTransforms.wgs84ToWindowCoordinates(
+      this.viewer.scene,
+      position
+    );
+    scenePosition && (this.scenePosition = scenePosition);
+  }
+};
+```
