@@ -5196,3 +5196,6 @@ new CallbackProperty(() => {
    return xxxx;
 }, false),
 ```
+
+**289. cesium做3Dgis系统很棒**
+- 学习threejs 和 cesium这类一定要先看demo
