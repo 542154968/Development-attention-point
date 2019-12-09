@@ -5199,3 +5199,40 @@ new CallbackProperty(() => {
 
 **289. cesium做3Dgis系统很棒**
 - 学习threejs 和 cesium这类一定要先看demo
+
+**290. 求多边形重心**
+```javascript
+function getHalfArea(p0, p1, p2) {
+  var area = 0.0;
+  area =
+    p0.longitude * p1.latitude +
+    p1.longitude * p2.latitude +
+    p2.longitude * p0.latitude -
+    p1.longitude * p0.latitude -
+    p2.longitude * p1.latitude -
+    p0.longitude * p2.latitude;
+  return area / 2;
+}
+
+function getPolygonAreaCenter(points) {
+  let sum_x = 0;
+  let sum_y = 0;
+  let sum_area = 0;
+  let p0 = points[0];
+  let p1 = points[1];
+  let length = points.length;
+  for (let i = 2; i < length; i++) {
+    let p2 = points[i];
+    let area = getHalfArea(p0, p1, p2);
+    sum_area += area;
+    sum_x += (p0.longitude + p1.longitude + p2.longitude) * area;
+    sum_y += (p0.latitude + p1.latitude + p2.latitude) * area;
+    p1 = p2;
+  }
+  let xx = sum_x / sum_area / 3;
+  let yy = sum_y / sum_area / 3;
+  return { x: xx, y: yy };
+}
+
+getPolygonAreaCenter([{longitude: 117.240752, latitude: 31.819288}...]) // {x: 中心点, y: 中心点}
+```
