@@ -802,12 +802,13 @@ function InitPolygon(viewer, lnglat, data) {
   this.entities = viewer.entities;
   this.points = [];
   this.pointGroup = null;
-  this.data = data;
+  this.userData = data;
   this.polygon = null;
   this.handle = null;
   this.isMoving = false;
   this.pointMoved = false;
   this.activePointIndex = null;
+  this.scenePosition = { x: 0, y: 0 };
   this._init();
 }
 InitPolygon.prototype = {
@@ -820,6 +821,13 @@ InitPolygon.prototype = {
     } else {
       this._deletePoints();
     }
+  },
+  _positionUpdated(position) {
+    let scenePosition = SceneTransforms.wgs84ToWindowCoordinates(
+      this.viewer.scene,
+      position
+    );
+    scenePosition && (this.scenePosition = scenePosition);
   },
   // _checkLngLat: function(){
   //   var lnglat = this.startLngLat;
@@ -892,36 +900,49 @@ InitPolygon.prototype = {
   },
   // 创建面
   _createPolygon: function() {
-    var that = this;
-    var baseColor = Color.fromCssColorString(that.data.color);
+    let that = this;
     this.polygon = this.entities.add({
       name: "polygon",
       userData: that.userData,
-      position: new CallbackProperty(function() {
-        var firstPoint = that.points[0];
-        var lastPoint = that.points[that.points.length - 1];
-        return new Cartesian3(
+      position: new CallbackProperty(() => {
+        let firstPoint = this.points[0];
+        let lastPoint = that.points[that.points.length - 1];
+        let position = new Cartesian3(
           (firstPoint.x + lastPoint.x) / 2,
           (firstPoint.y + lastPoint.y) / 2,
           (firstPoint.z + lastPoint.z) / 2
         );
+        this._positionUpdated(position);
+        // const obj = getCenterPoint(this.points);
+        // let position = new Cartesian3(obj.x, obj.y, 0);
+        return position;
       }, false), //that.points[0], // Cesium.Cartesian3.fromDegrees(lnglat.lng, lnglat.lat),
       polygon: {
         hierarchy: new CallbackProperty(function() {
           return new PolygonHierarchy(that.points);
         }, false),
-        perPositionHeight: 1000,
+        // perPositionHeight: 1000,
         // 不加height 没有outline  加height 就遮盖其他的了
         height: 0,
         // 先转成颜色对象 再加透明度
-        material: Color.fromAlpha(baseColor, 0.4), //Color.RED.withAlpha(0.5)
+        material: Color.fromAlpha(
+          Color.fromCssColorString(that.userData.color),
+          0.4
+        ),
         outline: true,
-        outlineColor: Color.fromAlpha(baseColor, 1)
+        outlineColor: new CallbackProperty(function() {
+          return Color.fromAlpha(
+            Color.fromCssColorString(that.userData.color),
+            1
+          ); //Color.RED.withAlpha(0.5)
+        }, false)
       },
       label: {
         //文字标签
         showBackground: true,
-        text: that.data.name,
+        text: new CallbackProperty(function() {
+          return that.userData.name; //Color.RED.withAlpha(0.5)
+        }, false),
         font: "14pt monospace",
         eyeOffset: new Cartesian3(0.0, 200.0, 0.0),
         pixelOffset: new Cartesian2(50, 15)
@@ -979,8 +1000,8 @@ InitPolygon.prototype = {
       var index = this.activePointIndex;
       var curPosition = this.points[index];
       if (
-        Math.abs(curPosition.x - worldPosition.x) > 0.5 ||
-        Math.abs(curPosition.y - worldPosition.y) > 0.5
+        Math.abs(curPosition.x - worldPosition.x) > 1 ||
+        Math.abs(curPosition.y - worldPosition.y) > 1
       ) {
         this.pointMoved = true;
         this.pointGroup.get(index).position = worldPosition;
@@ -1037,6 +1058,16 @@ InitPolygon.prototype = {
   _isFirstPoint(index) {
     return index === 0;
   },
+  _catesian2Lnglat(catesian3) {
+    const cartographic = this.viewer.scene.globe.ellipsoid.cartesianToCartographic(
+      catesian3
+    );
+    return {
+      lat: CesiumMath.toDegrees(cartographic.latitude),
+      lng: CesiumMath.toDegrees(cartographic.longitude),
+      alt: cartographic.height
+    };
+  },
   destory() {
     this._deletePoints();
     this._removeEventListener();
@@ -1046,6 +1077,20 @@ InitPolygon.prototype = {
 
     this.points = [];
     this.data = {};
+  },
+
+  resetUserData(data) {
+    this.userData = Object.assign(this.userData, data);
+    this.polygon.polygon.material = Color.fromAlpha(
+      Color.fromCssColorString(this.userData.color),
+      0.4
+    );
+  },
+
+  getPointsByLnglat() {
+    return this.points.map(v => {
+      return this._catesian2Lnglat(v);
+    });
   }
 };
 ```
