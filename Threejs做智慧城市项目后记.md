@@ -1,8 +1,10 @@
-# Threejs 做智慧城市项目开始
-
 ![demo展示效果](https://img-blog.csdnimg.cn/20191101180056341.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQwMDA0,size_16,color_FFFFFF,t_70)
 
-> 随着时间的推移技术的进步，前端越来越杂了，但是也越来越精彩了。只是会用一点`ThreeJs`，对于`WebGl`的原理并没了解过，这并不影响我们利用`ThreeJs`去做出一个非常炫酷的项目。 新世界的大门打开啦！
+> 随着时间的推移技术的进步，前端越来越杂了，但是也越来越精彩了。只是会用一点`ThreeJs`，对于`WebGl`的原理并没了解过，这并不影响我们利用`ThreeJs`去做出一个非常炫酷的项目。
+
+# 开始
+
+> 新世界的大门打开啦！
 
 ## 写在前面
 
@@ -12,7 +14,7 @@
 4. 本文所示代码大部分只是思路 我也是第一次上手用`ThreeJs`处理模型并应用到项目中，可能有少许不足之处，还望各路大神指正教导
 5. 项目进行一半的时候，因为没经验，我发现让建模看着地图建模的思路是不对的，应该让他们利用`geoJson`作为地理数据，去建模，建造出来的更精确，而且可以利用地理坐标和世界坐标去关联（猜想），利于项目开发，毕竟第一次，这个锅我背了
 6. `Threejs`的文档是不全的，很多`控制器`，`loader`，`后期处理`都没有文档，要自己多看看`Threejs`的`examples`，很多效果都可以基于`Demo`去实现
-7. 单页面应用一定要清除`ThreeJs` 的创建的对象，避免内存泄露，能`dispose`的`dispose`，多个`children`的要遍历`remove`掉 而且里面的 `material` 和`geometry`也要删掉
+7. 单页面应用一定要清除`ThreeJs` 的创建的对象，避免内存泄露，能`dispose`的`dispose`，多个`children`的要遍历`remove`掉 而且里面的 `material` 和`geometry`也要删掉，最近刚知道一个取消占用的妙招，[WEBGL_lose_context](https://developer.mozilla.org/zh-CN/docs/Web/API/WEBGL_lose_context)
 8. 后期处理对显卡有一定要求
 9. 最好一次渲染，不要多次渲染
 
@@ -796,7 +798,7 @@ var group = new THREE.Group();
 
 ## VUE/React 等单页面注意点
 
-由于单页面中，`Threejs`创建的任何材质，模型，贴图……只要含有`dispose`方法的，你在页面组件即将销毁的周期中，都要调用下`dispose`方法清除，不然可能**内存泄漏**。
+由于单页面中，`Threejs`创建的任何材质，模型，贴图……只要含有`dispose`方法的，你在页面组件即将销毁的周期中，都要调用下`dispose`方法清除，不然可能**内存泄漏**。刚学会一个妙招，利用[WEBGL_lose_context](https://developer.mozilla.org/zh-CN/docs/Web/API/WEBGL_lose_context)这个 API 可以让当前的 webgl 环境失效，达到取消占用的目的。
 
 ```javascript
 beforeDestory(){
@@ -820,6 +822,10 @@ beforeDestory(){
       }
     }
 	*/
+	// this.renderer.domElement 就是你的threejs的canvas Dom
+	let gl = this.renderer.domElement.getContext("webgl");
+
+    gl && gl.getExtension("WEBGL_lose_context").loseContext();
 }
 ```
 
