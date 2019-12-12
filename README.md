@@ -5236,3 +5236,7 @@ function getPolygonAreaCenter(points) {
 
 getPolygonAreaCenter([{longitude: 117.240752, latitude: 31.819288}...]) // {x: 中心点, y: 中心点}
 ```
+
+**291. es6阮一峰的书搜索排名不是第一了，记录下网址**
+- http://es6.ruanyifeng.com/ 
+- 另外，es6 Array只加了少许一两个方法
