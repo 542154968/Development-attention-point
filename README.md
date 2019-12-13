@@ -5240,3 +5240,16 @@ getPolygonAreaCenter([{longitude: 117.240752, latitude: 31.819288}...]) // {x: �
 **291. es6阮一峰的书搜索排名不是第一了，记录下网址**
 - http://es6.ruanyifeng.com/ 
 - 另外，es6 Array只加了少许一两个方法
+
+**292. 获取当前月份的前六个月**
+```javascript
+function getDate(){
+	const date = new Date();
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1;
+	const allMonth = year * 12 + month
+	for(let i = allMonth - 6; i < allMonth; i++){
+		console.log(`${Math.floor( i / 12)}-${i % 12 + 1}`)
+	}
+}
+```
