@@ -5255,3 +5255,5 @@ function getDate(){
 ```
 
 **293. cesium有removeAll remove add 等方法很好用**
+
+**294. TS是趋势，应该拥抱他**
