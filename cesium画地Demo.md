@@ -789,12 +789,79 @@
     </script>
   </body>
 </html>
-
 ```
 
-
 ## 生成地块代码
+
 ```javascript
+/**
+ * cesium xy转经纬度
+ * @param {*} viewer cesium实例
+ * @param {*} Math cesium.Math
+ * @param {*} position 当前{x,y}坐标
+ */
+export const xy2LngLat = (viewer, Math, position) => {
+  const worldPosition = xy2WorldPosition(viewer, position);
+  const cartographic = viewer.scene.globe.ellipsoid.cartesianToCartographic(
+    worldPosition
+  );
+  return {
+    lng: Math.toDegrees(cartographic.longitude),
+    lat: Math.toDegrees(cartographic.latitude),
+    alt: cartographic.height
+  };
+};
+
+import {
+  PointPrimitiveCollection,
+  Cartesian3,
+  Color,
+  HeightReference,
+  CallbackProperty,
+  PolygonHierarchy,
+  ScreenSpaceEventType,
+  PointPrimitive,
+  // createWorldTerrain,
+  ScreenSpaceEventHandler,
+  SceneTransforms
+  // Math
+  // ScreenSpaceEventType,
+} from "cesium/Cesium";
+import { Math as CesiumMath } from "cesium/Cesium";
+import { xy2LngLat } from "@common/utils";
+
+function getHalfArea(p0, p1, p2) {
+  var area = 0.0;
+  area =
+    p0.longitude * p1.latitude +
+    p1.longitude * p2.latitude +
+    p2.longitude * p0.latitude -
+    p1.longitude * p0.latitude -
+    p2.longitude * p1.latitude -
+    p0.longitude * p2.latitude;
+  return area / 2;
+}
+
+function getPolygonAreaCenter(points) {
+  let sum_x = 0;
+  let sum_y = 0;
+  let sum_area = 0;
+  let p0 = points[0];
+  let p1 = points[1];
+  let length = points.length;
+  for (let i = 2; i < length; i++) {
+    let p2 = points[i];
+    let area = getHalfArea(p0, p1, p2);
+    sum_area += area;
+    sum_x += (p0.longitude + p1.longitude + p2.longitude) * area;
+    sum_y += (p0.latitude + p1.latitude + p2.latitude) * area;
+    p1 = p2;
+  }
+  let xx = sum_x / sum_area / 3;
+  let yy = sum_y / sum_area / 3;
+  return { x: xx, y: yy };
+}
+
 // lnglat {lng:xx,lat:xx} [lng,lat,lng,lat]
 function InitPolygon(viewer, lnglat, data) {
   this.startLngLat = lnglat;
@@ -809,18 +876,38 @@ function InitPolygon(viewer, lnglat, data) {
   this.pointMoved = false;
   this.activePointIndex = null;
   this.scenePosition = { x: 0, y: 0 };
+  this.centerPosition = { x: 0, y: 0 };
   this._init();
 }
 InitPolygon.prototype = {
   constructor: InitPolygon,
-  setEditStatus(status) {
-    this._removeEventListener();
-    if (status) {
-      this._createPoints();
-      this._addEventListener();
-    } else {
-      this._deletePoints();
-    }
+
+  // _checkLngLat: function(){
+  //   var lnglat = this.startLngLat;
+  //   if(){}
+  // },
+  _init() {
+    this._formatStartLngLat();
+    this._setCenterPosition();
+    this._initPointGroup();
+    this._formatPoints();
+    // this._createPoints();
+    this._createPolygon();
+    this._initHandler();
+    // this._addEventListener();
+  },
+
+  _setCenterPosition(points = this.userData.areaCoordList) {
+    !points && (points = this._array2ObjectArray(this.startLngLat));
+    const center = getPolygonAreaCenter(points);
+    this.centerPosition = new Cartesian3.fromDegrees(center.x, center.y);
+  },
+  _array2ObjectArray(arr) {
+    let newArr = [];
+    arr.forEach((v, k) => {
+      k % 2 === 0 && newArr.push({ longitude: arr[k], latitude: arr[k + 1] });
+    });
+    return newArr;
   },
   _positionUpdated(position) {
     let scenePosition = SceneTransforms.wgs84ToWindowCoordinates(
@@ -829,18 +916,6 @@ InitPolygon.prototype = {
     );
     scenePosition && (this.scenePosition = scenePosition);
   },
-  // _checkLngLat: function(){
-  //   var lnglat = this.startLngLat;
-  //   if(){}
-  // },
-  _init() {
-    this._initPointGroup();
-    this._formatPoints();
-    // this._createPoints();
-    this._createPolygon();
-    this._initHandler();
-    // this._addEventListener();
-  },
   _initPointGroup() {
     this.pointGroup = new PointPrimitiveCollection();
     this.viewer.scene.primitives.add(this.pointGroup);
@@ -848,20 +923,22 @@ InitPolygon.prototype = {
   _initHandler() {
     this.handler = new ScreenSpaceEventHandler(this.viewer.scene.canvas);
   },
-  _formatPoints() {
-    var lnglat = this.startLngLat;
-    if (Array.isArray(lnglat)) {
-      this.points = Cartesian3.fromDegreesArray(lnglat);
-    } else {
-      this.points = Cartesian3.fromDegreesArray([
+  _formatStartLngLat() {
+    let lnglat = this.startLngLat;
+    // 如果是创建的时候
+    if (!Array.isArray(lnglat)) {
+      this.startLngLat = [
         lnglat.lng,
         lnglat.lat,
         lnglat.lng + 0.01,
         lnglat.lat,
         lnglat.lng,
         lnglat.lat + 0.01
-      ]);
+      ];
     }
+  },
+  _formatPoints() {
+    this.points = Cartesian3.fromDegreesArray(this.startLngLat);
   },
   // [{}] || [[]] => [1,2,3,4,56,78]
   // _formatArr(arr){
@@ -905,17 +982,17 @@ InitPolygon.prototype = {
       name: "polygon",
       userData: that.userData,
       position: new CallbackProperty(() => {
-        let firstPoint = this.points[0];
-        let lastPoint = that.points[that.points.length - 1];
-        let position = new Cartesian3(
-          (firstPoint.x + lastPoint.x) / 2,
-          (firstPoint.y + lastPoint.y) / 2,
-          (firstPoint.z + lastPoint.z) / 2
-        );
-        this._positionUpdated(position);
+        // let firstPoint = this.points[0];
+        // let lastPoint = that.points[that.points.length - 1];
+        // let position = new Cartesian3(
+        //   (firstPoint.x + lastPoint.x) / 2,
+        //   (firstPoint.y + lastPoint.y) / 2,
+        //   (firstPoint.z + lastPoint.z) / 2
+        // );
+        this._positionUpdated(this.centerPosition);
         // const obj = getCenterPoint(this.points);
         // let position = new Cartesian3(obj.x, obj.y, 0);
-        return position;
+        return this.centerPosition;
       }, false), //that.points[0], // Cesium.Cartesian3.fromDegrees(lnglat.lng, lnglat.lat),
       polygon: {
         hierarchy: new CallbackProperty(function() {
@@ -943,9 +1020,9 @@ InitPolygon.prototype = {
         text: new CallbackProperty(function() {
           return that.userData.name; //Color.RED.withAlpha(0.5)
         }, false),
-        font: "14pt monospace",
-        eyeOffset: new Cartesian3(0.0, 200.0, 0.0),
-        pixelOffset: new Cartesian2(50, 15)
+        font: "14px Microsoft YaHei",
+        eyeOffset: new Cartesian3(0.0, 200.0, 0.0)
+        // pixelOffset: new Cartesian2(50, 15)
         // horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
         // verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         // style: Cesium.LabelStyle.FILL_AND_OUTLINE
@@ -960,11 +1037,12 @@ InitPolygon.prototype = {
     this.handler.removeInputAction(ScreenSpaceEventType.MOUSE_MOVE);
   },
   _addEventListener() {
+    document.addEventListener("mouseup", this._onLeftMouseUp.bind(this));
+
     this.handler.setInputAction(
       this._onLeftMouseUp.bind(this),
       ScreenSpaceEventType.LEFT_UP
     );
-    document.addEventListener("mouseup", this._onLeftMouseUp.bind(this));
 
     this.handler.setInputAction(
       this._onLeftMouseDown.bind(this),
@@ -977,8 +1055,8 @@ InitPolygon.prototype = {
     );
   },
   _onLeftMouseDown(event) {
-    var position = event.position;
-    var pickedFeature = this.viewer.scene.pick(position);
+    const position = event.position;
+    const pickedFeature = this.viewer.scene.pick(position);
     // console.log(pickedFeature);
     if (pickedFeature && pickedFeature.primitive instanceof PointPrimitive) {
       // 禁止旋转
@@ -992,13 +1070,14 @@ InitPolygon.prototype = {
   },
   _onMouseMove(event) {
     if (this.isMoving) {
-      var position = event.endPosition;
-      var worldPosition = this.viewer.scene.globe.pick(
+      const position = event.endPosition;
+      const worldPosition = this.viewer.scene.globe.pick(
         this.viewer.camera.getPickRay(position),
         this.viewer.scene
       );
-      var index = this.activePointIndex;
-      var curPosition = this.points[index];
+      const index = this.activePointIndex;
+      const curPosition = this.points[index];
+      // 移动多少范围
       if (
         Math.abs(curPosition.x - worldPosition.x) > 1 ||
         Math.abs(curPosition.y - worldPosition.y) > 1
@@ -1014,10 +1093,10 @@ InitPolygon.prototype = {
   },
   _onLeftMouseUp() {
     if (this.isMoving) {
-      this.viewer.scene.screenSpaceCameraController.enableRotate === false &&
-        (this.viewer.scene.screenSpaceCameraController.enableRotate = true);
+      this.viewer.scene.screenSpaceCameraController.enableRotate = true;
       this.isMoving = false;
       this.pointMoved && this._addPointsWithActivePoint();
+      this._setCenterPosition(this.getPointsByLnglat(true));
     }
   },
   // _updatePolygon: function() {
@@ -1026,24 +1105,24 @@ InitPolygon.prototype = {
   //   );
   // },
   _addPointsWithActivePoint() {
-    var index = this.activePointIndex;
-    var point = this.points[index];
+    let index = this.activePointIndex;
+    let point = this.points[index];
     // 0 1 2
     // 3
-    var prevPoint = this._isFirstPoint(index)
+    let prevPoint = this._isFirstPoint(index)
       ? this.points[this.points.length - 1]
       : this.points[index - 1];
     // 4
-    var nextPoint = this._isLastPoint(index)
+    let nextPoint = this._isLastPoint(index)
       ? this.points[0]
       : this.points[index + 1];
     // 0 3 1 4 2
-    var prevAddPoint = new Cartesian3(
+    let prevAddPoint = new Cartesian3(
       (point.x + prevPoint.x) / 2,
       (point.y + prevPoint.y) / 2,
       (point.z + prevPoint.z) / 2
     );
-    var nextAddPoint = new Cartesian3(
+    let nextAddPoint = new Cartesian3(
       (point.x + nextPoint.x) / 2,
       (point.y + nextPoint.y) / 2,
       (point.z + nextPoint.z) / 2
@@ -1058,27 +1137,40 @@ InitPolygon.prototype = {
   _isFirstPoint(index) {
     return index === 0;
   },
-  _catesian2Lnglat(catesian3) {
+  // fullName 是返回的是否是完整的坐标属性而不是简写的
+  _catesian2Lnglat(catesian3, fullName = false) {
     const cartographic = this.viewer.scene.globe.ellipsoid.cartesianToCartographic(
       catesian3
     );
-    return {
-      lat: CesiumMath.toDegrees(cartographic.latitude),
-      lng: CesiumMath.toDegrees(cartographic.longitude),
-      alt: cartographic.height
-    };
+    return fullName
+      ? {
+          latitude: CesiumMath.toDegrees(cartographic.latitude),
+          longitude: CesiumMath.toDegrees(cartographic.longitude),
+          alt: cartographic.height
+        }
+      : {
+          lat: CesiumMath.toDegrees(cartographic.latitude),
+          lng: CesiumMath.toDegrees(cartographic.longitude),
+          alt: cartographic.height
+        };
   },
   destory() {
     this._deletePoints();
     this._removeEventListener();
     this.entities.remove(this.polygon);
-    this.entities.remove(this.pointGroup);
     this.handler.destroy();
-
     this.points = [];
     this.data = {};
   },
-
+  setEditStatus(status) {
+    this._removeEventListener();
+    if (status) {
+      this._createPoints();
+      this._addEventListener();
+    } else {
+      this._deletePoints();
+    }
+  },
   resetUserData(data) {
     this.userData = Object.assign(this.userData, data);
     this.polygon.polygon.material = Color.fromAlpha(
@@ -1087,52 +1179,66 @@ InitPolygon.prototype = {
     );
   },
 
-  getPointsByLnglat() {
+  getPointsByLnglat(fullName = false) {
     return this.points.map(v => {
-      return this._catesian2Lnglat(v);
+      return this._catesian2Lnglat(v, fullName);
     });
   }
 };
 ```
 
 ## 生成模型位置代码
+
 ```javascript
 function InitModel(opts = { viewer: null, data: {} }) {
-  this.data = opts.data || {};
-  this.lnglatArr = [opts.data.longitude, opts.data.latitude];
+  this.userData = opts.data || {};
+  this.lnglatArr = [this.userData.longitude, this.userData.latitude];
+  this.worldPosition = null;
   this.viewer = opts.viewer;
   this.entities = this.viewer.entities;
   this.model = null;
   this.scenePosition = { x: 0, y: 0 };
+  this.isMoving = false;
+  this.handler = null;
   this._init();
 }
 InitModel.prototype = {
   constructor: InitModel,
   _init() {
+    this._setWorldPosition(Cartesian3.fromDegrees(...this.lnglatArr));
     this._initModel();
+    this._initHandler();
+    this._addEventListener();
+  },
+  _setWorldPosition(position) {
+    this.worldPosition = position;
+  },
+  _initHandler() {
+    this.handler = new ScreenSpaceEventHandler(this.viewer.scene.canvas);
   },
   _initModel() {
-    let position = Cartesian3.fromDegrees(...this.lnglatArr);
     let deg = 0;
     this.model = this.entities.add({
       name: "model",
       position: new CallbackProperty(() => {
-        this._positionUpdated(position);
-        return position;
+        // this.userData.infoWindow.show &&
+        this._positionUpdated(this.worldPosition);
+        return this.worldPosition;
       }, false),
+      // 自动旋转
       orientation: new CallbackProperty(() => {
         const heading = Math.toRadians(deg++);
         const pitch = 0;
         const roll = 0;
         const hpr = new HeadingPitchRoll(heading, pitch, roll);
         const orientation = Transforms.headingPitchRollQuaternion(
-          position,
+          this.worldPosition,
           hpr
         );
         deg >= 360 && (deg = 0);
         return orientation;
       }, false),
-      userData: this.data,
+      userData: this.userData,
       model: {
         uri: "glTF/Duck.gltf",
         minimumPixelSize: 128,
@@ -1149,12 +1255,67 @@ InitModel.prototype = {
       // }
     });
   },
+  // 实时计算弹窗位置
   _positionUpdated(position) {
     let scenePosition = SceneTransforms.wgs84ToWindowCoordinates(
       this.viewer.scene,
       position
     );
     scenePosition && (this.scenePosition = scenePosition);
+  },
+  _removeEventListener() {
+    document.removeEventListener("mouseup", this._onLeftMouseUp.bind(this));
+    this.handler.removeInputAction(ScreenSpaceEventType.LEFT_UP);
+    this.handler.removeInputAction(ScreenSpaceEventType.LEFT_DOWN);
+    this.handler.removeInputAction(ScreenSpaceEventType.MOUSE_MOVE);
+  },
+  _addEventListener() {
+    document.addEventListener("mouseup", this._onLeftMouseUp.bind(this));
+
+    this.handler.setInputAction(
+      this._onLeftMouseUp.bind(this),
+      ScreenSpaceEventType.LEFT_UP
+    );
+
+    this.handler.setInputAction(
+      this._onLeftMouseDown.bind(this),
+      ScreenSpaceEventType.LEFT_DOWN
+    );
+
+    this.handler.setInputAction(
+      this._onMouseMove.bind(this),
+      ScreenSpaceEventType.MOUSE_MOVE
+    );
+  },
+  _onLeftMouseDown(event) {
+    const position = event.position;
+    const pickedFeature = this.viewer.scene.pick(position);
+    // console.log(pickedFeature);
+    if (
+      pickedFeature &&
+      pickedFeature.id &&
+      pickedFeature.id._id === this.model._id
+    ) {
+      // 禁止旋转
+      this.viewer.scene.screenSpaceCameraController.enableRotate = false;
+      this.isMoving = true;
+    }
+  },
+  _onMouseMove(event) {
+    if (this.isMoving) {
+      const position = event.endPosition;
+      const worldPosition = this.viewer.scene.globe.pick(
+        this.viewer.camera.getPickRay(position),
+        this.viewer.scene
+      );
+      this._setWorldPosition(worldPosition);
+    }
+  },
+  _onLeftMouseUp() {
+    if (this.isMoving) {
+      this.viewer.scene.screenSpaceCameraController.enableRotate = true;
+      this.isMoving = false;
+    }
   }
 };
 ```

@@ -5054,7 +5054,7 @@ encodeURI('http://127.0.0.1:5501/examples/webgl_loader_3ds_demo.html ' )
 // "http://127.0.0.1:5501/examples/webgl_loader_3ds_demo.html%20"
 ```
 
-**262. Threejs 模型重叠闪动问题  **
+**262. Threejs 模型重叠闪动问题**
 [threejs- z-fighting 问题（模型的重叠部位便不停的闪烁起来。这便是Z-Fighting问题）](https://www.cnblogs.com/lst619247/p/9098845.html?tdsourcetag=s_pcqq_aiomsg)
 
 **263. 在使用新语法的时候，看下自己的babel是否支持转这个新语法**
@@ -5178,7 +5178,7 @@ temp1.onChange({target: $dom})
 ```
 - 一番操作，获取验证码按钮不经过手动触发点亮了
 
-**284. 天地图和百度地图坐标转化 **
+**284. 天地图和百度地图坐标转化**
 - https://blog.csdn.net/rrrrroy_Ha/article/details/89374211
 
 **285. undefined.xxx || ''这种形式还是会报错 - -**
