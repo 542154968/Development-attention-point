@@ -5258,3 +5258,45 @@ function getDate(){
 
 **294. TS是趋势，应该拥抱他**
 - https://segmentfault.com/a/1190000021344428 TS笔记小结
+
+
+**295. 利用column实现瀑布流**
+> 昨天忘了更新了，忙项目。。
+
+- DOM结构
+```html
+ <div :class="['column-container', { 'all-data': showAllData }]">
+    <div :class="['gateways-list']">
+      <template v-for="(item, index) in gateways">
+        <transition
+          tag="div"
+          name="el-zoom-in-center"
+          :key="item.model._id || index"
+        >
+          <!--内容-->
+          <div class="bg-contain">...</div>
+        </transition>
+      </template>
+    </div>
+  </div>
+  <style lang="scss">
+    .column-container {
+      &.all-data {
+        z-index: 4;
+        width: 464px;
+        overflow: auto;
+        .gateways-list {
+          columns: 215px 2;
+          column-gap: 0;
+          .bg-contain {
+            margin-bottom: 10px;
+            transform: translate(0, 0) !important;
+            position: static;
+            break-inside: avoid;
+            // float: left;
+          }
+        }
+      }
+    }
+  </style>
+```
