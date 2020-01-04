@@ -5300,3 +5300,37 @@ function getDate(){
     }
   </style>
 ```
+
+
+**296. `user-select:none;`拖拽时加上这个很方便，用户不会选择到东西**
+```javascript
+    handleMouseDown(event) {
+      const { clientX, clientY } = event;
+      // 获取盒子的  因为是相对于盒子做的偏移
+      const $parent = document.querySelector("#cesiumContainer");
+      const $parentBounding = $parent.getBoundingClientRect();
+      this.parentX = $parentBounding.left;
+      this.parentY = $parentBounding.top;
+      // 获取本身相对于屏幕的位置 计算出点击的偏移
+      const $bouding = this.$refs.contain.getBoundingClientRect();
+      this.offsetX = clientX - $bouding.left;
+      this.offsetY = clientY - $bouding.top;
+      this.addEvent();
+    },
+    handleMouseUp() {
+      this.removeEvent();
+    },
+    addEvent() {
+      document.addEventListener("mousemove", this.handleMove);
+      document.addEventListener("mouseup", this.handleMouseUp);
+    },
+    removeEvent() {
+      document.removeEventListener("mousemove", this.handleMove);
+      document.removeEventListener("mouseup", this.handleMouseUp);
+    },
+    handleMove(event) {
+      const { clientX, clientY } = event;
+      this.pageX = clientX - this.parentX - this.offsetX;
+      this.pageY = clientY - this.parentY - this.offsetY;
+    }
+```
