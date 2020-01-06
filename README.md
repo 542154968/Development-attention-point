@@ -5334,3 +5334,6 @@ function getDate(){
       this.pageY = clientY - this.parentY - this.offsetY;
     }
 ```
+
+**297. 如果要计算尺寸的dom结构有动画，动画可能会对计算值有影响**
+> 今天写slider拖拽，有transform移动的时候，计算总有偏差，包一层盒子是有原因的。
