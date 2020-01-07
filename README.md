@@ -5337,3 +5337,9 @@ function getDate(){
 
 **297. 如果要计算尺寸的dom结构有动画，动画可能会对计算值有影响**
 > 今天写slider拖拽，有transform移动的时候，计算总有偏差，包一层盒子是有原因的。
+
+**298. cesium的遮挡问题可以使用disableDepthTestDistance来解决**
+- 这个值就是高度，简单来讲 在这个高度范围内 这个优先级是最高的 
+- 比如point1 disableDepthTestDistance设置为  50,
+- point2 disableDepthTestDistance 设置为 100
+- 在100以外是按默认方式去遮挡，而在100以内就是他俩谁大谁在上面
