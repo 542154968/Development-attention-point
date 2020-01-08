@@ -5343,3 +5343,14 @@ function getDate(){
 - 比如point1 disableDepthTestDistance设置为  50,
 - point2 disableDepthTestDistance 设置为 100
 - 在100以外是按默认方式去遮挡，而在100以内就是他俩谁大谁在上面
+
+**299. 通用的模块封装暴露规则**
+```javascript
+var DracoDecoderModule = function(DracoDecoderModule) {}
+if (typeof exports === 'object' && typeof module === 'object')
+  module.exports = DracoDecoderModule;
+else if (typeof define === 'function' && define['amd'])
+  define([], function() { return DracoDecoderModule; });
+else if (typeof exports === 'object')
+  exports["DracoDecoderModule"] = DracoDecoderModule;
+```
