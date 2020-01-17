@@ -5357,3 +5357,6 @@ else if (typeof exports === 'object')
 
 **300. 项目开始前的规划很重要，如何拆分模块，代码等**
 - 不要写一半擦发现这样设计不好，尽量想好再开工！
+
+
+**301. window.history和popstate事件可以监听浏览器返回**
