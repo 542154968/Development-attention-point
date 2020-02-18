@@ -5360,3 +5360,5 @@ else if (typeof exports === 'object')
 
 
 **301. window.history和popstate事件可以监听浏览器返回**
+
+**302. 长假期间不要忘了充电**
