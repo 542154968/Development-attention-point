@@ -5367,3 +5367,5 @@ else if (typeof exports === 'object')
 - 比如修改成微信访问的标识`Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12A365   MicroMessenger/5.4.1 NetType/WIFI`就可以访问限制微信访问的页面了。
 
 **304. h(1-6)标签会继承有效父元素的字体大小，但是会基于这个大小放大一定倍数，除非H标签被设置了字体大小**
+
+**305. 学习从三个地方思考 如:为什么要有promise promise解决了哪些问题 如何解决的**
