@@ -5371,3 +5371,75 @@ else if (typeof exports === 'object')
 **305. 学习从三个地方思考 如:为什么要有promise promise解决了哪些问题 如何解决的**
 
 **306. SVG可以去画DOM之间的连线，很实用**
+
+**307. Cesium计算面积**
+```javascript
+// 角度转化为弧度(rad)
+const radiansPerDegree = Math.PI / 180.0;
+// 弧度转化为角度
+const degreesPerRadian = 180.0 / Math.PI;
+
+// 计算面积
+    // points是 [{lng, lat,},...]
+    // positions 是 [Cartesian3, Cartesian3...]
+	// 单位平方公里
+   function getAreaNum(points, positions) {
+      let res = 0;
+      //拆分三角曲面
+
+      for (let i = 0, l = points.length; i < l - 2; i++) {
+        let j = (i + 1) % points.length;
+        let k = (i + 2) % points.length;
+        let totalAngle = this.getAngle(points[i], points[j], points[k]);
+
+        let dis_temp1 = this.getDistance(positions[i], positions[j]);
+        let dis_temp2 = this.getDistance(positions[j], positions[k]);
+        res += dis_temp1 * dis_temp2 * Math.abs(Math.sin(totalAngle));
+      }
+
+      return (res / 1000000.0).toFixed(4);
+    },
+
+    /*角度*/
+    function getAngle(p1, p2, p3) {
+      let bearing21 = this.getBearing(p2, p1);
+      let bearing23 = this.getBearing(p2, p3);
+      let angle = bearing21 - bearing23;
+      if (angle < 0) {
+        angle += 360;
+      }
+      return angle;
+    },
+    /*方向*/
+    function getBearing(from, to) {
+      let lat1 = from.lat * radiansPerDegree;
+      let lon1 = from.lng * radiansPerDegree;
+      let lat2 = to.lat * radiansPerDegree;
+      let lon2 = to.lng * radiansPerDegree;
+      let angle = -Math.atan2(
+        Math.sin(lon1 - lon2) * Math.cos(lat2),
+        Math.cos(lat1) * Math.sin(lat2) -
+          Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2)
+      );
+      if (angle < 0) {
+        angle += Math.PI * 2.0;
+      }
+      angle = angle * degreesPerRadian; //角度
+      return angle;
+    },
+    // 获取亮点之间距离
+    function getDistance(point1, point2) {
+      let point1cartographic = Cartographic.fromCartesian(point1);
+      let point2cartographic = Cartographic.fromCartesian(point2);
+      /**根据经纬度计算出距离**/
+      let geodesic = new EllipsoidGeodesic();
+      geodesic.setEndPoints(point1cartographic, point2cartographic);
+      let s = geodesic.surfaceDistance;
+      //返回两点之间的距离
+      s = Math.sqrt(
+        Math.pow(s, 2) +
+          Math.pow(point2cartographic.height - point1cartographic.height, 2)
+      );
+      return s;
+    }
+```
