@@ -5443,3 +5443,16 @@ const degreesPerRadian = 180.0 / Math.PI;
       return s;
     }
 ```
+**308. Cesium加载Draco压缩后的模型**
+> 走了很多弯路
+
+1. 首先找到`node_modules/cesium/ThirdParty`目录
+2. 找到`draco_decoder.wasm`文件。
+3. 在项目根目录下的`public`目录下新建`ThirdParty`，将`draco_decoder.wasm`复制进去，然后加载模型的时候什么都不用改，还是
+```javascript 
+model:{
+	url: '模型目录'
+}
+```
+4. 就可以加载`Draco`压缩后的gltf模型了。
+5. 其实就只解析压缩模型的`js`目录问题 
