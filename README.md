@@ -5462,3 +5462,15 @@ model:{
 2. 算出点击点的世界坐标 然后减去模型中心点的世界坐标
 3. mousemove的时候 当前坐标减去2步骤算出的差值 xyz值都要
 4. mouseup还原初始值不要忘了
+
+**310. nvm设置淘宝镜像**
+1. 验证nvm是否安装成功：在cmd输入nvm version，有提示nvm版本信息，即安装 成功
+
+2. 然后输入nvm root，查看到nvm的路径信息，我的是C:\Users\Administrator\AppData\Roaming\nvm，所以在资源管理器上打开这个路径，找到里面的settings.txt，并打开
+3. 在文本的最后一行中加入这两行代码
+```text
+node_mirror: https://npm.taobao.org/mirrors/node/
+npm_mirror: https://npm.taobao.org/mirrors/npm/
+```
+4. 然后保存
+5. 保存文件之后，关掉cmd，再重新打开cmd，输入：nvm install [version]，就会启用淘宝镜像自动下载安装对应的node和npm版本。
