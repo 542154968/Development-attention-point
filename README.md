@@ -5474,3 +5474,14 @@ npm_mirror: https://npm.taobao.org/mirrors/npm/
 ```
 4. 然后保存
 5. 保存文件之后，关掉cmd，再重新打开cmd，输入：nvm install [version]，就会启用淘宝镜像自动下载安装对应的node和npm版本。
+
+**311. scss根据颜色生成对应的class名字**
+```scss
+ $colorList: 2dd382, 2dd358, eb6120;
+ $jing: "#";
+ @each $type in $colorList {
+   .td-#{$type} {
+     background: #{$jing}#{$type};
+   }
+ }
+```
