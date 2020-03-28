@@ -5971,3 +5971,12 @@ $jing: "#";
 ```
 
 **312. 图片防盗链的原理一般是通过判断请求的 referer 来判断是否来自自己的服务器，根据这点也可以去破解**
+
+**313. 上线紫金山庄查车牌系统总结**
+1. pm2使用npm命令
+```shell
+ pm2 start  npm --name test -- run dev
+
+ pm2 start npm --name test -- start 
+```
+2. mongodb数据库也是分角色的 最大的admin有所有权限，然后你每加一个数据库都要给这个数据库分配角色才行
