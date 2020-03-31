@@ -5980,3 +5980,57 @@ $jing: "#";
  pm2 start npm --name test -- start 
 ```
 2. mongodb数据库也是分角色的 最大的admin有所有权限，然后你每加一个数据库都要给这个数据库分配角色才行
+
+**314. 翻墙后无法node请求墙外站点**
+1.用shadowsocks能正常浏览网页，但是用node脚本请求的时候无法访问，于是查到这篇文章[翻墙后无法node请求墙外站点](https://cnodejs.org/topic/593d631a325c502917ef0881),找到原因，原来是因为`node不会自动通过代理服务器访问，`，又看到`ShadowSocks会产生代理连接，在你的nodejs程序里指定网路走这个代理即可，任何网络操作的库都可以设置代理，另外参考翻墙后。`
+2. 于是查`如何用Shadowsocks(R)代理非浏览器软件`，找到这篇[如何用Shadowsocks(R)代理非浏览器软件](https://vimcaw.github.io/blog/2018/03/12/%E5%A6%82%E4%BD%95%E7%94%A8Shadowsocks(R)%E4%BB%A3%E7%90%86%E9%9D%9E%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BD%AF%E4%BB%B6%E3%80%81%E6%B8%B8%E6%88%8F/)
+3. 复制请求头，然后把proxy写上`http://127.0.0.1:1080`即可
+```javascript
+const request = require("request");
+
+function action(index) {
+  request(
+    {
+      url: "https://hongzhi.li/",
+      method: "get",
+      proxy: "http://127.0.0.1:1080",
+      headers: {
+        // ":authority": "hongzhi.li",
+        // ":method": "GET",
+        // ":path": "/",
+        // ":scheme": "https",
+        accept:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+        "accept-encoding": "gzip, deflate, br",
+        "accept-language": "zh-CN,zh;q=0.9",
+        "cache-control": "no-cache",
+        cookie:
+          "__cfduid=dfbcf9cd7cd04cf561e2e420830530db71585626448; _ga=GA1.2.1145598630.1585626450; _gid=GA1.2.378198327.1585626450",
+        pragma: "no-cache",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "cross-site",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": 1,
+        "user-agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36"
+      }
+    },
+    function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        console.log("请求成功" + index); // 请求成功的处理逻辑
+      } else {
+        console.log("error");
+      }
+    }
+  );
+}
+
+let index = 1;
+// setInterval(() => {
+//   index++;
+
+// }, 20);
+action(index);
+
+```
