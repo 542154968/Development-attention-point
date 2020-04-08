@@ -6034,3 +6034,6 @@ let index = 1;
 action(index);
 
 ```
+
+**315. gltf-pipeline使用draco算法压缩报错，没有明确提示**
+- 可能是模型没有三角化处理，让建模把所有模型三角化。
