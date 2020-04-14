@@ -6120,3 +6120,5 @@ export default {
 **317. 骨架屏**
 1. 作为spa中路由切换的loading,结合组件的生命周期和ajax请求返回的时机来使用.
 2. 作为首屏渲染的优化.
+
+**318. windows系统想使用shell命令可以用git**
