@@ -6037,3 +6037,77 @@ action(index);
 
 **315. gltf-pipeline使用draco算法压缩报错，没有明确提示**
 - 可能是模型没有三角化处理，让建模把所有模型三角化。
+
+**316. vue自定义v-model**
+- ```javascript
+model: {
+    prop: '这个是传进来的props，比如你v-modle="text",那你的props里面就要写个text',
+    event: '这个是触发的事件名字，比如你写了个input 你@input="$emit('testEvent')",那你这里就要写上testEvent'
+}
+```
+- 子
+```vue
+<template>
+  <el-select @change="handleSelectChange" :value="selected">
+    <el-option :value="1">1</el-option>
+    <el-option :value="2">2</el-option>
+  </el-select>
+</template>
+
+<script>
+export default {
+  model: {
+    prop: "selected",
+    event: "change"
+  },
+  props: {
+    selected: {
+      default: ""
+    }
+  },
+  data() {
+    return {};
+  },
+  computed: {},
+  methods: {
+    handleSelectChange(value) {
+      this.$emit("change", value);
+    }
+  }
+};
+</script>
+<style lang=""></style>
+
+```
+- 父
+```vue
+<template>
+  <div>
+    {{ testValue }}
+    <ht-select v-model="testValue"></ht-select>
+  </div>
+</template>
+
+<script>
+
+import SelectVue from "./Select";
+
+export default {
+  components: {
+    "ht-select": SelectVue
+  },
+  data() {
+    return {
+      testValue: "1",
+      
+    };
+  },
+  
+
+};
+</script>
+<style lang="scss">
+
+</style>
+
+```
