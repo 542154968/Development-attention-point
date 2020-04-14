@@ -6039,13 +6039,18 @@ action(index);
 - 可能是模型没有三角化处理，让建模把所有模型三角化。
 
 **316. vue自定义v-model**
-- ```javascript
+- 
+```javascript
+
 model: {
     prop: '这个是传进来的props，比如你v-modle="text",那你的props里面就要写个text',
     event: '这个是触发的事件名字，比如你写了个input 你@input="$emit('testEvent')",那你这里就要写上testEvent'
 }
+
 ```
+
 - 子
+
 ```vue
 <template>
   <el-select @change="handleSelectChange" :value="selected">
@@ -6077,8 +6082,8 @@ export default {
 };
 </script>
 <style lang=""></style>
-
 ```
+
 - 父
 ```vue
 <template>
