@@ -6130,3 +6130,5 @@ export default {
 **321. 通过dom获取vue / react 的组件对象**
 - vue在dom对象中是`__vue__`
 - react在dom对象中是`__reactInternalInstance 加一串 has`
+
+**322. 有些域名收录会很差，买的时候注意啦！**
