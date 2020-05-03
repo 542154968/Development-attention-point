@@ -6132,3 +6132,5 @@ export default {
 - react在dom对象中是`__reactInternalInstance 加一串 has`
 
 **322. 有些域名收录会很差，买的时候注意啦！**
+
+**323. Hook很好用，早学早用，香~**
