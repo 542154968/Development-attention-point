@@ -6148,3 +6148,86 @@ export default {
 **327. threejs uv变化和点击移动摄像机**
 - 让贴图循环 然后每次渲染更改uv值
 - 移动摄像机可以用tweenjs移动过去 也可以用threejs的曲线函数然后获取点 让摄像机移动这些点就行了
+
+
+**328. threejs 通过控制器移动镜头效果**
+```javascirpt
+handleMouseDown(event) {
+      this.controls.coupleCenters = true;
+      let x = null;
+      let y = null;
+      if (event.changedTouches) {
+        x = event.changedTouches[0].pageX;
+        y = event.changedTouches[0].pageY;
+      } else {
+        x = event.clientX;
+        y = event.clientY;
+      }
+      this.mouse.x = (x / this.width) * 2 - 1;
+      this.mouse.y = -(y / this.height) * 2 + 1;
+      this.checkIntersection();
+    },
+    checkIntersection() {
+      this.raycaster.setFromCamera(this.mouse, this.camera);
+      var intersects = this.raycaster.intersectObjects(this.spriteArr, true);
+      if (intersects.length > 0) {
+        const obj = intersects[0].object;
+        const point = intersects[0].point;
+        const name = obj.name;
+        if (/^\w+$/i.test(name)) {
+          this.animateCamera(
+            { x: point.x - 2, y: point.y - 2, z: point.z - 2 },
+            point
+          );
+
+          // this.changeCameraPosition(point);
+          // 由于group中的对象获取不到世界坐标 所以通过终端的数组去获取世界坐标
+          obj.children.length <= 0
+            ? this.initDiv(obj)
+            : this.loadDetail(obj, name);
+        }
+      }
+    },
+
+    animateCamera(position, target) {
+      this.controls.enable = false;
+      let camera = this.camera;
+      let controls = this.controls;
+      let tween = new TWEEN.Tween({
+        px: camera.position.x, // 起始相机位置x
+        py: camera.position.y, // 起始相机位置y
+        pz: camera.position.z, // 起始相机位置z
+        tx: controls.target.x, // 控制点的中心点x 起始目标位置x
+        ty: controls.target.y, // 控制点的中心点y 起始目标位置y
+        tz: controls.target.z // 控制点的中心点z 起始目标位置z
+      });
+      tween.to(
+        {
+          px: position.x,
+          py: position.y,
+          pz: position.z,
+          tx: target.x,
+          ty: target.y,
+          tz: target.z
+        },
+        1000
+      );
+      tween.onUpdate(function() {
+        camera.position.x = this.px;
+        camera.position.y = this.py;
+        camera.position.z = this.pz;
+        controls.target.x = this.tx;
+        controls.target.y = this.ty;
+        controls.target.z = this.tz;
+        // console.log(camera.position, controls.target);
+        // controls.update()
+      });
+      tween.easing(TWEEN.Easing.Cubic.InOut);
+      tween.onComplete(() => {
+        controls.target = target;
+        this.controls.enable = false;
+        console.log("结束");
+      });
+      tween.start();
+    },
+```
