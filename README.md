@@ -6231,3 +6231,41 @@ handleMouseDown(event) {
       tween.start();
     },
 ```
+
+**329. webpack加了hash上线还是没变化？？？**
+> [浏览器静态资源缓存问题](https://www.jianshu.com/p/914607715804)
+
+- 很可能是服务端缓存了index.html
+```text
+location = /index.html {
+    add_header Cache-Control "no-cache, no-store";
+}   
+# Expire rules for static content
+
+# cache.appcache, your document html and data
+location ~* \.(?:manifest|appcache|html?|xml|json)$ {
+  expires -1;
+  # access_log logs/static.log; # I don't usually include a static log
+}
+
+# Feed
+location ~* \.(?:rss|atom)$ {
+  expires 1h;
+  add_header Cache-Control "public";
+}
+
+# Media: images, icons, video, audio, HTC
+location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)$ {
+  expires 1M;
+  access_log off;
+  add_header Cache-Control "public";
+}
+#ps: nginx也可以通过 expires 指令来设置浏览器的Header, 使用本指令可以控制HTTP应答中的“Expires”和“Cache-Control”的头标（起到控制页面缓存的作用）。
+例如  js css缓存一年：
+# CSS and Javascript
+location ~* \.(?:css|js)$ {
+  expires 1y;
+  access_log off;
+  add_header Cache-Control "public";
+}
+```
