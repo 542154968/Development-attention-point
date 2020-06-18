@@ -6294,3 +6294,19 @@ location ~* \.(?:css|js)$ {
 **330. 多试着写正则，很有用的**
 
 **331. 拥抱hooks 太好用了**
+
+**332. postman中的basic auth 在axios是{auth:{}}这个参数**
+```javascript
+//登录
+export function login(params) {
+  return fetch({
+    url: LOGIN,
+    method: "post",
+    params,
+    auth: {
+      username: "web",
+      password: "web"
+    }
+  });
+}
+```
