@@ -1,3 +1,8 @@
+# 配置
+
+## setting
+
+```json
 {
   "workbench.colorTheme": "Ysgrifennwr",
   "workbench.iconTheme": "vscode-icons",
@@ -43,3 +48,22 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
+```
+
+### 插件
+1. background
+2. Chinese
+3. Color info
+4. ESLint
+5. GitLens
+6. glTF Tools
+7. Image preview
+8. Import Cost
+9. Live Server
+10. Prettier - Code formatter
+11. stylus
+12. Syncing
+13. Vetur
+14. vscode-icons
+15. Vue Peek
+16. Ysgrifennwr Theme
