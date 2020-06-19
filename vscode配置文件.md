@@ -67,3 +67,5 @@
 14. vscode-icons
 15. Vue Peek
 16. Ysgrifennwr Theme
+17. Auto Rename Tag
+18. Auto Close Tag
