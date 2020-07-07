@@ -6315,3 +6315,13 @@ export function login(params) {
 - 同名函数会被后面的覆盖
 - 函数表达式是运行到这里才会被执行
 - 函数声明式是一开始就被提升到顶部
+
+**334. vue2中不想数据被vue监听，又想在template中用可以这样写**
+```javascript
+ export default {
+    data(){
+      this.list = [...]
+      return {}
+    }
+}
+```
