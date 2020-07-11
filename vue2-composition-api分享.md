@@ -1,6 +1,6 @@
 # @vue/composition-api分享
 
-该`API`现已稳定！
+该`API`现已稳定！本文主要是按照官方文档加上自己的理解编写，如若有误，烦请指正！
 
 💡 当迁移到 Vue 3 时，只需简单的将 `@vue/composition-api` 替换成 `vue` 即可。你现有的代码几乎无需进行额外的改动。
 
@@ -117,7 +117,7 @@
   }
   ```
 
-   第二个参数提供一个上下文对象，可以解构。这些API大家都知道就不一一介绍了，`root`是组件的实例。`attrs` 和 `slots` 都是内部组件实例上对应项的代理，可以确保在更新后仍然是最新值。所以可以解构，无需担心后面访问到过期的值。
+   第二个参数提供一个上下文对象，可以解构。这些API大家都知道就不一一介绍了，`root`是**根组件**的实例。`attrs` 和 `slots` 都是内部组件实例上对应项的代理，可以确保在更新后仍然是最新值。所以可以解构，无需担心后面访问到过期的值。
   ![image-20200710173426685](/Users/liqiankun/Library/Application Support/typora-user-images/image-20200710173426685.png)
 
 ## API介绍
@@ -377,9 +377,306 @@ console.log(count.value) // 0
   })
   ```
 
+- **immediate等**
+  监听路由变化
+
+  ```js
+  import { watch } from "@vue/composition-api";
+  
+  export default {
+    setup(props, { refs, root }) {
+      const { $route } = root;
+  
+      watch(
+        () => $route,
+        (to, from) => {
+          console.log(to, from);
+        },
+        { immediate: true }
+      );
+  
+      return {};
+    }
+  };
+  ```
+
+- **watch是可以停止的**
+
+  ```js
+  import { watch } from "@vue/composition-api";
+  
+  export default {
+    setup() {
+  
+      const stopWatch = watch('xxxx');
+      
+      // 执行即可停止监听
+      // watch返回一个函数 function(){ stop() }
+      stopWatch()
+  
+      return {};
+    }
+  };
+  ```
 
 
 
+### watchEffect
+
+立即执行传入的一个函数，并响应式追踪其依赖，并在其依赖变更时重新运行该函数。
+
+```js
+import { ref, watchEffect } from "@vue/composition-api";
+export default {
+  setup() {
+    const count = ref(0);
+
+    watchEffect(() => console.log(count.value)); // -> 打印出 0
+
+    setTimeout(() => {
+      count.value++; // -> 打印出 1
+    }, 100);
+
+    return {};
+  }
+};
+```
+
+#### 停止侦听
+
+当 `watchEffect` 在组件的 `setup()` 函数或生命周期钩子被调用时， 侦听器会被链接到该组件的生命周期，并在组件卸载时自动停止。
+
+在一些情况下，也可以显式调用返回值以停止侦听：
+
+```js
+const stop = watchEffect(() => {
+  /* ... */
+})
+
+// 之后
+stop()
+```
+
+#### 清除副作用
+
+有时副作用函数会执行一些异步的副作用, 这些响应需要在其失效时清除（即完成之前状态已改变了）。所以侦听副作用传入的函数可以接收一个 `onInvalidate` 函数作入参, 用来注册清理失效时的回调。当以下情况发生时，这个**失效回调**会被触发:
+
+- 副作用即将重新执行时
+- 侦听器被停止 (如果在 `setup()` 或 生命周期钩子函数中使用了 `watchEffect`, 则在卸载组件时)
+
+```js
+watchEffect((onInvalidate) => {
+  const token = performAsyncOperation(id.value)
+  onInvalidate(() => {
+    // id 改变时 或 停止侦听时
+    // 取消之前的异步操作
+    token.cancel()
+  })
+})
+```
+
+####  副作用刷新时机
+
+Vue 的响应式系统会缓存副作用函数，并异步地刷新它们，这样可以避免同一个 tick 中多个状态改变导致的不必要的重复调用。在核心的具体实现中, 组件的更新函数也是一个被侦听的副作用。当一个用户定义的副作用函数进入队列时, 会在所有的组件更新后执行：
+
+```html
+<template>
+  <div>{{ count }}</div>
+</template>
+
+<script>
+	import { ref, watchEffect } from "@vue/composition-api"';
+  export default {
+    setup() {
+      const count = ref(0)
+
+      watchEffect(() => {
+        console.log(count.value)
+      })
+
+      return {
+        count,
+      }
+    },
+  }
+</script>
+```
+
+在这个例子中：
+
+- `count` 会在初始运行时同步打印出来
+- 更改 `count` 时，将在组件**更新后**执行副作用。
+
+请注意，初始化运行是在组件 `mounted` 之前执行的。因此，如果你希望在编写副作用函数时访问 DOM（或模板 ref），请在 `onMounted` 钩子中进行：
+
+```js
+onMounted(() => {
+  watchEffect(() => {
+    // 在这里可以访问到 DOM 或者 template refs
+  })
+})
+```
+
+如果副作用需要同步或在组件更新之前重新运行，我们可以传递一个拥有 `flush` 属性的对象作为选项（默认为 `'post'`）：
+
+```js
+// 同步运行
+watchEffect(
+  () => {
+    /* ... */
+  },
+  {
+    flush: 'sync',
+  }
+)
+
+// 组件更新前执行
+watchEffect(
+  () => {
+    /* ... */
+  },
+  {
+    flush: 'pre',
+  }
+)
+```
+
+#### 侦听器调试
+
+`onTrack` 和 `onTrigger` 选项可用于调试一个侦听器的行为。
+
+- 当一个 reactive 对象属性或一个 ref 作为依赖被追踪时，将调用 `onTrack`
+- 依赖项变更导致副作用被触发时，将调用 `onTrigger`
+
+这两个回调都将接收到一个包含有关所依赖项信息的调试器事件。建议在以下回调中编写 `debugger` 语句来检查依赖关系：
+
+```js
+watchEffect(
+  () => {
+    /* 副作用的内容 */
+  },
+  {
+    onTrigger(e) {
+      debugger
+    },
+  }
+)
+```
+
+**`onTrack` 和 `onTrigger` 仅在开发模式下生效。**
+
+
+
+## 响应式系统工具集
+
+### unref
+
+如果参数是一个 ref 则返回它的 `value`，否则返回参数本身。它是 `val = isRef(val) ? val.value : val` 的语法糖。
+
+```js
+function useFoo(x: number | Ref<number>) {
+  const unwrapped = unref(x) // unwrapped 一定是 number 类型
+}
+```
+
+
+
+### toRef
+
+`toRef` 可以用来为一个 reactive 对象的属性创建一个 ref。这个 ref 可以被传递并且能够保持响应性。
+
+当您要将一个 prop 中的属性作为 ref 传给组合逻辑函数时，`toRef` 就派上了用场：
+
+```js
+export default {
+  setup(props) {
+    useSomeFeature(toRef(props, 'foo'))
+  },
+}
+```
+
+
+
+### `toRefs`
+
+把一个响应式对象转换成普通对象，该普通对象的每个 property 都是一个 ref ，和响应式对象 property 一一对应。
+
+当想要从一个组合逻辑函数中返回响应式对象时，用 `toRefs` 是很有效的，该 API 让消费组件可以 解构 / 扩展（使用 `...` 操作符）返回的对象，并不会丢失响应性：
+
+```js
+function useFeatureX() {
+  const state = reactive({
+    foo: 1,
+    bar: 2,
+  })
+
+  // 对 state 的逻辑操作
+
+  // 返回时将属性都转为 ref
+  return toRefs(state)
+}
+
+export default {
+  setup() {
+    // 可以解构，不会丢失响应性
+    const { foo, bar } = useFeatureX()
+
+    return {
+      foo,
+      bar,
+    }
+  },
+}
+```
+
+
+
+### isRef
+
+检查一个值是否为一个 ref 对象。
+
+
+
+## 高级响应式系统 API
+
+###  customRef
+
+`customRef` 用于自定义一个 `ref`，可以显式地控制依赖追踪和触发响应，接受一个工厂函数，两个参数分别是用于追踪的 `track` 与用于触发响应的 `trigger`，并返回一个一个带有 `get` 和 `set` 属性的对象
+
+- 使用自定义 ref 实现带防抖功能的 `v-model` ：
+
+  ```html
+  <input v-model="text" />
+  ```
+
+  ```js
+  function useDebouncedRef(value, delay = 200) {
+    let timeout
+    return customRef((track, trigger) => {
+      return {
+        get() {
+          track()
+          return value
+        },
+        set(newValue) {
+          clearTimeout(timeout)
+          timeout = setTimeout(() => {
+            value = newValue
+            trigger()
+          }, delay)
+        },
+      }
+    })
+  }
+  
+  export default {
+    setup() {
+      return {
+        text: useDebouncedRef('hello'),
+      }
+    },
+  }
+  ```
 
 
 
@@ -530,6 +827,276 @@ export default {
 </script>
 ```
 
+**在列表中使用**
+
+```vue
+<template>
+  <div class="about">
+    <ul>
+      <li v-for="i in 3" ref="liList" :key="i">{{ i }}</li>
+    </ul>
+  </div>
+</template>
+
+<script>
+import { ref, onMounted } from "@vue/composition-api";
+
+export default {
+  setup() {
+    const liList = ref([]);
+
+    onMounted(() => console.log(liList.value));
+
+    return { liList };
+  }
+};
+</script>
+
+```
+
+另一种方式
+
+```vue
+<template>
+  <div class="about">
+    <ul>
+      <li v-for="i in 3" ref="liList" :key="i">{{ i }}</li>
+    </ul>
+  </div>
+</template>
+
+<script>
+import { onMounted } from "@vue/composition-api";
+
+export default {
+  setup(props, { refs }) {
+    onMounted(() => console.log(refs.liList));
+
+    return {};
+  }
+};
+</script>
+
+```
+
+
+
+## 在setup中使用Vue-Router的API
+
+
+```js
+export default {
+  setup(props, { root }) {
+    
+    const { $router, $route } = root;
+    console.log($router, $route);
+    
+    // $router.push(...)
+    // $route.path ...
+    
+  }
+};
+```
+
+
+
+## 在setup中使用Vuex的API
+
+最简化版本的
+
+假如我们的`vuex`是这样定义的
+
+```js
+import Vue from "vue";
+import Vuex from "vuex";
+
+Vue.use(Vuex);
+
+export default new Vuex.Store({
+  state: { count: 0 },
+  mutations: {
+    ["CHAGNE_COUNT"](state) {
+      state.count++;
+    }
+  },
+  actions: {},
+  modules: {}
+});
+
+```
+
+在`setup`中，我们可以这样使用
+
+```vue
+<template>
+  <div class="about">
+    {{ $store.state.count }}
+  </div>
+</template>
+
+<script>
+export default {
+  setup(props, { root }) {
+    const { $store } = root;
+
+    $store.commit("CHAGNE_COUNT");
+
+    return {};
+  }
+};
+</script>
+
+```
+
+如何使用`mapState`、`mapGetters`、`mapActions`、`mapMutations`?
+
+直接在`return`的对象中解耦即可
+
+```vue
+<template>
+  <div class="about" @click="handleAddCount">
+    {{ $store.state.count }}
+  </div>
+</template>
+
+<script>
+import { mapMutations } from "vuex";
+export default {
+  setup() {
+    return { ...mapMutations({ handleAddCount: "CHAGNE_COUNT" }) };
+  }
+};
+</script>
+
+```
+
+
+
+## 组合式API
+
+
+
+### 命名规范
+
+我们建议使用 `use` 作为函数名的开头，以表示它是一个组合函数。
+
+
+
+### 逻辑的提取与复用
+
+我们创建一个`src/hooks/useMousePosition.js`的文件，内容如下
+
+```js
+import { ref, onMounted, onUnmounted } from "@vue/composition-api";
+
+export default function useMousePosition() {
+  const x = ref(0);
+  const y = ref(0);
+
+  function update(e) {
+    x.value = e.pageX;
+    y.value = e.pageY;
+  }
+
+  onMounted(() => {
+    window.addEventListener("mousemove", update);
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener("mousemove", update);
+  });
+
+  return { x, y };
+}
+
+```
+
+在单页面文件中使用
+
+```vue
+<template>
+  <div class="about">当前位置x: {{ x }} - y:{{ y }}</div>
+</template>
+
+<script>
+import useMousePosition from "../hooks/useMousePosition";
+export default {
+  setup() {
+    const { x, y } = useMousePosition();
+    return { x, y };
+  }
+};
+</script>
+
+```
+
+类似的逻辑复用也可以通过诸如 `mixins`、高阶组件或是 (通过作用域插槽实现的) 无渲染组件的模式达成。网上已经有很多解释这些模式的信息了所以我们不再赘述。更高层面的想法是，相比于组合函数，这些模式都有各自的弊端：
+
+- 渲染上下文中暴露的 property 来源不清晰。例如在阅读一个运用了多个 mixin 的模板时，很难看出某个 property 是从哪一个 mixin 中注入的。
+- 命名空间冲突。Mixin 之间的 property 和方法可能有冲突，同时高阶组件也可能和预期的 prop 有命名冲突。
+- 性能方面，高阶组件和无渲染组件需要额外的有状态的组件实例，从而使得性能有所损耗。
+
+相比而言，组合式 API：
+
+- 暴露给模板的 property 来源十分清晰，因为它们都是被组合逻辑函数返回的值。
+- 不存在命名空间冲突，可以通过解构任意命名
+- 不再需要仅为逻辑复用而创建的组件实例。
+
+
+
+
+
+
+### `setup()` 函数现在只是简单地作为调用所有组合函数的入口
+
+```js
+export default {
+  setup() {
+    // 网络状态
+    const { networkState } = useNetworkState()
+
+    // 文件夹状态
+    const { folders, currentFolderData } = useCurrentFolderData(networkState)
+    const folderNavigation = useFolderNavigation({
+      networkState,
+      currentFolderData,
+    })
+    const { favoriteFolders, toggleFavorite } = useFavoriteFolders(
+      currentFolderData
+    )
+    const { showHiddenFolders } = useHiddenFolders()
+    const createFolder = useCreateFolder(folderNavigation.openFolder)
+
+    // 当前工作目录
+    resetCwdOnLeave()
+    const { updateOnCwdChanged } = useCwdUtils()
+
+    // 实用工具
+    const { slicePath } = usePathUtils()
+
+    return {
+      networkState,
+      folders,
+      currentFolderData,
+      folderNavigation,
+      favoriteFolders,
+      toggleFavorite,
+      showHiddenFolders,
+      createFolder,
+      updateOnCwdChanged,
+      slicePath,
+    }
+  },
+}
+```
+
+- 每个逻辑关注点的代码现在都被组合进了一个组合函数。这大大减少了在处理大型组件时不断“跳转”的需要。
+- 你还可以根据传递的参数清楚地看到组合函数之间的依赖关系。
+- 最后的 return 语句作为单一出口确认暴露给模板的内容。
+- 当然这只是举个例子，项目中实际情况随机应变
+
+
+
 
 
 ## 缺失的 API
@@ -541,7 +1108,8 @@ export default {
 - `defineAsyncComponent`
 - `onRenderTracked`
 - `onRenderTriggered`
-- `customRef`
 - `isProxy`
 - `isReadonly`
 - `isVNode`
+
+
