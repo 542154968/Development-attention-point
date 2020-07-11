@@ -1113,10 +1113,148 @@ export default {
 
 
 
+## todoList
+
+目录结构
+
+```shell
+todoList
+|____index.vue
+|____hooks
+| |____useDataList.js
+| |____useLiEvent.js
+```
+
+index.vue
+
+```vue
+<template>
+  <div>
+    <div v-if="dataListLoadingStatus">加载中...</div>
+    <ul v-else>
+      <li v-for="item in dataList" :key="item.id" @click="handleClickLi(item)">
+        {{ item.text }}
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+import useDataList from "./hooks/useDataList";
+import useLiEvent from "./hooks/useLiEvent";
+
+export default {
+  setup() {
+    const { dataList, loadingStatus: dataListLoadingStatus } = useDataList();
+    const { handleClick: handleClickLi } = useLiEvent();
+
+    return {
+      dataList,
+      dataListLoadingStatus,
+      handleClickLi
+    };
+  }
+};
+</script>
+
+<style></style>
+
+```
+
+
+
+useDataList.js
+
+```js
+import { ref, onMounted } from "@vue/composition-api";
+
+/**
+ * 获取模拟的数据列表
+ * @returns {Array} dataList - 数据列表
+ * @returns {Boolean} loadingStatus - 请求状态
+ */
+function useDataList() {
+  /**
+   * 加载状态
+   */
+  const loadingStatus = ref(false);
+  /**
+   * 数据列表
+   */
+  const dataList = ref([]);
+
+  /**
+   * 模拟获取数据列表
+   */
+  function getDataList() {
+    changeLoadingStatus(true);
+
+    setTimeout(() => {
+      dataList.value = [
+        { id: 1, text: "小红" },
+        { id: 2, text: "小明" },
+        { id: 3, text: "小黄" }
+      ];
+
+      changeLoadingStatus(false);
+    }, 3000);
+  }
+
+  /**
+   * 更改loading状态
+   * @param {boolean} status 状态值
+   * @returns {void}
+   */
+  function changeLoadingStatus(status) {
+    loadingStatus.value = status;
+  }
+
+  onMounted(() => getDataList());
+
+  return {
+    dataList,
+    loadingStatus
+  };
+}
+
+export default useDataList;
+
+```
+
+
+
+UseLiEvent.js
+
+```js
+/**
+ * 点击li的回调
+ */
+function useLiEvent() {
+  /**
+   * 点击之后的回调
+   * @param {HTMLElement} item
+   */
+  function handleClick(item) {
+    console.log(item);
+  }
+
+  return {
+    handleClick
+  };
+}
+
+export default useLiEvent;
+
+```
+
+
+
+
+
 ## 鸣谢
 
 - [@vue/composition-api](https://github.com/vuejs/composition-api/blob/master/README.zh-CN.md)
 
-- [组合式 API 征求意见稿]([https://composition-api.vuejs.org/zh/#%E6%A6%82%E8%BF%B0](https://composition-api.vuejs.org/zh/#概述))
+- [组合式 API 征求意见稿](https://composition-api.vuejs.org/zh/#%E6%A6%82%E8%BF%B0)
 
 
