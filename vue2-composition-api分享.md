@@ -541,29 +541,7 @@ watchEffect(
 )
 ```
 
-#### 侦听器调试
 
-`onTrack` 和 `onTrigger` 选项可用于调试一个侦听器的行为。
-
-- 当一个 reactive 对象属性或一个 ref 作为依赖被追踪时，将调用 `onTrack`
-- 依赖项变更导致副作用被触发时，将调用 `onTrigger`
-
-这两个回调都将接收到一个包含有关所依赖项信息的调试器事件。建议在以下回调中编写 `debugger` 语句来检查依赖关系：
-
-```js
-watchEffect(
-  () => {
-    /* 副作用的内容 */
-  },
-  {
-    onTrigger(e) {
-      debugger
-    },
-  }
-)
-```
-
-**`onTrack` 和 `onTrigger` 仅在开发模式下生效。**
 
 
 
