@@ -597,7 +597,7 @@ export default {
 
 
 
-### `toRefs`
+### toRefs
 
 把一个响应式对象转换成普通对象，该普通对象的每个 property 都是一个 ref ，和响应式对象 property 一一对应。
 
@@ -900,6 +900,23 @@ export default {
 
 
 
+## 在setup中使用$nextTick等
+
+```js
+export default {
+  setup(props, { root }) {
+    
+    const { $nextTick } = root;
+    console.log($nextTick);
+    
+  }
+};
+```
+
+
+
+
+
 ## 在setup中使用Vuex的API
 
 最简化版本的
@@ -1097,8 +1114,6 @@ export default {
 
 
 
-
-
 ## 缺失的 API
 
 以下在 Vue 3 新引入的 API ，在本插件中暂不适用：
@@ -1111,5 +1126,19 @@ export default {
 - `isProxy`
 - `isReadonly`
 - `isVNode`
+
+
+
+## JSX
+
+截稿前，官方提供的`bable`插件仍存在`bug`，不能使用。
+
+
+
+## 鸣谢
+
+- [@vue/composition-api](https://github.com/vuejs/composition-api/blob/master/README.zh-CN.md)
+
+- [组合式 API 征求意见稿]([https://composition-api.vuejs.org/zh/#%E6%A6%82%E8%BF%B0](https://composition-api.vuejs.org/zh/#概述))
 
 
