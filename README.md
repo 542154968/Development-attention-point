@@ -6345,3 +6345,34 @@ alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 2、安装 tree
+
+**337. 项目配置git提交检查**
+1. 安装依赖
+```shell
+npm i -D husky lint-staged @commitlint/cli @commitlint/config-conventional
+```
+2. 根目录创建`commitlint.config.js`
+```js
+module.exports = {
+  extends: [
+    '@commitlint/config-conventional'
+  ]
+}
+```
+3. 修改`package.json`
+```json
+{
+    "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{js,vue}": [
+      "npm run lint",
+      "git add"
+    ]
+  }
+}
+```
