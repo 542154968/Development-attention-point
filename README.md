@@ -6327,3 +6327,21 @@ export function login(params) {
 ```
 
 **335. 后端返回的数据不要做类型判断，如果数据格式错误就应该报错，如果一定要做异常数据格式判断，要加个提示，不要为了健壮性让该报错的地方不报错**
+
+**336. mac os 生成树结构**
+Mac没有自带的tree命令，需要额外安装才可以，操作方法有两种：
+
+一、用find命令模拟tree效果
+1、mac下默认是没有 tree命令的，不过我们可以使用find命令模拟出tree命令的效果，如显示当前目录的 tree 的命令：
+$ find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
+
+2、当然你也可以写一个别名来快速执行该命令，运行如下命令，将上面这个命令写到~/.bash_profile里，以后直接运行tree命令就更方便了:
+alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
+
+二、安装tree
+因为安装tree需要用brew命令，所以先安装Homebrew
+1、安装Homebrew https://brew.sh/index_zh-cn.html
+在终端输入下面指令
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+2、安装 tree
