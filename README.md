@@ -6378,3 +6378,19 @@ module.exports = {
 ```
 
 **338. 在忙也不要忘了学习**
+
+**339. vue computed 传参**
+```javascript
+computed: {
+  text() {
+    return function (index) {
+      return this.Ratedata[index].currentRate.toFixed(0) + '%';
+    }
+  }
+}
+
+
+const getActiveStatus = computed(() => index => {
+  return activeIndex.value === index;
+});
+```
