@@ -6394,3 +6394,24 @@ const getActiveStatus = computed(() => index => {
   return activeIndex.value === index;
 });
 ```
+
+**340. services层应该处理一些数据**
+- 避免与业务层耦合度高，举个例子
+```javascript
+import axios from '@/libs/http';
+import { formatDataByType } from '@libs/assist';
+import * as types from '@/api/types';
+
+export const getDurgTypeList = params => {
+  return axios
+    .get(types.GETRootTypeList, params)
+    .then(res => formatDataByType(res.data));
+};
+
+export const getDrugTypeByIdAndKeyword = params => {
+  return axios
+    .get(types.GETDrugTypeByIdAndKeyword, params)
+    .then(res => formatDataByType(res.data));
+};
+
+```
