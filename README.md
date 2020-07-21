@@ -6415,3 +6415,5 @@ export const getDrugTypeByIdAndKeyword = params => {
 };
 
 ```
+
+**341. $attrs只能接收父props中没有的，而且不是响应式的**
