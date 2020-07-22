@@ -97,7 +97,7 @@
 `setup` 函数是一个新的组件选项。作为在组件内使用 Composition API 的入口点。
 
 - **调用时机**
-  创建组件实例，然后初始化 `props` ，紧接着就调用`setup` 函数。从生命周期钩子的视角来看，它会在 `beforeCreate` 钩子之前被调用
+  创建组件实例，然后初始化 `props` ，紧接着就调用`setup` 函数。从生命周期钩子的视角来看，它会在 `beforeCreate` 钩子之前被调用 但是在`vue2.x`版本中，是先执行`beforeCreatd` 之后是`setup`再是`created`
 
 - **模板中使用**
   如果 `setup` 返回一个对象，则对象的属性将会被合并到组件模板的渲染上下文
@@ -317,6 +317,8 @@ export default {
 传入一个 getter 函数，返回一个默认不可手动修改的 ref 对象。
 
 ```js
+import { computed } from "@vue/composition-api";
+// ...
 const count = ref(1)
 const plusOne = computed(() => count.value + 1)
 
@@ -328,6 +330,8 @@ plusOne.value++ // 错误！
 或者传入一个拥有 `get` 和 `set` 函数的对象，创建一个可手动修改的计算状态。
 
 ```js
+import { computed } from "@vue/composition-api";
+// ...
 const count = ref(1)
 const plusOne = computed({
   get: () => count.value + 1,
@@ -338,6 +342,16 @@ const plusOne = computed({
 
 plusOne.value = 1
 console.log(count.value) // 0
+```
+
+传参
+
+```js
+import { computed } from "@vue/composition-api";
+// ...
+const getActiveStatus = computed(() => index => {
+  return activeIndex.value === index;
+});
 ```
 
 
@@ -1109,7 +1123,142 @@ export default {
 
 ## JSX
 
-截稿前，官方提供的`bable`插件仍存在`bug`，不能使用。
+使用`babel`插件[babel-preset-vca-jsx](https://github.com/luwanquan/babel-preset-vca-jsx)
+
+### 使用前提
+
+已安装`@vue/composition-api`和`@vue/cli-plugin-babel`的项目
+
+### 如何使用?
+
+1. 安装
+
+   ```
+   npm install babel-preset-vca-jsx --save-dev
+   ```
+
+2. 配置 `babel.config.js`
+
+   ```
+   module.exports = {
+       presets: [
+           "vca-jsx",
+           "@vue/cli-plugin-babel/preset"
+       ]
+   };
+   ```
+
+### 注意
+
+- 这里需要区分默认的 `functional`组件和基于 `composition-api` 的 `functional`组件的概念
+
+  - 默认的 `functional`组件实质是 `render`函数，`jsx`中的简写写法如下
+
+    ```
+    const Test = ({ props, children, data, ... }) => {
+        return <h1>Hello World!</h1>;
+    };
+    ```
+
+    **注：变量名首字母必须为大写，具体回调参数见[详情](https://cn.vuejs.org/v2/guide/render-function.html#函数式组件)**
+
+  - 基于本插件的 `composition-api functional`实质是 `setup`函数，`jsx`中的简写写法如下
+
+    ```
+    const Test = (props, { refs, emit, ... }) => {
+        return () => <h1>Hello World!</h1>;
+    };
+    ```
+
+    **注：与默认`functional`的区别是返回了一个`render`函数**
+    
+  - 现在写的函数式组件 props无法正常拿到，疑似没有定义props类型，全通过attrs传了进来
+  
+  - 如果出现 `"export 'createElement' (imported as 'h') was not found in '@vue/composition-api'`
+    
+    删除`node_modules`，
+    然后`npm install`
+    找到`node_modules`里面的`babel-preset-vca-jsx/src/babel-sugar-inject-h.js`，修改里面的代码
+    [requests-#12](https://github.com/luwanquan/babel-preset-vca-jsx/pull/12)
+    
+    ```js
+    // t.isImportSpecifier(s) && s.imported.name === 'h' && s.local.name === 'h'
+       t.isImportSpecifier(s) && s.local.name === 'h'
+    ```
+  
+
+### demo
+
+#### jsx与vue-router
+
+写一个jsx文件 比如名字叫`Page.jsx`
+
+```javascript
+import { ref } from "@vue/composition-api";
+
+const Hello = () => {
+  const state = ref("Hello World!");
+  return () => <h1>{state.value}</h1>;
+};
+
+export default {
+  setup(props, ctx) {
+    console.log(ctx);
+    return () => (
+      <h1>
+       // jsx中组件不用注册 直接使用 不会注册到全局中
+        page1 <Hello></Hello>
+      </h1>
+    );
+  }
+};
+
+```
+
+在路由中这样引入
+
+```javascript
+{
+    path: "/page",
+    name: "page",
+    component: () => import(/* webpackChunkName: "page" */ "../views/Page.jsx")
+  }
+```
+
+
+
+#### jsx与vue文件混用
+
+```javascript
+import Page from './Page.jsx'
+export default {
+  components:{
+    Page
+  } 
+}
+```
+
+
+
+#### jsx与props
+
+```javascript
+const Button = {
+  props: {
+    type: {},
+    size: {}
+  },
+  setup(props, ctx) {
+    return () => (
+      <el-button props={props}>
+        {ctx.slots.default()}---{props.size}
+      </el-button>
+    );
+  }
+};
+```
+
+
 
 
 
