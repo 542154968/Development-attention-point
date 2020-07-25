@@ -6417,3 +6417,60 @@ export const getDrugTypeByIdAndKeyword = params => {
 ```
 
 **341. $attrs只能接收父props中没有的，而且不是响应式的**
+
+**342. 当子路由不是菜单如何优雅的进行高亮**
+```vue
+<template>
+  <el-scrollbar class="layout-aside__scrollbar">
+    <el-menu :default-active="activeMenu" router>
+      <template v-for="item in routes">
+        <el-submenu
+          :key="item.path"
+          :index="item.path"
+          v-if="Array.isArray(item.children) && item.children.length > 0"
+        >
+          <template slot="title">
+            <MenuContain :item="item" />
+          </template>
+          <MenuItem
+            v-for="child in item.children"
+            :child="child"
+            :key="child.path"
+            :index="child.path"
+          />
+        </el-submenu>
+        <MenuItem v-else :child="item" :key="item.path" :index="item.path" />
+      </template>
+    </el-menu>
+  </el-scrollbar>
+</template>
+
+<script>
+import { computed } from '@vue/composition-api';
+import routes from '@router/menuList';
+import MenuItem from './MenuItem';
+import MenuContain from './MenuContain';
+
+export default {
+  components: { MenuItem, MenuContain },
+  setup(props, { root }) {
+    // 设置默认高亮的菜单
+    const activeMenu = computed(() => {
+      const { meta, path } = root.$route;
+      // 这种针对于子路由不是菜单但是又需要高亮菜单的情况
+      return meta.activeMenu ? meta.activeMenu : path;
+    });
+
+    return {
+      routes,
+      activeMenu
+    };
+  }
+};
+</script>
+
+<style lang="scss">
+
+</style>
+
+```
