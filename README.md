@@ -6474,3 +6474,28 @@ export default {
 </style>
 
 ```
+
+**343. 弹窗的visible维护新思路**
+- 以前是父传props到子的el-dialog组件，子再emit update改变父
+- 新的思路是用hooks想出来的 通过一个外部变量维护visible 父子通过改变这个变量去控制显示隐藏 就避免了emit props这些东西
+```js
+import { useDialog } from '@hooks/index';
+import { ref, onBeforeUnmount } from '@vue/composition-api';
+
+// 在外部管理 它会始终存在直到组件销毁 相当于一个小型vuex
+// 我们只通过方法去改变而不能直接改变
+const visible = ref(false);
+
+export default function usePackageDialog() {
+  const { handleChangeVisible } = useDialog(visible);
+  // 组件因为在这里维护的并不会被销毁 所以等销毁后变为false
+  // 不能设为null 销毁不掉
+  onBeforeUnmount(() => handleChangeVisible(false));
+
+  return {
+    visible,
+    handleChangeVisible
+  };
+}
+
+```
