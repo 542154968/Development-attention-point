@@ -6499,3 +6499,13 @@ export default function usePackageDialog() {
 }
 
 ```
+
+**344. 不知道什么时候开始火狐已经兼容多行省略文本了**
+```scss
+@mixin textRowEllipsis($row) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $row;
+  overflow: hidden;
+}
+```
