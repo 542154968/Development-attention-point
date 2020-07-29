@@ -6509,3 +6509,36 @@ export default function usePackageDialog() {
   overflow: hidden;
 }
 ```
+
+**345. vuehook数据共享可以写在use方法外面而方法共享可以使用观察者模式**
+```javascript
+/**
+ * 一个简易的观察者对象
+ */
+export class Subject {
+  constructor() {
+    this.observes = [];
+  }
+
+  /**
+   * 添加一个观察者 key是观察者的id 避免重复 updateFn是回调函数
+   * @param {string} key
+   * @param {function} updateFn
+   */
+  addObserve(key, updateFn) {
+    const index = this.observes.findIndex(v => v.key === key);
+    const observe = { key, updateFn };
+    index > -1
+      ? this.observes.splice(index, 1, observe)
+      : this.observes.push(observe);
+  }
+
+  removeAll(SSS) {
+    this.observes = [SSS];
+  }
+
+  notify() {
+    this.observes.forEach(v => v.updateFn());
+  }
+}
+```
