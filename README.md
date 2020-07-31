@@ -6542,3 +6542,23 @@ export class Subject {
   }
 }
 ```
+
+**346. onbeforeunload来显示离开提示**
+```js
+import { onUnmounted } from '@vue/composition-api';
+
+export default function useBeforeunload() {
+  window.onbeforeunload = function() {
+    return '确定离开吗？';
+  };
+
+  onUnmounted(() => remove());
+
+  function remove() {
+    console.log('un');
+    window.onbeforeunload = null;
+  }
+  return { remove };
+}
+
+```
