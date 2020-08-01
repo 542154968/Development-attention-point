@@ -6562,3 +6562,5 @@ export default function useBeforeunload() {
 }
 
 ```
+
+**346. 如果几个组件共用一个数据联动 一定要写在vuex或者别的能统一管理里面**
