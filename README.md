@@ -6571,3 +6571,9 @@ export default function useBeforeunload() {
 **348. 又遇到了数组高阶循环的问题**
 1. forEach循环删除数组 用的splice，发现清空的时候删不干净，因为删掉一项数组长度就变了，所以总会漏掉
 2. 解决方案：用delte删除 删完之后  arr = arr.filter(v=>v)
+
+**349. new Date的奇淫技巧**
+- new Date(2014,4,0).toLocaleString()
+- "2014/4/30 上午12:00:00"
+- new Date(2014,4,1).toLocaleString()
+- "2014/5/1 上午12:00:00"
