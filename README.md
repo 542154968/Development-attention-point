@@ -6577,3 +6577,34 @@ export default function useBeforeunload() {
 - "2014/4/30 上午12:00:00"
 - new Date(2014,4,1).toLocaleString()
 - "2014/5/1 上午12:00:00"
+
+**350. scss根据颜色数组生成类型class**
+```scss
+$colorList: (
+    type: "primary",
+    color: $primaryColor,
+  ),
+  (
+    type: "success",
+    color: $successColor,
+  ),
+  (
+    type: "warning",
+    color: $warningColor,
+  ),
+  (
+    type: "danger",
+    color: $dangerColor,
+  ),
+  (
+    type: "info",
+    color: $infoColor,
+  );
+
+@for $i from 1 through length($colorList) {
+  $item: nth($colorList, $i);
+  &.#{map-get($item, type)} {
+    background: map-get($item, color);
+  }
+}
+```
