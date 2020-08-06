@@ -1259,7 +1259,27 @@ const Button = {
 ```
 
 
+## Babel的设置
 
+如果您引入完整的babel了，可跳过该章。如果是`vue-cli`默认的按需引入，需要在`vue.config.js`中增加如下配置，用以兼容IE。
+
+```javascript
+const path = require('path');
+const resolve = function(dir) {
+  return path.join(__dirname, dir);
+};
+
+module.exports = {
+	// ...
+  transpileDependencies: ['@vue/composition-api'],
+  chainWebpack: config => {
+    config.module
+      .rule('js')
+      .include.add(resolve('node_modules/@vue/composition-api'))
+  }
+  // ...
+}  
+```
 
 
 ## todoList
