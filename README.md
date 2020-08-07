@@ -6608,3 +6608,13 @@ $colorList: (
   }
 }
 ```
+
+**351. elementui打包之后图标偶尔乱码**
+> [elementui生产环境图标加载时偶而乱码](https://blog.csdn.net/palmer_kai/article/details/105728156)
+
+- 如果加载资源没问题的情况下，就是dart-sass造成的，打包之后看app.css el-icon的里面是不是不能识别的乱码
+```shell
+npm uninstall sass
+npm install node-sass
+```
+- 之后再打包看到正常了 不是乱码
