@@ -6618,3 +6618,14 @@ npm uninstall sass
 npm install node-sass
 ```
 - 之后再打包看到正常了 不是乱码
+
+**352. vue render函数渲染html标签**
+```javascript
+render(h, data) {
+   return h("div", {
+      domProps: {
+          innerHTML: data.row.instanceExeParams // 这里是要渲染的数据
+      }
+   })
+}
+```
