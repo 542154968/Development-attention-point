@@ -6619,7 +6619,7 @@ npm install node-sass
 ```
 - 之后再打包看到正常了 不是乱码
 
-**352. vue render函数渲染html标签**
+**352. vue render函数、jsx渲染html标签**
 ```javascript
 render(h, data) {
    return h("div", {
@@ -6628,4 +6628,18 @@ render(h, data) {
       }
    })
 }
+```
+```javascript
+render() {
+   return (
+      <div id="cropper">
+        <div {...{
+          domProps: {
+            innerHTML: this.previewHTML
+          }
+          }}>
+        </div>
+      </div >
+    )
+  }
 ```
