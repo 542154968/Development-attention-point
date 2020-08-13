@@ -6642,4 +6642,10 @@ render() {
       </div >
     )
   }
+  // -------------
+  render (createElement) {
+     return (
+         <button domPropsInnerHTML={htmlContent}></button>
+     )
+ }
 ```
