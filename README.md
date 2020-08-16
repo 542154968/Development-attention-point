@@ -6649,3 +6649,13 @@ render() {
      )
  }
 ```
+
+
+**353. mac动态壁纸是用的是heic格式的图片**
+这个图片大概内容是一个json配置文件加上一些图片，live图片貌似也是基于这个。
+相关资料
+1. [https://www.jianshu.com/p/377f31da0c5d](如何自己动手制作macOS系统Heic动态壁纸
+)
+2. [https://zhuanlan.zhihu.com/p/35847861](HEIF/heic图片文件解析)
+3. [https://itnext.io/macos-mojave-dynamic-wallpaper-fd26b0698223?gi=dbd14796f401](macOS Mojave dynamic wallpaper. How Apple built dynamic wallpapers? And… | by Marcin Czachurski | ITNEXT)
+4. [https://github.com/asvinours/jpeg-to-heif](JPEG image to HEIF image)
