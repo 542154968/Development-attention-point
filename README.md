@@ -6659,3 +6659,21 @@ render() {
 2. [https://zhuanlan.zhihu.com/p/35847861](HEIF/heic图片文件解析)
 3. [https://itnext.io/macos-mojave-dynamic-wallpaper-fd26b0698223?gi=dbd14796f401](macOS Mojave dynamic wallpaper. How Apple built dynamic wallpapers? And… | by Marcin Czachurski | ITNEXT)
 4. [https://github.com/asvinours/jpeg-to-heif](JPEG image to HEIF image)
+
+**354. scss如何别写BEM规范代码**
+```scss
+.person {
+  @at-root #{&}__hand {
+    color: red;
+    @at-root #{&}--left {
+     color: yellow;
+    }
+  }
+  @at-root #{&}--female {
+    color: blue;
+    @at-root #{&}__hand {
+      color: green;
+    }
+  }
+}
+```
