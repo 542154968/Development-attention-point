@@ -6677,3 +6677,17 @@ render() {
   }
 }
 ```
+提取公共项编写
+```scss
+@mixin atRoot($modify) {
+  @at-root #{&}#{$modify} {
+    @content;
+  }
+}
+#app {
+  position: relative;
+  @include atRoot(__hand) {
+    background: red;
+  }
+}
+```
