@@ -6691,3 +6691,5 @@ render() {
   }
 }
 ```
+
+**355. vuerouter的base要开history模式貌似才行**
