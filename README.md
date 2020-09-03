@@ -6706,3 +6706,14 @@ render() {
 - 可以尝试只抽离复用组件 页面逻辑用hooks抽开 mixins就算了太乱
 
 **369. ?.叫可选链 xxx!.是ts的判断，这个属性一定存在的判断**
+
+**370. chrome浏览器查看placeholder样式**
+- 在控制台的setting中勾选`show user agent shadow DOM`即可
+- 另外在做contenteditable 的dom元素时，可以使用设置placeholder
+```css
+.input-box:empty::before {
+  content: attr(placeholder);
+  color: #c0c4cc;
+  opacity: 0.8;
+}
+```
