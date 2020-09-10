@@ -6717,3 +6717,37 @@ render() {
   opacity: 0.8;
 }
 ```
+
+**371. el-select多选内容不能撑开**
+- 在change和tag-remove中调用此方法
+```js
+let cacheTagWidthObj = {};
+
+/**
+   * 重新计算宽度
+   */
+  function hanldeDiseaseChoicedChange() {
+    setTimeout(() => {
+      const { $el } = refs.diagnoseSelect;
+      if (!$el) {
+        return;
+      }
+      const tagList = Array.from($el.querySelectorAll('.el-tag'));
+      let maxWidth = Math.max(
+        ...tagList.map(v => {
+          const text = v.textContent;
+          const cacheWidth = cacheTagWidthObj[text];
+          if (isId(cacheWidth)) {
+            return cacheWidth;
+          } else {
+            const { offsetWidth } = v;
+            cacheTagWidthObj[v.textContent] = offsetWidth;
+            return offsetWidth;
+          }
+        })
+      );
+      const minWidth = maxWidth < 192 ? 192 : maxWidth + 20;
+      diseaseSelectWidth.value = minWidth + 55;
+    }, 0);
+  }
+```
