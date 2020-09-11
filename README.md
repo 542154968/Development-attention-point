@@ -6751,3 +6751,16 @@ let cacheTagWidthObj = {};
     }, 0);
   }
 ```
+
+**372. toLocaleString的妙用**
+```javascript
+new Date().toLocaleString('ja-JP-u-ca-chinese')
+// "一,二三四,五六七,八九〇"
+
+new Number(1234567890).toLocaleString('zh-Hans-CN-u-nu-hanidec')
+"庚子年7月24日 16:36:57"
+
+let num = 223232332
+num.toLocaleString()
+// '223,232,332'
+```
