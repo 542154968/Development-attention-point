@@ -6764,3 +6764,5 @@ let num = 223232332
 num.toLocaleString()
 // '223,232,332'
 ```
+
+**373. div加上tabindex就可以出发键盘事件了**
