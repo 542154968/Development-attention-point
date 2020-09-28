@@ -6766,3 +6766,5 @@ num.toLocaleString()
 ```
 
 **373. div加上tabindex就可以出发键盘事件了**
+
+**373. getClientRects可以获取内联元素有多少行**
