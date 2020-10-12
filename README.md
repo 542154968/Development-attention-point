@@ -6768,3 +6768,34 @@ num.toLocaleString()
 **373. div加上tabindex就可以出发键盘事件了**
 
 **373. getClientRects可以获取内联元素有多少行**
+
+**374. if与局部全局变量的关系**
+> https://www.zhihu.com/question/265381252
+
+1. if里的函数声明首先会定义一个全局同名变量a=undefined
+
+2. if里的函数赋值会提升到块作用域顶部
+
+3. 执行到函数声明语句时,会把块作用域里的a赋值到全局同名变量a
+
+4. 基于行为诡异，不同浏览器实现不同，建议在if里用函数表达式代替函数声明
+
+```javascript
+var a = 0;
+console.log(window.a, a) // undefined undefined 对应解释1
+if(true) {
+  console.log(window.a, a) // undefined function a(){} 对应解释2
+  a = 0.5; 
+  console.log(window.a, a) // undefined 0.5 
+  a = 1;
+  console.log(window.a, a) // undefined 1 对应解释2
+  function a(){} // 对应解释3
+  a = 21;
+  console.log(window.a, a) // 1 21 
+  a = 30
+  console.log(window.a, a) // 1 30
+  
+}
+
+console.log(a)
+```
