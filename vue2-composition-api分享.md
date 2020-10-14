@@ -20,6 +20,12 @@
 
 
 
+return {
+
+​	co
+
+}
+
 ## 安装与使用
 - `vue create app`创建`vue 2.x`项目或现有`vue 2.x`项目
 
@@ -101,6 +107,10 @@
 
 - **模板中使用**
   如果 `setup` 返回一个对象，则对象的属性将会被合并到组件模板的渲染上下文
+  
+- **this**
+由于 setup() 在解析 2.x 选项前被调用，setup() 中的 this 将与 2.x 选项中的 this 完全不同。同时在 setup() 和 2.x 选项中使用 this 时将造成混乱。
+
 
 - **参数**
 
@@ -117,8 +127,12 @@
   }
   ```
 
-   第二个参数提供一个上下文对象，可以解构。这些API大家都知道就不一一介绍了，`root`是**根组件**的实例。`attrs` 和 `slots` 都是内部组件实例上对应项的代理，可以确保在更新后仍然是最新值。所以可以解构，无需担心后面访问到过期的值。
+   第二个参数提供一个上下文对象，可以解构。这些API大家都知道就不一一介绍了，`root`（vue3中不存在root了 要注意）是**new Vue**的实例。`attrs` 和 `slots` 都是内部组件实例上对应项的代理，可以确保在更新后仍然是最新值。所以可以解构，无需担心后面访问到过期的值。
   ![image-20200710173426685](/Users/liqiankun/Library/Application Support/typora-user-images/image-20200710173426685.png)
+
+
+
+
 
 ## API介绍
 
@@ -674,8 +688,6 @@ export default {
 
 ## 生命周期
 
-可以直接导入 `onXXX` 一族的函数来注册生命周期钩子
-
 ```js
 import {
   onMounted,
@@ -871,6 +883,8 @@ export default {
 
 ```
 
+⚠️ **警告**: `SetupContext.refs` 并非 `Vue 3.0` 的一部分, `@vue/composition-api` 将其暴露在 `SetupContext` 中只是临时提供一种变通方案。
+
 
 
 ## 在setup中使用Vue-Router的API
@@ -890,6 +904,39 @@ export default {
 };
 ```
 
+但是要注意，vue3中的composition-api是没有root的
+
+```js
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRouter } from 'vue-router'
+
+// 获得router实例对象
+const router = useRouter()
+```
+
+在vue2中可以自己封装个useRouter 避免后期升级vue3带来的麻烦。
+
+```js
+// 这个是vue router的实例
+import $router from '@router/';
+
+/**
+ * 使用路由的公共逻辑
+ */
+export default function useRouter() {
+  const { currentRoute } = $router;
+  const { query } = currentRoute;
+  return {
+    $router,
+    $route: currentRoute,
+    query,
+    currentRoute
+  };
+}
+
+```
+
+
+
 
 
 ## 在setup中使用$nextTick等
@@ -897,15 +944,13 @@ export default {
 ```js
 export default {
   setup(props, { root }) {
-    
     const { $nextTick } = root;
     console.log($nextTick);
-    
   }
 };
 ```
 
-
+注意  vue3中没有 root ，使用`import { nextTick } from 'vue'`代替
 
 
 
@@ -957,7 +1002,7 @@ export default {
 
 ```
 
-如何使用`mapState`、`mapGetters`、`mapActions`、`mapMutations`?
+如何使用`mapActions`、`mapMutations`?
 
 直接在`return`的对象中解耦即可
 
@@ -978,6 +1023,8 @@ export default {
 </script>
 
 ```
+
+注意， vue3中由于没有root，新的vuex暴露了useStore这个方法  使用这个获得vuex实例，可以自己封装个useStore
 
 
 
@@ -1134,7 +1181,7 @@ export default {
 1. 安装
 
    ```
-   npm install babel-preset-vca-jsx --save-dev
+   npm install babel-preset-vca-jsx -dev
    ```
 
 2. 配置 `babel.config.js`
@@ -1259,6 +1306,7 @@ const Button = {
 ```
 
 
+
 ## Babel的设置
 
 如果您引入完整的babel了，可跳过该章。如果是`vue-cli`默认的按需引入，需要在`vue.config.js`中增加如下配置，用以兼容IE。
@@ -1280,6 +1328,7 @@ module.exports = {
   // ...
 }  
 ```
+
 
 
 ## todoList
@@ -1425,5 +1474,4 @@ export default useLiEvent;
 - [@vue/composition-api](https://github.com/vuejs/composition-api/blob/master/README.zh-CN.md)
 
 - [组合式 API 征求意见稿](https://composition-api.vuejs.org/zh/#%E6%A6%82%E8%BF%B0)
-
 
