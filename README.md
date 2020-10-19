@@ -6809,24 +6809,35 @@ console.log(a)
 **376. node输出彩色字**
 > https://www.jb51.net/article/175493.htm
 
-其意义如下：
+其原理最重要的一个知识点就是ANSI Escape code.
 
+ASCII编码中有些字符是不能用来在终端中打印显示的，比如'\a' 0x7代表响铃，'\n' 0x0A代表换行，这些字符被称为控制符。
+
+而其中的一个控制符 '\e' 0x1B比较特殊，这个字符代表 ESC ，即键盘上 ESC 按键的作用。ESC 是单词 escape 的缩写，即逃逸的意思。文本中出现这个控制符，表示接下来的字符是ANSI Escape code编码。
+
+而ANSI Escape code编码中有专门控制字符颜色的控制符，例如：\e[31;44;4;1m
+
+\e 控制符的16进制码为 0x1B ， 8 进制码为 033 
+
+其意义如下：
 \e 代表开始ANSI Escape code
 [ 代表转义序列开始符 CSI，Control Sequence Introducer
 31;44;4;1 代表以; 分隔的文本样式控制符，其中 31 代表文本前景色为红色，44代表背景为蓝色，4代表下划线，1代表加粗
 m 代表结束控制符序列
 
 ```javascript
+const NODE_EMPTY_TEXT_STYLE = '\x1B[0m';
+
 // 一开始是 \033 这种eslint会报错 在严格模式下不准使用八进制之类的
 // 将 \033改为\x1B就行了
 console.log(`
-${'\x1B[41;30m'} 注意 ${NODE_EMPTY_TEXT_STYLE}
-项目拆分成多入口了，访问地址出现变动
-${'\x1B[0;31m'}1.${NODE_EMPTY_TEXT_STYLE}能力平台 协议://域名:端口/index.html
-${'\x1B[0;32m'}2.${NODE_EMPTY_TEXT_STYLE}体验平台 协议://域名:端口/index.html
-${'\x1B[0;33m'}3.${NODE_EMPTY_TEXT_STYLE}AI门户   协议://域名:端口/door.html
+${'\x1B[41;32;1;30m'} 注意 ${NODE_EMPTY_TEXT_STYLE}
+项目拆分成${'\x1B[91;1m'}多入口${NODE_EMPTY_TEXT_STYLE}了，访问地址出现变动
+${'\x1B[31m'}1.${NODE_EMPTY_TEXT_STYLE}能力平台 协议://域名:端口/index.html
+${'\x1B[32m'}2.${NODE_EMPTY_TEXT_STYLE}体验平台 协议://域名:端口/index.html
+${'\x1B[33m'}3.${NODE_EMPTY_TEXT_STYLE}AI门户   协议://域名:端口/door.html
 
-例如 
-访问AI门户  http://localhost:8081/door.html
+${'\x1B[42;31;1m'} 例如 ${NODE_EMPTY_TEXT_STYLE}
+访问AI门户  http://localhost:8080/door.html
  `);
 ```
