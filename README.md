@@ -6844,3 +6844,7 @@ ${'\x1B[42;31;1m'} 例如 ${NODE_EMPTY_TEXT_STYLE}
 
 
 **377. tweenjs能做好多动画好用**
+
+**378. window.onload ondocumentready**
+- onload会等页面dom静态资源加载完毕 html里的  后面再加的不算
+- ondocumentread只是等待dom完毕
