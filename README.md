@@ -6850,3 +6850,6 @@ ${'\x1B[42;31;1m'} 例如 ${NODE_EMPTY_TEXT_STYLE}
 - ondocumentread只是等待dom完毕
 
 **379. 前端脚手架生成工具可以使用 Yeoman 和 plop**
+
+**380. tab按键阻止默认事件的一些点**
+- tab切换的时候 有时候会失去焦点 或焦点不在el上 可以 el.focus 加上el.click 强制聚焦
