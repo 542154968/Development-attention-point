@@ -6874,3 +6874,186 @@ ${'\x1B[42;31;1m'} 例如 ${NODE_EMPTY_TEXT_STYLE}
 - 超链接跳转  
 
 **389. chrome浏览器滚动条样式还是可以调调的**
+
+**390. antv G6 踩坑记录**
+1. 分辨率改变重绘,自适应布局
+```js
+const { width, height } = $el.getBoundingClientRect();
+graph.changeSize(width, height);
+```
+
+2. 清空    `graph.clear()`
+3. 销毁 `graph.destory()`
+4. 数据如何更新？
+```js
+// 直接修改数据源， 然后调用 graph.changeData()
+activeItem.label = diseaseName;
+activeItem.diseaseId = abilityId;
+graph.changeData();
+```
+5. 设置disabled和active状态
+```javascript
+graph.findAll('node', node => {
+  const nodeId = node._cfg.id;
+  graph.setItemState(nodeId, 'disabled', true);
+})
+```
+6. 键盘事件
+```javascript
+const key2Event = {
+      Backspace: deleteNode,
+      Enter: insertBrother,
+      Tab: insertChild,
+      'ctrl-z': handleCancel,
+      'ctrl-y': handleDeCancel,
+      'ctrl-c': handleCopyNode,
+      'ctrl-v': handlePasteNode
+    };
+/**
+ * 键盘事件的逻辑
+ * @param {*} key2Event
+ * @param {*} getEditStatus
+ */
+export default function useKeyEvent(key2Event, getEditStatus) {
+  let ctrolActiveStatus = false;
+  /**
+   * 触发键盘事件快捷操作
+   */
+  const ctrlArr = ['Meta', 'Control'];
+  function handlekeyDown(event) {
+    if (getEditStatus()) {
+      return;
+    }
+    // event.preventDefault();
+    let key = event.key;
+    // 兼容苹果笔记本和windows系统 键盘差异
+    if (key === 'Delete') {
+      key = 'Backspace';
+    }
+    // 阻止tab（避免切换点击区域）、 ctrl+z、 ctrl+y、ctrl+c、ctrl+v默认事件  重写了这几个行为
+    if (
+      key === 'Tab' ||
+      (ctrolActiveStatus && ['z', 'y', 'c', 'v'].includes(key))
+    ) {
+      event.preventDefault();
+    }
+
+    // 是否点击了ctrl 或common键
+    ctrlArr.includes(key) && (ctrolActiveStatus = true);
+
+    key = `${ctrolActiveStatus ? 'ctrl-' : ''}${key}`;
+    const fn = key2Event[key];
+    typeof fn === 'function' && fn();
+  }
+
+  function handleKeyUp(event) {
+    const key = event.key;
+    ctrlArr.includes(key) && (ctrolActiveStatus = false);
+  }
+
+  return {
+    ctrolActiveStatus,
+    handlekeyDown,
+    handleKeyUp
+  };
+}       
+```
+7. 自定义dom-node如何自适应布局
+```js
+// 我们的业务场景是宽度固定 然后高度根据输入的文字自适应 我们每行高度是26 每行最多7个字 所以用7来分割算出来高度  渲染的时候拿不到dom高度 只能这样推算了
+// 思路就是 自定义node中的宽高与layout中的宽高保持一致
+// 之后布局就不会有遮挡了
+// 然后更新宽高调用graph.refreshItem(id); 这个方法
+
+
+// 定义一个自定义node
+ G6.registerNode('dom-node', {
+      setState(name, value, item) {
+        const group = item.getContainer();
+        const shape = group.get('children')[0]; // 顺序根据 draw 时确定
+        shape.attrs[name] = value;
+      },
+      draw: (cfg, group) => {
+       
+        return group.addShape('dom', {
+          attrs: {
+            x: 0,
+            y: 0,
+	    // 核心 26是每行高度
+            height: Math.ceil(cfg.label.length / 7) * 26 || 26,
+            width: 120,
+           
+            html() {
+              return `<p 
+	      contenteditable
+              data-id=${cfg.id} 
+	      title="${cfg.label}">
+	      ${
+                cfg.label
+              }
+	      </p>`;
+            },
+            name: 'p-shape'
+          }
+        });
+      }
+    });
+
+// 实例化
+const { width, height } = refs.contain.getBoundingClientRect();
+      graph = new G6.TreeGraph({
+        container: 'mountNode', // String | HTMLElement，必须，在 Step 1 中创建的容器 id 或容器本身
+        width, // Number，必须，图的宽度
+        height, // Number，必须，图的高度
+	// 必须设置为svg  不然自定义node不出来
+        renderer: 'svg',
+        modes: {
+          default: [
+            {
+              type: 'collapse-expand',
+              onChange: function onChange(item, collapsed) {
+                const data = item.get('model').data;
+                data.collapsed = collapsed;
+                return true;
+              }
+            },
+            'drag-canvas',
+            'zoom-canvas'
+          ]
+        },
+        // 定义布局
+        layout: {
+          type: 'compactBox',
+          direction: 'LR',
+	  // 核心
+          getHeight: node => {
+            return Math.ceil(node.label.length / 7) * 26 || 26;
+          },
+          getWidth: () => {
+            return 120; 
+          },
+          getHGap: () => {
+            return 40;
+          },
+          getVGap: () => {
+            return 20;
+          }
+        },
+        defaultNode: {
+          type: 'dom-node',
+          anchorPoints: [
+            [0, 0.5],
+            [1, 0.5]
+          ],
+          style: {
+            fill: '#cee3fc',
+            stroke: '#C6E5FF'
+          }
+        },
+        
+      });
+      
+//  之后改变p标签里的文字 就调用这个方法  id是p树的子节点
+      graph.refreshItem(id);
+```
+8. node的增删改查要注意动画时间
