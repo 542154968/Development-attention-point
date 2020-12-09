@@ -7057,3 +7057,12 @@ const { width, height } = refs.contain.getBoundingClientRect();
       graph.refreshItem(id);
 ```
 8. node的增删改查要注意动画时间
+
+
+**391. 规范的环境名称**
+- dev:开发环境
+- qa:测试环境
+- online:生产环境
+- pl: 预上线
+- grey: 灰度
+      
