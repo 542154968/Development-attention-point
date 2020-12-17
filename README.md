@@ -7067,3 +7067,5 @@ const { width, height } = refs.contain.getBoundingClientRect();
 - grey: 灰度
       
 **392. axios create的使用场景是创建多个实例 然后根据不同的实例访问不同的服务配置**
+
+**393. 没去过大公司一定要去体验下，工作流程、福利、小公司真的很难比**
