@@ -7071,3 +7071,49 @@ const { width, height } = refs.contain.getBoundingClientRect();
 **393. 没去过大公司一定要去体验下，工作流程、福利、小公司真的很难比**
 
 **394. 可选链能用就用避免多次数据判断 方便  还有?? 避免隐式转换 很nice**
+
+**395. 记一次node和nginx配合**
+1. 首先服务端装好npm、 pm2、nrm
+2. 本地调试好expess代码 将代码上传到服务器
+3. pm2 启动express服务
+4. 修改nginx配置 可以include一个 
+```conf
+server {
+        listen       3333;
+        server_name   172.31.242.57;
+	    client_max_body_size 100m;
+
+		proxy_set_header Host $host;
+        proxy_set_header Cookie $http_cookie;
+
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+            root html;
+        }
+
+		#root /disk1/cdss/web/dist;
+		#index index.html;
+
+        location /imts/ {	
+		    proxy_pass http://localhost:2233/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+					
+        }
+
+        location / {
+			add_header 'Access-Control-Allow-Origin' '*';		
+			include  uwsgi_params;
+			proxy_pass http://172.31.200.110:8701/;
+			proxy_set_header Host $http_host;   
+			proxy_set_header Cookie $http_cookie;
+			
+			client_max_body_size 10m; 
+        }
+    }
+```
+5. 然后重启nginx
+进入nginx 的 sbin 目录 `./nginx -s reload -c /disk1/jjlei/env/nginx/conf/nginx.conf` 输入这个
+6. 访问即可
