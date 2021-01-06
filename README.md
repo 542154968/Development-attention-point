@@ -7117,3 +7117,56 @@ server {
 5. 然后重启nginx
 进入nginx 的 sbin 目录 `./nginx -s reload -c /disk1/jjlei/env/nginx/conf/nginx.conf` 输入这个
 6. 访问即可
+
+**396. 将vue页面打包成npm包思路**
+1. 搞个入口文件 比如`package/index.js`
+```javascript
+import PaintedChart from '@/views/statistic/index.js';
+
+const components = [PaintedChart];
+
+const install = function(Vue) {
+  components.forEach(component => {
+    Vue.component(component.name, component);
+  });
+};
+
+/* istanbul ignore if */
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue);
+}
+
+export default {
+  install,
+  PaintedChart
+};
+
+```
+2. `package.json`打包build命令改为 ` "build": "vue-cli-service build --target lib --name cdssChart ./package/index.js"`
+- cdssChart 是npm包名
+- ./package/index.js 是打包入口
+
+3. 给vue页面添加一个index.js 让页面暴露出去 在`src/views/statistic/`目录下
+```JavaScript
+import PaintedChart from '@/views/statistic/index.js';
+
+const components = [PaintedChart];
+
+const install = function(Vue) {
+  components.forEach(component => {
+    Vue.component(component.name, component);
+  });
+};
+
+/* istanbul ignore if */
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue);
+}
+
+export default {
+  install,
+  PaintedChart
+};
+
+```
+4. 然后运行  npm run build 发布到私有npm上就行了
