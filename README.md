@@ -7170,3 +7170,22 @@ export default {
 
 ```
 4. 然后运行  npm run build 发布到私有npm上就行了
+
+**397. 对于高频繁的请求的优化**
+1. 如果有个同步文件的操作向服务器发送请求，用户每点击一次，需要发送一个，对服务器压力高，可以使用代理模式，缓存操作，等待一段时间之后集中发送
+```js
+const proxyFile = (function(){
+  let cache = [];
+  let timer = null;
+  return function(id){
+    cache.push(id);
+    if(timer){ return };
+    timer = setTimeout(function(){
+      // 传递。。。
+      clearTimeout(timer);
+      cache.length = 0;
+      timer = null;
+    }, 200)
+  }
+})()
+```
