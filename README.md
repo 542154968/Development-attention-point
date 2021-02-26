@@ -7189,3 +7189,6 @@ const proxyFile = (function(){
   }
 })()
 ```
+
+**398. 多页面的时候可以使用环境变量控制run哪个项目，比较方便**
+1. devserve配置open  和 openPage  利用环境变量控制openPage即可拉
