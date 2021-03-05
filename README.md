@@ -7192,3 +7192,66 @@ const proxyFile = (function(){
 
 **398. 多页面的时候可以使用环境变量控制run哪个项目，比较方便**
 1. devserve配置open  和 openPage  利用环境变量控制openPage即可拉
+
+**399. webpack5 上手**
+```javascript
+const HtmlWebpackPlugin = require("html-webpack-plugin"); // 通过 npm 安装
+const webpack = require("webpack"); // 访问内置的插件
+const path = require("path");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+
+const config = {
+  // 构建目标 默认是node  要改成web 热更新才有用
+  target: "web",
+  entry: "./src/main.js",
+  output: {
+    filename: "render.js",
+    path: path.resolve(__dirname, "dist"),
+    scriptType: "text/javascript",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: "babel-loader",
+      },
+    ],
+  },
+  plugins: [
+    new webpack.ProgressPlugin(),
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+      scriptLoading: "blocking",
+      inject: "head",
+    }),
+  ],
+  devServer: {
+    contentBase: path.join(__dirname, "public"), // boolean | string | array, static file location
+    hot: true, // hot module replacement. Depends on HotModuleReplacementPlugin
+    noInfo: true, // only errors & warns on hot reload
+    open: true,
+    compress: true,
+    overlay: true,
+    inline: true,
+    // ...
+  },
+};
+
+module.exports = (env, argv) => {
+  if (argv.mode === "development") {
+    config.devtool = "source-map";
+  }
+  if (argv.mode === "production") {
+    //...
+    config.optimization = {
+      minimize: true,
+      minimizer: [new TerserPlugin()],
+    };
+  }
+  return config;
+};
+
+```
