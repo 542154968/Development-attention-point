@@ -53,7 +53,7 @@ let tools = {
   returnNum(num) {
     isNaN(num) && (num = 0);
     return Number(num);
-  }
+  },
 };
 let logic = {
   // 你的逻辑函数
@@ -96,10 +96,10 @@ var glob = {
   // 全局函数 用来实现作用域间的通信
   // 这里定义全局的属性和一些别的
 };
-(function() {
+(function () {
   // 作用域1 这是业务逻辑A的部分
 })();
-(function() {
+(function () {
   // 作用域2 这是业务逻辑B的部分
 })();
 
@@ -184,20 +184,20 @@ str.slice(0, 39);
 ```javascript
 status = false;
 function timeout(long) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     window.scrollTo(0, long);
     setTimeout(resolve, 0);
   });
 }
 
-$(document).click(function() {
+$(document).click(function () {
   status = true;
-  timeout(200).then(function() {
+  timeout(200).then(function () {
     status = false;
   });
 });
 
-$(window).scroll(function() {
+$(window).scroll(function () {
   if (status == "true") {
     console.log("点击事件触发的");
   } else if (status == "false") {
@@ -398,7 +398,7 @@ isNaN("666"); // false
 var m = { a: 1, b: { c: 2, d: [3, 4] }, e: { f: { g: "6" } } };
 var obj = {};
 function planeHouse(m, child) {
-  Object.keys(m).forEach(function(v, k) {
+  Object.keys(m).forEach(function (v, k) {
     if (Object.prototype.toString.call(m[v]) === "[object Object]") {
       // 如果当前还是一个对象 递归调用 传入child  v是m[v]的子key  obj[b.c] obj[b.d]
       planeHouse(m[v], v);
@@ -417,7 +417,7 @@ planeHouse(m); // {a: 1, b.c: 2, b.d: Array(2), f.g: "6"}
 var m = { a: 1, b: { c: 2, d: [3, 4] } };
 var obj = {};
 function planeHouse(m, child) {
-  Object.keys(m).forEach(function(v, k) {
+  Object.keys(m).forEach(function (v, k) {
     if (Object.prototype.toString.call(m[v]) === "[object Object]") {
       // 如果当前还是一个对象 递归调用 传入child  v是m[v]的子key  obj[b.c] obj[b.d]
       planeHouse(m[v], v);
@@ -734,7 +734,7 @@ true;
 ```javascript
 const arr = [
   ["1", "2", "3"],
-  ["a", "b"]
+  ["a", "b"],
 ];
 for (let i = 0, l = arr[0].length; i < l; i++) {
   newArr.push(arr[0][i] + arr[1][0], arr[0][i] + arr[1][1]);
@@ -756,7 +756,7 @@ function curry(fn) {
     if (args.length >= len) {
       return fn.apply(this, args);
     }
-    return function() {
+    return function () {
       return curried.apply(
         this,
         args.concat(Array.prototype.slice.call(arguments))
@@ -764,7 +764,7 @@ function curry(fn) {
     };
   };
 }
-const result = curry(function(a, b, c) {
+const result = curry(function (a, b, c) {
   return a * b * c;
 });
 result(3)(4)(4); // 48
@@ -800,14 +800,14 @@ arr.sort((a, b) => {
 var arr = [
   ["0001", "0010"],
   ["0020", "0300"],
-  ["0301", "0400"]
+  ["0301", "0400"],
 ];
 console.log(JSON.stringify(arr)); // [["0001","0010"],["0020","0300"],["0301","0400"]]
 
 var arr = [
   [0001, 0010],
   [0020, 0300],
-  [0301, 0400]
+  [0301, 0400],
 ];
 console.log(JSON.stringify(arr)); // [[1,8],[16,192],[193,256]]
 ```
@@ -976,7 +976,7 @@ methods: {
 **64. 一个关于作用域的面试题**
 
 ```javascript
-(function() {
+(function () {
   try {
     throw new Error();
   } catch (x) {
@@ -1122,7 +1122,7 @@ export default function fetch(options, type) {
   if (options.url.indexOf("api") > 0) {
     token = JSON.stringify({
       deviceType: "WEB",
-      token: "Basic  " + auth.getToken()
+      token: "Basic  " + auth.getToken(),
     });
   }
   //console.log('token is ' + token);
@@ -1131,8 +1131,8 @@ export default function fetch(options, type) {
     //创建一个axios实例
     const instance = axios.create({
       headers: {
-        Authorization: token
-      }
+        Authorization: token,
+      },
     });
     //请求处理
     instance(options)
@@ -1146,7 +1146,7 @@ export default function fetch(options, type) {
         if (status === 200) {
           //console.log(11);
           resolve({
-            data: body
+            data: body,
           });
         } else if (status === 300) {
           if (model) {
@@ -1168,7 +1168,7 @@ export default function fetch(options, type) {
           if (model) {
             let mockData = getMockData(JSON.stringify(options.url));
             resolve({
-              data: mockData
+              data: mockData,
             });
           } else {
             Message.error("操作失败！错误原因 " + resMsg);
@@ -1190,7 +1190,7 @@ export function getList(data) {
   return fetch({
     url: api.FILE_LIST,
     method: "post",
-    data
+    data,
   });
 }
 ```
@@ -1234,7 +1234,7 @@ var debug = require("debug")("my-application"); // debug模块
 app.set("port", process.env.PORT || 3000); // 设定监听端口
 
 //启动监听
-var server = app.listen(app.get("port"), function() {
+var server = app.listen(app.get("port"), function () {
   debug("Express server listening on port " + server.address().port);
 });
 
@@ -1329,7 +1329,7 @@ SolidGauge(Highcharts);
 
 Highcharts.setOptions({
   chart: {
-    type: "solidgauge"
+    type: "solidgauge",
   },
   title: null,
   pane: {
@@ -1342,38 +1342,38 @@ Highcharts.setOptions({
         (Highcharts.theme && Highcharts.theme.background2) || "#EEE",
       innerRadius: "60%",
       outerRadius: "100%",
-      shape: "arc"
-    }
+      shape: "arc",
+    },
   },
   tooltip: {
-    enabled: false
+    enabled: false,
   },
   yAxis: {
     stops: [
       [0.1, "#55BF3B"], // green
       [0.5, "#DDDF0D"], // yellow
-      [0.9, "#DF5353"] // red
+      [0.9, "#DF5353"], // red
     ],
     lineWidth: 0,
     minorTickInterval: null,
     tickPixelInterval: 400,
     tickWidth: 0,
     title: {
-      y: -70
+      y: -70,
     },
     labels: {
-      y: 16
-    }
+      y: 16,
+    },
   },
   plotOptions: {
     solidgauge: {
       dataLabels: {
         y: 5,
         borderWidth: 0,
-        useHTML: true
-      }
-    }
-  }
+        useHTML: true,
+      },
+    },
+  },
 });
 
 export default {
@@ -1393,11 +1393,11 @@ export default {
           min: 0,
           max: 200,
           title: {
-            text: "速度"
-          }
+            text: "速度",
+          },
         },
         credits: {
-          enabled: false
+          enabled: false,
         },
         series: [
           {
@@ -1409,16 +1409,16 @@ export default {
                 ((Highcharts.theme && Highcharts.theme.contrastTextColor) ||
                   "black") +
                 '">{y}</span><br/>' +
-                '<span style="font-size:12px;color:silver">km/h</span></div>'
+                '<span style="font-size:12px;color:silver">km/h</span></div>',
             },
             tooltip: {
-              valueSuffix: " km/h"
-            }
-          }
-        ]
+              valueSuffix: " km/h",
+            },
+          },
+        ],
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -1453,7 +1453,7 @@ function throttle(func, wait, mustRun) {
   var timeout,
     startTime = new Date();
 
-  return function() {
+  return function () {
     var context = this,
       args = arguments,
       curTime = new Date();
@@ -1507,7 +1507,7 @@ new new Foo().getName();
 - 这道题的答案是：2、4、1、1、2、3、3。 -这里考察声明提前的题目在代码中已经标出，这里声明 getName 方法的两个语句：
 
 ```javascript
-var getName = function() {
+var getName = function () {
   alert(4);
 };
 function getName() {
@@ -1522,7 +1522,7 @@ function getName() {
   alert(5);
 }
 var getName;
-getName = function() {
+getName = function () {
   alert(4);
 };
 ```
@@ -1531,7 +1531,7 @@ getName = function() {
 
 ```javascript
 getName(); // 5
-var getName = function() {
+var getName = function () {
   alert(4);
 };
 getName(); // 4
@@ -1549,7 +1549,7 @@ function getName() {
 }
 var getName;
 getName(); // 5
-getName = function() {
+getName = function () {
   alert(4);
 };
 getName(); // 4
@@ -1586,12 +1586,12 @@ console.log(object3);
 **86. Object.definePrototy 用法的一道题**
 
 ```javascript
-var foo = (function() {
+var foo = (function () {
   var o = {
     a: 1,
-    b: 2
+    b: 2,
   };
-  return function(key) {
+  return function (key) {
     return o[key];
   };
 })();
@@ -1600,7 +1600,7 @@ var foo = (function() {
 Object.defineProperty(Object.prototype, "_getAll", {
   get() {
     return this;
-  }
+  },
 });
 let obj = foo("_getAll");
 // 避免污染
@@ -1636,7 +1636,7 @@ let data = {
   secondes: "秒",
   ago: "",
   "Less than a second": "少于一秒",
-  "About a minute": "大概一分钟"
+  "About a minute": "大概一分钟",
 };
 
 var str = "系统{%up%}, 15{%days%}";
@@ -1870,7 +1870,7 @@ arr.join().match(/0/g); // 2893
 - IE 没有`window.scrollY` 使用 document 来获取滚动高度
 
 ```javascript
-export const getScrollTop = function() {
+export const getScrollTop = function () {
   let scrollTop = 0;
   if (document.documentElement && document.documentElement.scrollTop) {
     scrollTop = document.documentElement.scrollTop;
@@ -2069,7 +2069,7 @@ const v = x / ms,
 // 移动距离
 let s = 0;
 
-setInterval(function() {
+setInterval(function () {
   // 避免计算不精确的小数问题
   s = ~~s + onceMoveloNG;
 }, 16.7);
@@ -2140,11 +2140,11 @@ const arr = [
         children: [
           {
             parentId: 2,
-            id: 3
-          }
-        ]
-      }
-    ]
+            id: 3,
+          },
+        ],
+      },
+    ],
   },
   {
     parentId: 0,
@@ -2156,12 +2156,12 @@ const arr = [
         children: [
           {
             parentId: 5,
-            id: 6
-          }
-        ]
-      }
-    ]
-  }
+            id: 6,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 let m = new Map();
@@ -2551,8 +2551,8 @@ import test from "./test";
 
 @Component({
   components: {
-    HelloWorld
-  }
+    HelloWorld,
+  },
 })
 export default class Home extends Vue {
   private msg: string = "Hello, World!";
@@ -2664,7 +2664,7 @@ var a = {
   i: 1,
   toString() {
     return a.i, a.i++;
-  }
+  },
 };
 a == 1 && a == 2 && a == 3; // true
 ```
@@ -2783,8 +2783,8 @@ configureWebpack: confing => {
     extensions: [".js", ".vue", ".json", ".css"],
     alias: {
       vue$: "vue/dist/vue.esm.js",
-      "@": resolve("src")
-    }
+      "@": resolve("src"),
+    },
   };
 };
 ```
@@ -3032,7 +3032,7 @@ export default {
                 resolve({
                   data: uploadRes.data,
                   status: uploadRes.status,
-                  fileId: res.key
+                  fileId: res.key,
                 });
               })
               .catch(err => {
@@ -3050,8 +3050,8 @@ export default {
     },
     $file_download(fileId, type) {
       return ossApi.getDownloadUrl({ fileId, type });
-    }
-  }
+    },
+  },
 };
 ```
 
@@ -3129,7 +3129,7 @@ export default {
 **170. vue beforeDestory 另一种用法**
 
 ```js
-this.$once("hook:beforeDestroy", function() {
+this.$once("hook:beforeDestroy", function () {
   clearTimeout(timeId);
 });
 ```
@@ -3157,7 +3157,7 @@ export const getBaseUrl = url => {
 
 ```javascript
 //复制文字
-GlobalFunction.prototype.copyText = function(text) {
+GlobalFunction.prototype.copyText = function (text) {
   let dom = document.createElement("input");
   dom.value = text;
   document.querySelector("html").appendChild(dom);
@@ -3167,7 +3167,11 @@ GlobalFunction.prototype.copyText = function(text) {
   dom.remove();
 };
 //复制文字选中兼容苹果Safari
-GlobalFunction.prototype.selectText = function(textbox, startIndex, stopIndex) {
+GlobalFunction.prototype.selectText = function (
+  textbox,
+  startIndex,
+  stopIndex
+) {
   if (textbox.createTextRange) {
     //ie
     var range = textbox.createTextRange();
@@ -3333,7 +3337,7 @@ chainWebpack: config => {
 - 这是`plugins/axios`中的内容 可以参考@nuxt/axios 的文档做拦截 很方便
 
 ```javascript
-export default function({ $axios, redirect }) {
+export default function ({ $axios, redirect }) {
   $axios.onRequest(config => {
     // console.log('Making request to ' + config.url)
   });
@@ -3366,10 +3370,10 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    node: true
+    node: true,
   },
   parserOptions: {
-    parser: "babel-eslint"
+    parser: "babel-eslint",
   },
   extends: ["plugin:vue/recommended", "plugin:prettier/recommended"],
   // required to lint *.vue files
@@ -3377,8 +3381,8 @@ module.exports = {
   // add your custom rules here
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off"
-  }
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+  },
 };
 ```
 
@@ -3521,32 +3525,32 @@ define("douyu/com/zoom", [
   "shark/util/cookie/1.0",
   "shark/util/storage/1.0",
   "douyu/context",
-  "douyu/com/zoom-dp"
-], function(e, i, t, n, o, a) {
+  "douyu/com/zoom-dp",
+], function (e, i, t, n, o, a) {
   var s = {
       storageName: "zoomtip",
       storageVal: "1",
       storageTime: 604800,
       isPop: !1,
-      init: function() {
+      init: function () {
         this.handleCookie(),
           this.pop(),
-          i.on("mod.layout.screen.change", function(e) {
+          i.on("mod.layout.screen.change", function (e) {
             s.detect() && s.pop();
           });
       },
-      handleCookie: function() {
+      handleCookie: function () {
         t.get(this.storageName) &&
           (t.remove(this.storageName),
           n.set(this.storageName, this.storageVal, this.storageTime));
       },
-      detect: function() {
+      detect: function () {
         return (
           (this.ua = navigator.userAgent.toLowerCase()),
           -1 == this.ua.indexOf("windows") ? !1 : !n.get(this.storageName)
         );
       },
-      cal: function() {
+      cal: function () {
         var e = 0,
           i = window.screen;
         return (
@@ -3564,7 +3568,7 @@ define("douyu/com/zoom", [
           e
         );
       },
-      resize: function() {
+      resize: function () {
         var i = this.cal();
         if (this.isPop && i && 100 == i) return void this.close();
         var t = 540,
@@ -3575,10 +3579,10 @@ define("douyu/com/zoom", [
           width: o + "px",
           height: a + "px",
           marginLeft: -o / 2 + "px",
-          marginTop: -a / 2 + "px"
+          marginTop: -a / 2 + "px",
         });
       },
-      pop: function() {
+      pop: function () {
         var t = this.cal();
         if (!n.get(this.storageName) && !this.isPop && 100 !== t) {
           var a =
@@ -3593,7 +3597,7 @@ define("douyu/com/zoom", [
               '<div class="pop-zoom-close">close</div>',
               '<div class="pop-zoom-hide"></div>',
               "</div>",
-              "</div>"
+              "</div>",
             ].join("");
           e("body").append(s),
             this.bindEvt(),
@@ -3602,24 +3606,24 @@ define("douyu/com/zoom", [
         }
         this.resize();
       },
-      close: function() {
+      close: function () {
         e(".pop-zoom-container").remove(),
           (this.isPop = !this.isPop),
           i.trigger("dys.com.zoom.pop.close");
       },
-      bindEvt: function() {
+      bindEvt: function () {
         var t = this;
-        e(".pop-zoom-close").on("click", function() {
+        e(".pop-zoom-close").on("click", function () {
           t.close();
         }),
-          e(".pop-zoom-hide").on("click", function() {
+          e(".pop-zoom-hide").on("click", function () {
             n.set(t.storageName, t.storageVal, t.storageTime),
               i.trigger("dys.com.zoom.pop.zoomtip"),
               t.close();
           });
-      }
+      },
     },
-    r = function() {
+    r = function () {
       s.detect() && s.init();
     };
   e(r);
@@ -3629,7 +3633,7 @@ define("douyu/com/zoom", [
 - 最后提出来
 
 ```javascript
-var getScreenScaleNum = function() {
+var getScreenScaleNum = function () {
   var e = 0,
     i = window.screen;
   return (
@@ -3659,10 +3663,10 @@ module.exports = {
       "component",
       {
         libraryName: "element-ui",
-        styleLibraryName: "theme-chalk"
-      }
-    ]
-  ]
+        styleLibraryName: "theme-chalk",
+      },
+    ],
+  ],
 };
 ```
 
@@ -3702,7 +3706,7 @@ export default {
       scrollStatus: false,
       timeId: null,
       holdTime: 1500,
-      clickTimeDate: null
+      clickTimeDate: null,
     };
   },
   methods: {
@@ -3735,8 +3739,8 @@ export default {
         // this.$store.commit("setActivityContent", data.content);
         this.$router.push({ path: "/activity/detail", query: { id: data.id } });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 ```
@@ -3772,13 +3776,13 @@ export default {
           bdMiniList: false,
           bdPic: "",
           bdStyle: "1",
-          bdSize: "24"
+          bdSize: "24",
         },
         share: {},
         selectShare: {
           bdContainerClass: null,
-          bdSelectMiniList: ["weixin", "tsina", "qzone"]
-        }
+          bdSelectMiniList: ["weixin", "tsina", "qzone"],
+        },
       };
       const $el = document.querySelector("#baiduShare");
       $el && document.body.removeChild($el);
@@ -3787,8 +3791,8 @@ export default {
       s.id = "baiduShare";
       s.src = "";
       document.body.appendChild(s);
-    }
-  }
+    },
+  },
 };
 ```
 
@@ -3797,7 +3801,7 @@ export default {
 ```javascript
 const routeData = this.$router.resolve({
   path: lang ? `/${lang}/news/detail` : `news/detail`,
-  query: { id }
+  query: { id },
 });
 window.open(routeData.href, "_blank");
 ```
@@ -4049,7 +4053,7 @@ function addCounter(e, obj) {
     birthYear: "1865",
     deathYear: "1936",
     reign: "1910-1936",
-    parent: data.key
+    parent: data.key,
   });
   myDiagram.rebuildParts();
 }
@@ -4263,7 +4267,7 @@ export default {
     return {};
   },
   computed: {},
-  methods: {}
+  methods: {},
 };
 </script>
 <style lang=""></style>
@@ -4325,7 +4329,7 @@ const mqtt = require("mqtt");
 export default {
   data() {
     return {
-      client: null
+      client: null,
     };
   },
   created() {
@@ -4335,7 +4339,7 @@ export default {
     createClient() {
       console.log("create");
       this.client = mqtt.connect("mqtt://127.0.0.1:7410", {
-        connectTimeout: 5000
+        connectTimeout: 5000,
       });
       this.client.on("connect", () => {
         // persence 和  /hello/word 相当于监听的路由 不在这里写 收不到信息
@@ -4352,7 +4356,7 @@ export default {
         });
       });
       // 当有消息传递过来 topic就是监听的路由
-      this.client.on("message", function(topic, message) {
+      this.client.on("message", function (topic, message) {
         // message is Buffer
         console.log(topic, message.toString(), "msg");
         // this.client.end();
@@ -4362,8 +4366,8 @@ export default {
         console.log(error);
         this.client.end();
       });
-    }
-  }
+    },
+  },
 };
 ```
 
@@ -4377,7 +4381,7 @@ var ascoltatore = {
   type: "mongo",
   url: "mongodb://localhost:27017/mqtt",
   pubsubCollection: "ascoltatori",
-  mongo: {}
+  mongo: {},
 };
 
 var settings = {
@@ -4385,8 +4389,8 @@ var settings = {
   // 直接请求1884端口不能用  要加 http 或者https(没试,看你请求链接)
   // 第三方的话 开通websocket就可以访问了
   http: {
-    port: 7410
-  }
+    port: 7410,
+  },
   //   backend: ascoltatore
 };
 
@@ -4394,20 +4398,20 @@ var message = {
   topic: "/hello/world",
   payload: "abcde", // or a Buffer
   qos: 0, // 0, 1, or 2
-  retain: false // or true
+  retain: false, // or true
 };
 
 var server = new mosca.Server(settings);
 
-server.on("clientConnected", function(client) {
+server.on("clientConnected", function (client) {
   // 推送消息
-  server.publish(message, function() {
+  server.publish(message, function () {
     console.log("done!");
   });
 });
 
 // fired when a message is received
-server.on("published", function(packet, client) {
+server.on("published", function (packet, client) {
   console.log("Published", packet.payload.toString());
 });
 
@@ -4470,7 +4474,7 @@ export default {
         });
       let marker = new BMap.Marker(new BMap.Point(lng, lat), {
         icon: new BMap.Icon(iconImg, new BMap.Size(100, 100)),
-        enableClicking: true
+        enableClicking: true,
       }); // 创建标注
       marker.htData = data;
       marker.removeEventListener("click", this.showTerminalWindow);
@@ -4491,8 +4495,8 @@ export default {
           })
           .catch(() => {});
       });
-    }
-  }
+    },
+  },
 };
 ```
 
@@ -4513,7 +4517,7 @@ export default {
 <template>
   <div
     :style="{
-      background: require(`@img/service/${item.feesStandardCode}.png`)
+      background: require(`@img/service/${item.feesStandardCode}.png`),
     }"
     :alt="item.feesStandardName"
   />
@@ -4533,7 +4537,7 @@ import Vue from "vue";
 import store from "@/store/store";
 //注册一个v-allowed指令
 Vue.directive("allowed", {
-  inserted: function(el, bingding) {
+  inserted: function (el, bingding) {
     let roles = store.getters.roles;
     //判断权限
     if (Array.isArray(roles) && roles.length > 0) {
@@ -4546,7 +4550,7 @@ Vue.directive("allowed", {
         }
       }
     }
-  }
+  },
 });
 ```
 
@@ -4618,7 +4622,7 @@ export const ht_notify_error = msg => {
   ht_notify({
     title: "非常抱歉...",
     message: msg,
-    type: "error"
+    type: "error",
   });
 };
 ```
@@ -4834,7 +4838,7 @@ box-shadow: 30px 15px #8e1a19, 45px 15px #ac0500, 75px 15px #f73f0c, 90px 15px
 ```js
 form = {
   name: "",
-  password: ""
+  password: "",
 };
 ```
 
@@ -4911,7 +4915,7 @@ function deepClone(obj) {
 
 ```javascript
 // 点击浏览器返回按钮，404页面刷新
-window.addEventListener("pageshow", function(event) {
+window.addEventListener("pageshow", function (event) {
   //event.persisted属性为true时，表示当前文档是从往返缓存中获取
   if (event.persisted) location.reload();
 });
@@ -4934,8 +4938,8 @@ function inherit(subType, superType) {
       enumerable: false,
       configurable: true,
       writable: true,
-      value: subType
-    }
+      value: subType,
+    },
   });
   Object.setPrototypeOf(subType, superType);
 }
@@ -4963,15 +4967,15 @@ function inherit(subType, superType) {
       enumerable: false,
       configurable: true,
       writable: true,
-      value: subType
-    }
+      value: subType,
+    },
   });
   // 注释掉这里  Sub.speak()将会报undefined
   //       Object.setPrototypeOf(subType, superType)
 }
 
 function Super() {}
-Super.speak = function() {
+Super.speak = function () {
   console.log("666", this);
 };
 
@@ -5003,7 +5007,7 @@ var s = new Sub();
         var file = event.target.files[0];
         if (file && /text/.test(file.type)) {
           var fileRead = new FileReader();
-          fileRead.onload = function(result) {
+          fileRead.onload = function (result) {
             var $el = document.getElementById("textContent");
             $el.value = this.result;
           };
@@ -5019,9 +5023,7 @@ var s = new Sub();
 
 **239. 规范 git 提交信息，请使用 commitlint**
 
-> [git commit 提交规范 & 规范校验](https://blog.csdn.net/y491887095/article/details/80594043)
-> [如何写好 Git commit messages](https://www.cnblogs.com/cpselvis/p/6423874.html)
-> [git commit 规范指南](https://www.jianshu.com/p/201bd81e7dc9?utm_source=oschina-app)
+> [git commit 提交规范 & 规范校验](https://blog.csdn.net/y491887095/article/details/80594043) > [如何写好 Git commit messages](https://www.cnblogs.com/cpselvis/p/6423874.html) > [git commit 规范指南](https://www.jianshu.com/p/201bd81e7dc9?utm_source=oschina-app)
 
 ```text
 用于说明 commit 的类别，只允许使用下面7个标识。
@@ -5112,7 +5114,7 @@ $.ajax({
   data: data,
   success: () => {
     console.log("发送成功!");
-  }
+  },
 });
 console.log("代码执行结束");
 
@@ -5189,6 +5191,7 @@ el.setAttribute(key, value);
 ```javascript
 "\u202D3777308808";
 // "‭3777308808"
+
 ```
 
 **250. 一个按照顺序异步执行的解决方案引发的 event loop 的思考**
@@ -5229,7 +5232,7 @@ p.then(() => {
 ```javascript
 const attributes = {
   attrs: this.$attrs,
-  on: this.$listeners
+  on: this.$listeners,
 };
 return <div {...attributes}>232</div>;
 ```
@@ -5250,13 +5253,13 @@ function _new() {
   return obj;
 }
 
-var Dog = function(name) {
+var Dog = function (name) {
   this.name = name;
 };
-Dog.prototype.bark = function() {
+Dog.prototype.bark = function () {
   console.log("wangwang");
 };
-Dog.prototype.sayName = function() {
+Dog.prototype.sayName = function () {
   console.log("my name is " + this.name);
 };
 
@@ -5277,14 +5280,14 @@ async function async2() {
   console.log("async2");
 }
 console.log("script start");
-setTimeout(function() {
+setTimeout(function () {
   console.log("setTimeout");
 }, 0);
 async1();
-new Promise(function(resolve) {
+new Promise(function (resolve) {
   console.log("promise1");
   resolve();
-}).then(function() {
+}).then(function () {
   console.log("promise2");
 });
 console.log("script end");
@@ -5316,7 +5319,7 @@ const decodingMap = {
   "&amp;": "&",
   "&#10;": "\n",
   "&#9;": "\t",
-  "&#39;": "'"
+  "&#39;": "'",
 };
 ```
 
@@ -5402,7 +5405,7 @@ function getPercentWithPrecision(valueList, idx, precision) {
     return 0;
   }
 
-  var sum = valueList.reduce(function(acc, val) {
+  var sum = valueList.reduce(function (acc, val) {
     return acc + (isNaN(val) ? 0 : val);
   }, 0);
   if (sum === 0) {
@@ -5412,25 +5415,25 @@ function getPercentWithPrecision(valueList, idx, precision) {
   // sum 9
   var digits = Math.pow(10, precision); // digits 100
   console.log("digits", digits);
-  var votesPerQuota = valueList.map(function(val) {
+  var votesPerQuota = valueList.map(function (val) {
     return ((isNaN(val) ? 0 : val) / sum) * digits * 100; // 扩大比例，这样可以确保整数部分是已经确定的议席配额，小数部分是余额
   });
   console.log("votesPerQuota", votesPerQuota);
   // votesPerQuota [ 2222.222222222222, 4444.444444444444, 3333.333333333333 ] 每一个项获得的议席配额，整数部分是已经确定的议席配额，小数部分是余额
   var targetSeats = digits * 100; // targetSeats 10000 全部的议席
   console.log("targetSeats", targetSeats);
-  var seats = votesPerQuota.map(function(votes) {
+  var seats = votesPerQuota.map(function (votes) {
     // Assign automatic seats.
     return Math.floor(votes);
   });
   console.log("seats", seats);
   // seats [ 2222, 4444, 3333 ] 获取配额的整数部分
-  var currentSum = seats.reduce(function(acc, val) {
+  var currentSum = seats.reduce(function (acc, val) {
     return acc + val;
   }, 0);
   console.log("currentSum", currentSum);
   // 9999 表示已经配额了9999个议席，还剩下一个议席
-  var remainder = votesPerQuota.map(function(votes, idx) {
+  var remainder = votesPerQuota.map(function (votes, idx) {
     return votes - seats[idx];
   });
   console.log("remainder", remainder);
@@ -5817,11 +5820,11 @@ function getDate() {
 **299. 通用的模块封装暴露规则**
 
 ```javascript
-var DracoDecoderModule = function(DracoDecoderModule) {};
+var DracoDecoderModule = function (DracoDecoderModule) {};
 if (typeof exports === "object" && typeof module === "object")
   module.exports = DracoDecoderModule;
 else if (typeof define === "function" && define["amd"])
-  define([], function() {
+  define([], function () {
     return DracoDecoderModule;
   });
 else if (typeof exports === "object")
@@ -5973,18 +5976,19 @@ $jing: "#";
 **312. 图片防盗链的原理一般是通过判断请求的 referer 来判断是否来自自己的服务器，根据这点也可以去破解**
 
 **313. 上线紫金山庄查车牌系统总结**
-1. pm2使用npm命令
+
+1. pm2 使用 npm 命令
+
 ```shell
  pm2 start  npm --name test -- run dev
 
- pm2 start npm --name test -- start 
+ pm2 start npm --name test -- start
 ```
-2. mongodb数据库也是分角色的 最大的admin有所有权限，然后你每加一个数据库都要给这个数据库分配角色才行
 
-**314. 翻墙后无法node请求墙外站点**
-1.用shadowsocks能正常浏览网页，但是用node脚本请求的时候无法访问，于是查到这篇文章[翻墙后无法node请求墙外站点](https://cnodejs.org/topic/593d631a325c502917ef0881),找到原因，原来是因为`node不会自动通过代理服务器访问，`，又看到`ShadowSocks会产生代理连接，在你的nodejs程序里指定网路走这个代理即可，任何网络操作的库都可以设置代理，另外参考翻墙后。`
-2. 于是查`如何用Shadowsocks(R)代理非浏览器软件`，找到这篇[如何用Shadowsocks(R)代理非浏览器软件](https://vimcaw.github.io/blog/2018/03/12/%E5%A6%82%E4%BD%95%E7%94%A8Shadowsocks(R)%E4%BB%A3%E7%90%86%E9%9D%9E%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BD%AF%E4%BB%B6%E3%80%81%E6%B8%B8%E6%88%8F/)
-3. 复制请求头，然后把proxy写上`http://127.0.0.1:1080`即可
+2. mongodb 数据库也是分角色的 最大的 admin 有所有权限，然后你每加一个数据库都要给这个数据库分配角色才行
+
+**314. 翻墙后无法 node 请求墙外站点** 1.用 shadowsocks 能正常浏览网页，但是用 node 脚本请求的时候无法访问，于是查到这篇文章[翻墙后无法 node 请求墙外站点](https://cnodejs.org/topic/593d631a325c502917ef0881),找到原因，原来是因为`node不会自动通过代理服务器访问，`，又看到`ShadowSocks会产生代理连接，在你的nodejs程序里指定网路走这个代理即可，任何网络操作的库都可以设置代理，另外参考翻墙后。` 2. 于是查`如何用Shadowsocks(R)代理非浏览器软件`，找到这篇[如何用 Shadowsocks(R)代理非浏览器软件](<https://vimcaw.github.io/blog/2018/03/12/%E5%A6%82%E4%BD%95%E7%94%A8Shadowsocks(R)%E4%BB%A3%E7%90%86%E9%9D%9E%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BD%AF%E4%BB%B6%E3%80%81%E6%B8%B8%E6%88%8F/>) 3. 复制请求头，然后把 proxy 写上`http://127.0.0.1:1080`即可
+
 ```javascript
 const request = require("request");
 
@@ -6013,10 +6017,10 @@ function action(index) {
         "sec-fetch-user": "?1",
         "upgrade-insecure-requests": 1,
         "user-agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36"
-      }
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36",
+      },
     },
-    function(error, response, body) {
+    function (error, response, body) {
       if (!error && response.statusCode == 200) {
         console.log("请求成功" + index); // 请求成功的处理逻辑
       } else {
@@ -6032,14 +6036,16 @@ let index = 1;
 
 // }, 20);
 action(index);
-
 ```
 
-**315. gltf-pipeline使用draco算法压缩报错，没有明确提示**
+**315. gltf-pipeline 使用 draco 算法压缩报错，没有明确提示**
+
 - 可能是模型没有三角化处理，让建模把所有模型三角化。
 
-**316. vue自定义v-model**
-- 
+**316. vue 自定义 v-model**
+
+-
+
 ```javascript
 
 model: {
@@ -6063,12 +6069,12 @@ model: {
 export default {
   model: {
     prop: "selected",
-    event: "change"
+    event: "change",
   },
   props: {
     selected: {
-      default: ""
-    }
+      default: "",
+    },
   },
   data() {
     return {};
@@ -6077,14 +6083,15 @@ export default {
   methods: {
     handleSelectChange(value) {
       this.$emit("change", value);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang=""></style>
 ```
 
 - 父
+
 ```vue
 <template>
   <div>
@@ -6094,63 +6101,60 @@ export default {
 </template>
 
 <script>
-
 import SelectVue from "./Select";
 
 export default {
   components: {
-    "ht-select": SelectVue
+    "ht-select": SelectVue,
   },
   data() {
     return {
       testValue: "1",
-      
     };
   },
-  
-
 };
 </script>
-<style lang="scss">
-
-</style>
-
+<style lang="scss"></style>
 ```
 
 **317. 骨架屏**
-1. 作为spa中路由切换的loading,结合组件的生命周期和ajax请求返回的时机来使用.
+
+1. 作为 spa 中路由切换的 loading,结合组件的生命周期和 ajax 请求返回的时机来使用.
 2. 作为首屏渲染的优化.
 
-**318. windows系统想使用shell命令可以用git**
+**318. windows 系统想使用 shell 命令可以用 git**
 
 **319. 面试题平时看到好的要收藏下来，然后找工作前一个月仔细看看背背，平时难记的多看看，不用天天抱着面试题背**
 
 **320. 面试的部门通过了，如果遇到认识中途让你转部门，一定要问下面试你的人，或者部门里的人，有可能是人事在暗箱操作。**
 
-**321. 通过dom获取vue / react 的组件对象**
-- vue在dom对象中是`__vue__`
-- react在dom对象中是`__reactInternalInstance 加一串 has`
+**321. 通过 dom 获取 vue / react 的组件对象**
+
+- vue 在 dom 对象中是`__vue__`
+- react 在 dom 对象中是`__reactInternalInstance 加一串 has`
 
 **322. 有些域名收录会很差，买的时候注意啦！**
 
-**323. Hook很好用，早学早用，香~**
+**323. Hook 很好用，早学早用，香~**
 
 **324. 找工作一定要多找几家，都是双向选择，有可能你是备胎，所以你也要把公司当备胎**
 
-**325. JS遗留问题，变量提升**
+**325. JS 遗留问题，变量提升**
+
 > https://www.cnblogs.com/Hexa-gram/p/7944645.html
 
-- 在js中存在这样一种机制，在程序正式执行之前，会将var声明的变量和function声明的函数预读到当前作用域的顶部
-- 虽然let 和 const解决了这个问题，注意代码规范也不会遇到这个问题 但是有时候还是会问到 复习的时候注意下
+- 在 js 中存在这样一种机制，在程序正式执行之前，会将 var 声明的变量和 function 声明的函数预读到当前作用域的顶部
+- 虽然 let 和 const 解决了这个问题，注意代码规范也不会遇到这个问题 但是有时候还是会问到 复习的时候注意下
 
-**326. threejs做地块的时候，可以搞个透明的shapes和实体shapes一起就可以点击了**
+**326. threejs 做地块的时候，可以搞个透明的 shapes 和实体 shapes 一起就可以点击了**
 
-**327. threejs uv变化和点击移动摄像机**
-- 让贴图循环 然后每次渲染更改uv值
-- 移动摄像机可以用tweenjs移动过去 也可以用threejs的曲线函数然后获取点 让摄像机移动这些点就行了
+**327. threejs uv 变化和点击移动摄像机**
 
+- 让贴图循环 然后每次渲染更改 uv 值
+- 移动摄像机可以用 tweenjs 移动过去 也可以用 threejs 的曲线函数然后获取点 让摄像机移动这些点就行了
 
 **328. threejs 通过控制器移动镜头效果**
+
 ```javascirpt
 handleMouseDown(event) {
       this.controls.coupleCenters = true;
@@ -6232,14 +6236,16 @@ handleMouseDown(event) {
     },
 ```
 
-**329. webpack加了hash上线还是没变化？？？**
+**329. webpack 加了 hash 上线还是没变化？？？**
+
 > [浏览器静态资源缓存问题](https://www.jianshu.com/p/914607715804)
 
-- 很可能是服务端缓存了index.html
+- 很可能是服务端缓存了 index.html
+
 ```text
 location = /index.html {
     add_header Cache-Control "no-cache, no-store";
-}   
+}
 # Expire rules for static content
 
 # cache.appcache, your document html and data
@@ -6270,32 +6276,35 @@ location ~* \.(?:css|js)$ {
 }
 ```
 
-**329. axios上传进度条**
+**329. axios 上传进度条**
+
 - 原生一样适用
+
 ```javascript
-    var form = new FormData()
-    form.append('file', vm.$refs.upload.files[0])
-    form.append('id', id)
-    form.append('type', type)
-    var config = {
-        onUploadProgress: progressEvent => {
-            var complete = (progressEvent.loaded / progressEvent.total * 100 | 0) + '%'
-            this.progress = complete
-        }
-    }
-    axios.post(`api/uploadFile`,
-        form, config).then((res) => {
-        if (res.data.status === 'success') {
-            console.log('上传成功')
-        }
-    })
+var form = new FormData();
+form.append("file", vm.$refs.upload.files[0]);
+form.append("id", id);
+form.append("type", type);
+var config = {
+  onUploadProgress: progressEvent => {
+    var complete =
+      (((progressEvent.loaded / progressEvent.total) * 100) | 0) + "%";
+    this.progress = complete;
+  },
+};
+axios.post(`api/uploadFile`, form, config).then(res => {
+  if (res.data.status === "success") {
+    console.log("上传成功");
+  }
+});
 ```
 
 **330. 多试着写正则，很有用的**
 
-**331. 拥抱hooks 太好用了**
+**331. 拥抱 hooks 太好用了**
 
-**332. postman中的basic auth 在axios是{auth:{}}这个参数**
+**332. postman 中的 basic auth 在 axios 是{auth:{}}这个参数**
+
 ```javascript
 //登录
 export function login(params) {
@@ -6305,18 +6314,20 @@ export function login(params) {
     params,
     auth: {
       username: "web",
-      password: "web"
-    }
+      password: "web",
+    },
   });
 }
 ```
 
-**333. js没有重载**
+**333. js 没有重载**
+
 - 同名函数会被后面的覆盖
 - 函数表达式是运行到这里才会被执行
 - 函数声明式是一开始就被提升到顶部
 
-**334. vue2中不想数据被vue监听，又想在template中用可以这样写**
+**334. vue2 中不想数据被 vue 监听，又想在 template 中用可以这样写**
+
 ```javascript
  export default {
     data(){
@@ -6329,50 +6340,51 @@ export function login(params) {
 **335. 后端返回的数据不要做类型判断，如果数据格式错误就应该报错，如果一定要做异常数据格式判断，要加个提示，不要为了健壮性让该报错的地方不报错**
 
 **336. mac os 生成树结构**
-Mac没有自带的tree命令，需要额外安装才可以，操作方法有两种：
+Mac 没有自带的 tree 命令，需要额外安装才可以，操作方法有两种：
 
-一、用find命令模拟tree效果
-1、mac下默认是没有 tree命令的，不过我们可以使用find命令模拟出tree命令的效果，如显示当前目录的 tree 的命令：
-$ find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
+一、用 find 命令模拟 tree 效果
+1、mac 下默认是没有 tree 命令的，不过我们可以使用 find 命令模拟出 tree 命令的效果，如显示当前目录的 tree 的命令：
+$ find . -print | sed -e 's;[^/]\*/;|\_**\_;g;s;\_\_**|; |;g'
 
-2、当然你也可以写一个别名来快速执行该命令，运行如下命令，将上面这个命令写到~/.bash_profile里，以后直接运行tree命令就更方便了:
-alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
+2、当然你也可以写一个别名来快速执行该命令，运行如下命令，将上面这个命令写到~/.bash_profile 里，以后直接运行 tree 命令就更方便了:
+alias tree="find . -print | sed -e 's;[^/]\*/;|\_**\_;g;s;\_\_**|; |;g'"
 
-二、安装tree
-因为安装tree需要用brew命令，所以先安装Homebrew
-1、安装Homebrew https://brew.sh/index_zh-cn.html
+二、安装 tree
+因为安装 tree 需要用 brew 命令，所以先安装 Homebrew
+1、安装 Homebrew https://brew.sh/index_zh-cn.html
 在终端输入下面指令
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 2、安装 tree
 
-**337. 项目配置git提交检查**
+**337. 项目配置 git 提交检查**
+
 1. 安装依赖
+
 ```shell
 npm i -D husky lint-staged @commitlint/cli @commitlint/config-conventional
 ```
+
 2. 根目录创建`commitlint.config.js`
+
 ```js
 module.exports = {
-  extends: [
-    '@commitlint/config-conventional'
-  ]
-}
+  extends: ["@commitlint/config-conventional"],
+};
 ```
+
 3. 修改`package.json`
+
 ```json
 {
-    "husky": {
+  "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
-    "*.{js,vue}": [
-      "npm run lint",
-      "git add"
-    ]
+    "*.{js,vue}": ["npm run lint", "git add"]
   }
 }
 ```
@@ -6380,6 +6392,7 @@ module.exports = {
 **338. 在忙也不要忘了学习**
 
 **339. vue computed 传参**
+
 ```javascript
 computed: {
   text() {
@@ -6395,12 +6408,14 @@ const getActiveStatus = computed(() => index => {
 });
 ```
 
-**340. services层应该处理一些数据**
+**340. services 层应该处理一些数据**
+
 - 避免与业务层耦合度高，举个例子
+
 ```javascript
-import axios from '@/libs/http';
-import { formatDataByType } from '@libs/assist';
-import * as types from '@/api/types';
+import axios from "@/libs/http";
+import { formatDataByType } from "@libs/assist";
+import * as types from "@/api/types";
 
 export const getDurgTypeList = params => {
   return axios
@@ -6413,12 +6428,12 @@ export const getDrugTypeByIdAndKeyword = params => {
     .get(types.GETDrugTypeByIdAndKeyword, params)
     .then(res => formatDataByType(res.data));
 };
-
 ```
 
-**341. $attrs只能接收父props中没有的，而且不是响应式的**
+**341. $attrs 只能接收父 props 中没有的，而且不是响应式的**
 
 **342. 当子路由不是菜单如何优雅的进行高亮**
+
 ```vue
 <template>
   <el-scrollbar class="layout-aside__scrollbar">
@@ -6446,10 +6461,10 @@ export const getDrugTypeByIdAndKeyword = params => {
 </template>
 
 <script>
-import { computed } from '@vue/composition-api';
-import routes from '@router/menuList';
-import MenuItem from './MenuItem';
-import MenuContain from './MenuContain';
+import { computed } from "@vue/composition-api";
+import routes from "@router/menuList";
+import MenuItem from "./MenuItem";
+import MenuContain from "./MenuContain";
 
 export default {
   components: { MenuItem, MenuContain },
@@ -6463,24 +6478,23 @@ export default {
 
     return {
       routes,
-      activeMenu
+      activeMenu,
     };
-  }
+  },
 };
 </script>
 
-<style lang="scss">
-
-</style>
-
+<style lang="scss"></style>
 ```
 
-**343. 弹窗的visible维护新思路**
-- 以前是父传props到子的el-dialog组件，子再emit update改变父
-- 新的思路是用hooks想出来的 通过一个外部变量维护visible 父子通过改变这个变量去控制显示隐藏 就避免了emit props这些东西
+**343. 弹窗的 visible 维护新思路**
+
+- 以前是父传 props 到子的 el-dialog 组件，子再 emit update 改变父
+- 新的思路是用 hooks 想出来的 通过一个外部变量维护 visible 父子通过改变这个变量去控制显示隐藏 就避免了 emit props 这些东西
+
 ```js
-import { useDialog } from '@hooks/index';
-import { ref, onBeforeUnmount } from '@vue/composition-api';
+import { useDialog } from "@hooks/index";
+import { ref, onBeforeUnmount } from "@vue/composition-api";
 
 // 在外部管理 它会始终存在直到组件销毁 相当于一个小型vuex
 // 我们只通过方法去改变而不能直接改变
@@ -6494,13 +6508,13 @@ export default function usePackageDialog() {
 
   return {
     visible,
-    handleChangeVisible
+    handleChangeVisible,
   };
 }
-
 ```
 
 **344. 不知道什么时候开始火狐已经兼容多行省略文本了**
+
 ```scss
 @mixin textRowEllipsis($row) {
   display: -webkit-box;
@@ -6510,7 +6524,8 @@ export default function usePackageDialog() {
 }
 ```
 
-**345. vuehook数据共享可以写在use方法外面而方法共享可以使用观察者模式**
+**345. vuehook 数据共享可以写在 use 方法外面而方法共享可以使用观察者模式**
+
 ```javascript
 /**
  * 一个简易的观察者对象
@@ -6543,56 +6558,58 @@ export class Subject {
 }
 ```
 
-**346. onbeforeunload来显示离开提示**
+**346. onbeforeunload 来显示离开提示**
+
 ```js
-import { onUnmounted } from '@vue/composition-api';
+import { onUnmounted } from "@vue/composition-api";
 
 export default function useBeforeunload() {
-  window.onbeforeunload = function() {
-    return '确定离开吗？';
+  window.onbeforeunload = function () {
+    return "确定离开吗？";
   };
 
   onUnmounted(() => remove());
 
   function remove() {
-    console.log('un');
+    console.log("un");
     window.onbeforeunload = null;
   }
   return { remove };
 }
-
 ```
 
-**346. 如果几个组件共用一个数据联动 一定要写在vuex或者别的能统一管理里面**
+**346. 如果几个组件共用一个数据联动 一定要写在 vuex 或者别的能统一管理里面**
 
-**347. 如果产品设计了一款3个以上的组件共用一个数据源还要在同个页面联动的产品，一定要拒绝**
+**347. 如果产品设计了一款 3 个以上的组件共用一个数据源还要在同个页面联动的产品，一定要拒绝**
+
 - 虽说数据驱动 但是处理起来极度恶心 深坑
 
 **348. 又遇到了数组高阶循环的问题**
-1. forEach循环删除数组 用的splice，发现清空的时候删不干净，因为删掉一项数组长度就变了，所以总会漏掉
-2. 解决方案：用delte删除 删完之后  arr = arr.filter(v=>v)
 
-**349. new Date的奇淫技巧**
+1. forEach 循环删除数组 用的 splice，发现清空的时候删不干净，因为删掉一项数组长度就变了，所以总会漏掉
+2. 解决方案：用 delte 删除 删完之后 arr = arr.filter(v=>v)
+
+**349. new Date 的奇淫技巧**
+
 - new Date(2014,4,0).toLocaleString()
-- "2014/4/30 上午12:00:00"
+- "2014/4/30 上午 12:00:00"
 - new Date(2014,4,1).toLocaleString()
-- "2014/5/1 上午12:00:00"
+- "2014/5/1 上午 12:00:00"
 
-**350. scss根据颜色数组生成类型class**
+**350. scss 根据颜色数组生成类型 class**
+
 ```scss
 $colorList: (
     type: "primary",
     color: $primaryColor,
-  ),
-  (
+  ), (
     type: "success",
     color: $successColor,
   ),
   (
     type: "warning",
     color: $warningColor,
-  ),
-  (
+  ), (
     type: "danger",
     color: $dangerColor,
   ),
@@ -6609,17 +6626,21 @@ $colorList: (
 }
 ```
 
-**351. elementui打包之后图标偶尔乱码**
-> [elementui生产环境图标加载时偶而乱码](https://blog.csdn.net/palmer_kai/article/details/105728156)
+**351. elementui 打包之后图标偶尔乱码**
 
-- 如果加载资源没问题的情况下，就是dart-sass造成的，打包之后看app.css el-icon的里面是不是不能识别的乱码
+> [elementui 生产环境图标加载时偶而乱码](https://blog.csdn.net/palmer_kai/article/details/105728156)
+
+- 如果加载资源没问题的情况下，就是 dart-sass 造成的，打包之后看 app.css el-icon 的里面是不是不能识别的乱码
+
 ```shell
 npm uninstall sass
 npm install node-sass
 ```
+
 - 之后再打包看到正常了 不是乱码
 
-**352. vue render函数、jsx渲染html标签**
+**352. vue render 函数、jsx 渲染 html 标签**
+
 ```javascript
 render(h, data) {
    return h("div", {
@@ -6629,6 +6650,7 @@ render(h, data) {
    })
 }
 ```
+
 ```javascript
 render() {
    return (
@@ -6650,23 +6672,23 @@ render() {
  }
 ```
 
-
-**353. mac动态壁纸是用的是heic格式的图片**
-这个图片大概内容是一个json配置文件加上一些图片，live图片貌似也是基于这个。
+**353. mac 动态壁纸是用的是 heic 格式的图片**
+这个图片大概内容是一个 json 配置文件加上一些图片，live 图片貌似也是基于这个。
 相关资料
-1. [https://www.jianshu.com/p/377f31da0c5d](如何自己动手制作macOS系统Heic动态壁纸
-)
+
+1. [https://www.jianshu.com/p/377f31da0c5d](如何自己动手制作macOS系统Heic动态壁纸)
 2. [https://zhuanlan.zhihu.com/p/35847861](HEIF/heic图片文件解析)
 3. [https://itnext.io/macos-mojave-dynamic-wallpaper-fd26b0698223?gi=dbd14796f401](macOS Mojave dynamic wallpaper. How Apple built dynamic wallpapers? And… | by Marcin Czachurski | ITNEXT)
 4. [https://github.com/asvinours/jpeg-to-heif](JPEG image to HEIF image)
 
-**354. scss如何别写BEM规范代码**
+**354. scss 如何别写 BEM 规范代码**
+
 ```scss
 .person {
   @at-root #{&}__hand {
     color: red;
     @at-root #{&}--left {
-     color: yellow;
+      color: yellow;
     }
   }
   @at-root #{&}--female {
@@ -6677,7 +6699,9 @@ render() {
   }
 }
 ```
+
 提取公共项编写
+
 ```scss
 @mixin atRoot($modify) {
   @at-root #{&}#{$modify} {
@@ -6692,24 +6716,28 @@ render() {
 }
 ```
 
-**355. vuerouter的base要开history模式貌似才行**
+**355. vuerouter 的 base 要开 history 模式貌似才行**
 
-**367. 使用keepalive配合全局变量控制弹窗显示的一个问题**
-- 当使用了keep-alive的时候，el-dialog组件如果添加到了body上，会被缓存下来
-- 如果多个keepalive页面共用了这个弹窗，那么就会生成很多个相同弹窗不会被销毁
+**367. 使用 keepalive 配合全局变量控制弹窗显示的一个问题**
+
+- 当使用了 keep-alive 的时候，el-dialog 组件如果添加到了 body 上，会被缓存下来
+- 如果多个 keepalive 页面共用了这个弹窗，那么就会生成很多个相同弹窗不会被销毁
 - 如果你是每个路由去单独控制当前路由的这个弹窗那么不会有问题
-- 如果你是用vuex或者别的全局变量去控制弹窗的显隐，那么就会同时打开这些弹窗，看起来像只打开了一个，其实打开了多个
+- 如果你是用 vuex 或者别的全局变量去控制弹窗的显隐，那么就会同时打开这些弹窗，看起来像只打开了一个，其实打开了多个
 - 可能最上层的弹窗并没有被传值，导致出错
 - 可以通过生命周期去销毁这个组件达到清除缓存的作用
 
 **368. 组件拆分太细了，跨组件传递数据会很麻烦，无形中增加开发难度**
-- 可以尝试只抽离复用组件 页面逻辑用hooks抽开 mixins就算了太乱
 
-**369. ?.叫可选链 xxx!.是ts的判断，这个属性一定存在的判断**
+- 可以尝试只抽离复用组件 页面逻辑用 hooks 抽开 mixins 就算了太乱
 
-**370. chrome浏览器查看placeholder样式**
-- 在控制台的setting中勾选`show user agent shadow DOM`即可
-- 另外在做contenteditable 的dom元素时，可以使用设置placeholder
+**369. ?.叫可选链 xxx!.是 ts 的判断，这个属性一定存在的判断**
+
+**370. chrome 浏览器查看 placeholder 样式**
+
+- 在控制台的 setting 中勾选`show user agent shadow DOM`即可
+- 另外在做 contenteditable 的 dom 元素时，可以使用设置 placeholder
+
 ```css
 .input-box:empty::before {
   content: attr(placeholder);
@@ -6718,197 +6746,211 @@ render() {
 }
 ```
 
-**371. el-select多选内容不能撑开**
-- 在change和tag-remove中调用此方法
+**371. el-select 多选内容不能撑开**
+
+- 在 change 和 tag-remove 中调用此方法
+
 ```js
 let cacheTagWidthObj = {};
 
 /**
-   * 重新计算宽度
-   */
-  function hanldeDiseaseChoicedChange() {
-    setTimeout(() => {
-      const { $el } = refs.diagnoseSelect;
-      if (!$el) {
-        return;
-      }
-      const tagList = Array.from($el.querySelectorAll('.el-tag'));
-      let maxWidth = Math.max(
-        ...tagList.map(v => {
-          const text = v.textContent;
-          const cacheWidth = cacheTagWidthObj[text];
-          if (isId(cacheWidth)) {
-            return cacheWidth;
-          } else {
-            const { offsetWidth } = v;
-            cacheTagWidthObj[v.textContent] = offsetWidth;
-            return offsetWidth;
-          }
-        })
-      );
-      const minWidth = maxWidth < 192 ? 192 : maxWidth + 20;
-      diseaseSelectWidth.value = minWidth + 55;
-    }, 0);
-  }
+ * 重新计算宽度
+ */
+function hanldeDiseaseChoicedChange() {
+  setTimeout(() => {
+    const { $el } = refs.diagnoseSelect;
+    if (!$el) {
+      return;
+    }
+    const tagList = Array.from($el.querySelectorAll(".el-tag"));
+    let maxWidth = Math.max(
+      ...tagList.map(v => {
+        const text = v.textContent;
+        const cacheWidth = cacheTagWidthObj[text];
+        if (isId(cacheWidth)) {
+          return cacheWidth;
+        } else {
+          const { offsetWidth } = v;
+          cacheTagWidthObj[v.textContent] = offsetWidth;
+          return offsetWidth;
+        }
+      })
+    );
+    const minWidth = maxWidth < 192 ? 192 : maxWidth + 20;
+    diseaseSelectWidth.value = minWidth + 55;
+  }, 0);
+}
 ```
 
-**372. toLocaleString的妙用**
+**372. toLocaleString 的妙用**
+
 ```javascript
-new Date().toLocaleString('ja-JP-u-ca-chinese')
+new Date().toLocaleString("ja-JP-u-ca-chinese");
 // "一,二三四,五六七,八九〇"
 
-new Number(1234567890).toLocaleString('zh-Hans-CN-u-nu-hanidec')
-"庚子年7月24日 16:36:57"
+new Number(1234567890).toLocaleString("zh-Hans-CN-u-nu-hanidec");
+("庚子年7月24日 16:36:57");
 
-let num = 223232332
-num.toLocaleString()
+let num = 223232332;
+num.toLocaleString();
 // '223,232,332'
 ```
 
-**373. div加上tabindex就可以出发键盘事件了**
+**373. div 加上 tabindex 就可以出发键盘事件了**
 
-**373. getClientRects可以获取内联元素有多少行**
+**373. getClientRects 可以获取内联元素有多少行**
 
-**374. if与局部全局变量的关系**
+**374. if 与局部全局变量的关系**
+
 > https://www.zhihu.com/question/265381252
 
-1. if里的函数声明首先会定义一个全局同名变量a=undefined
+1. if 里的函数声明首先会定义一个全局同名变量 a=undefined
 
-2. if里的函数赋值会提升到块作用域顶部
+2. if 里的函数赋值会提升到块作用域顶部
 
-3. 执行到函数声明语句时,会把块作用域里的a赋值到全局同名变量a
+3. 执行到函数声明语句时,会把块作用域里的 a 赋值到全局同名变量 a
 
-4. 基于行为诡异，不同浏览器实现不同，建议在if里用函数表达式代替函数声明
+4. 基于行为诡异，不同浏览器实现不同，建议在 if 里用函数表达式代替函数声明
 
 ```javascript
 var a = 0;
-console.log(window.a, a) // undefined undefined 对应解释1
-if(true) {
-  console.log(window.a, a) // undefined function a(){} 对应解释2
-  a = 0.5; 
-  console.log(window.a, a) // undefined 0.5 
+console.log(window.a, a); // undefined undefined 对应解释1
+if (true) {
+  console.log(window.a, a); // undefined function a(){} 对应解释2
+  a = 0.5;
+  console.log(window.a, a); // undefined 0.5
   a = 1;
-  console.log(window.a, a) // undefined 1 对应解释2
-  function a(){} // 对应解释3
+  console.log(window.a, a); // undefined 1 对应解释2
+  function a() {} // 对应解释3
   a = 21;
-  console.log(window.a, a) // 1 21 
-  a = 30
-  console.log(window.a, a) // 1 30
-  
+  console.log(window.a, a); // 1 21
+  a = 30;
+  console.log(window.a, a); // 1 30
 }
 
-console.log(a)
+console.log(a);
 ```
 
 **375. 如果是自己的不同项目基本上都能同域**
-- 使用nginx 分发
+
+- 使用 nginx 分发
 - 子域名
 - 同域名不同路径
 
+**376. node 输出彩色字**
 
-**376. node输出彩色字**
 > https://www.jb51.net/article/175493.htm
 
-其原理最重要的一个知识点就是ANSI Escape code.
+其原理最重要的一个知识点就是 ANSI Escape code.
 
-ASCII编码中有些字符是不能用来在终端中打印显示的，比如'\a' 0x7代表响铃，'\n' 0x0A代表换行，这些字符被称为控制符。
+ASCII 编码中有些字符是不能用来在终端中打印显示的，比如'\a' 0x7 代表响铃，'\n' 0x0A 代表换行，这些字符被称为控制符。
 
-而其中的一个控制符 '\e' 0x1B比较特殊，这个字符代表 ESC ，即键盘上 ESC 按键的作用。ESC 是单词 escape 的缩写，即逃逸的意思。文本中出现这个控制符，表示接下来的字符是ANSI Escape code编码。
+而其中的一个控制符 '\e' 0x1B 比较特殊，这个字符代表 ESC ，即键盘上 ESC 按键的作用。ESC 是单词 escape 的缩写，即逃逸的意思。文本中出现这个控制符，表示接下来的字符是 ANSI Escape code 编码。
 
-而ANSI Escape code编码中有专门控制字符颜色的控制符，例如：\e[31;44;4;1m
+而 ANSI Escape code 编码中有专门控制字符颜色的控制符，例如：\e[31;44;4;1m
 
-\e 控制符的16进制码为 0x1B ， 8 进制码为 033 
+\e 控制符的 16 进制码为 0x1B ， 8 进制码为 033
 
 其意义如下：
-\e 代表开始ANSI Escape code
+\e 代表开始 ANSI Escape code
 [ 代表转义序列开始符 CSI，Control Sequence Introducer
-31;44;4;1 代表以; 分隔的文本样式控制符，其中 31 代表文本前景色为红色，44代表背景为蓝色，4代表下划线，1代表加粗
+31;44;4;1 代表以; 分隔的文本样式控制符，其中 31 代表文本前景色为红色，44 代表背景为蓝色，4 代表下划线，1 代表加粗
 m 代表结束控制符序列
 
 ```javascript
-const NODE_EMPTY_TEXT_STYLE = '\x1B[0m';
+const NODE_EMPTY_TEXT_STYLE = "\x1B[0m";
 
 // 一开始是 \033 这种eslint会报错 在严格模式下不准使用八进制之类的
 // 将 \033改为\x1B就行了
 console.log(`
-${'\x1B[41;32;1;30m'} 注意 ${NODE_EMPTY_TEXT_STYLE}
-项目拆分成${'\x1B[91;1m'}多入口${NODE_EMPTY_TEXT_STYLE}了，访问地址出现变动
-${'\x1B[31m'}1.${NODE_EMPTY_TEXT_STYLE}能力平台 协议://域名:端口/index.html
-${'\x1B[32m'}2.${NODE_EMPTY_TEXT_STYLE}体验平台 协议://域名:端口/index.html
-${'\x1B[33m'}3.${NODE_EMPTY_TEXT_STYLE}AI门户   协议://域名:端口/door.html
+${"\x1B[41;32;1;30m"} 注意 ${NODE_EMPTY_TEXT_STYLE}
+项目拆分成${"\x1B[91;1m"}多入口${NODE_EMPTY_TEXT_STYLE}了，访问地址出现变动
+${"\x1B[31m"}1.${NODE_EMPTY_TEXT_STYLE}能力平台 协议://域名:端口/index.html
+${"\x1B[32m"}2.${NODE_EMPTY_TEXT_STYLE}体验平台 协议://域名:端口/index.html
+${"\x1B[33m"}3.${NODE_EMPTY_TEXT_STYLE}AI门户   协议://域名:端口/door.html
 
-${'\x1B[42;31;1m'} 例如 ${NODE_EMPTY_TEXT_STYLE}
+${"\x1B[42;31;1m"} 例如 ${NODE_EMPTY_TEXT_STYLE}
 访问AI门户  http://localhost:8080/door.html
  `);
 ```
 
-
-**377. tweenjs能做好多动画好用**
+**377. tweenjs 能做好多动画好用**
 
 **378. window.onload ondocumentready**
-- onload会等页面dom静态资源加载完毕 html里的  后面再加的不算
-- ondocumentread只是等待dom完毕
+
+- onload 会等页面 dom 静态资源加载完毕 html 里的 后面再加的不算
+- ondocumentread 只是等待 dom 完毕
 
 **379. 前端脚手架生成工具可以使用 Yeoman 和 plop**
 
-**380. tab按键阻止默认事件的一些点**
-- tab切换的时候 有时候会失去焦点 或焦点不在el上 可以 el.focus 加上el.click 强制聚焦
+**380. tab 按键阻止默认事件的一些点**
+
+- tab 切换的时候 有时候会失去焦点 或焦点不在 el 上 可以 el.focus 加上 el.click 强制聚焦
 
 **381. 虚拟机能解决一部分问题，但是还是真实的系统试一下比较好**
 
-**382. 什么时候JS的权限再高点就好了**
+**382. 什么时候 JS 的权限再高点就好了**
 
 **383. 写代码多考虑维护性 因为以后需求改你就哭了**
 
-**384. 用split处理业务逻辑的时候一定小小心 保证这个分隔符是唯一的**
+**384. 用 split 处理业务逻辑的时候一定小小心 保证这个分隔符是唯一的**
 
-**385. 使用多行文本溢出的时候不要用padding-bottom**
+**385. 使用多行文本溢出的时候不要用 padding-bottom**
+
 - 不然会再显示出来
 
-**386. 父元素opacity之后子元素会一直受到影响**
+**386. 父元素 opacity 之后子元素会一直受到影响**
 
-**387. elementui的折叠面板想要点击头部不去展开收起可以自定义一个头部并阻止冒泡**
+**387. elementui 的折叠面板想要点击头部不去展开收起可以自定义一个头部并阻止冒泡**
 
-**388. 富文本编辑器想保证原有样式可以使用iframe**
-- 但是又带来很多问题，比如里面内容宽度超出iframe 、 iframe高度
-- 超链接跳转  
+**388. 富文本编辑器想保证原有样式可以使用 iframe**
 
-**389. chrome浏览器滚动条样式还是可以调调的**
+- 但是又带来很多问题，比如里面内容宽度超出 iframe 、 iframe 高度
+- 超链接跳转
+
+**389. chrome 浏览器滚动条样式还是可以调调的**
 
 **390. antv G6 踩坑记录**
+
 1. 分辨率改变重绘,自适应布局
+
 ```js
 const { width, height } = $el.getBoundingClientRect();
 graph.changeSize(width, height);
 ```
 
-2. 清空    `graph.clear()`
+2. 清空 `graph.clear()`
 3. 销毁 `graph.destory()`
 4. 数据如何更新？
+
 ```js
 // 直接修改数据源， 然后调用 graph.changeData()
 activeItem.label = diseaseName;
 activeItem.diseaseId = abilityId;
 graph.changeData();
 ```
-5. 设置disabled和active状态
+
+5. 设置 disabled 和 active 状态
+
 ```javascript
-graph.findAll('node', node => {
+graph.findAll("node", node => {
   const nodeId = node._cfg.id;
-  graph.setItemState(nodeId, 'disabled', true);
-})
+  graph.setItemState(nodeId, "disabled", true);
+});
 ```
+
 6. 键盘事件
+
 ```javascript
 const key2Event = {
-      Backspace: deleteNode,
-      Enter: insertBrother,
-      Tab: insertChild,
-      'ctrl-z': handleCancel,
-      'ctrl-y': handleDeCancel,
-      'ctrl-c': handleCopyNode,
-      'ctrl-v': handlePasteNode
-    };
+  Backspace: deleteNode,
+  Enter: insertBrother,
+  Tab: insertChild,
+  "ctrl-z": handleCancel,
+  "ctrl-y": handleDeCancel,
+  "ctrl-c": handleCopyNode,
+  "ctrl-v": handlePasteNode,
+};
 /**
  * 键盘事件的逻辑
  * @param {*} key2Event
@@ -6919,7 +6961,7 @@ export default function useKeyEvent(key2Event, getEditStatus) {
   /**
    * 触发键盘事件快捷操作
    */
-  const ctrlArr = ['Meta', 'Control'];
+  const ctrlArr = ["Meta", "Control"];
   function handlekeyDown(event) {
     if (getEditStatus()) {
       return;
@@ -6927,13 +6969,13 @@ export default function useKeyEvent(key2Event, getEditStatus) {
     // event.preventDefault();
     let key = event.key;
     // 兼容苹果笔记本和windows系统 键盘差异
-    if (key === 'Delete') {
-      key = 'Backspace';
+    if (key === "Delete") {
+      key = "Backspace";
     }
     // 阻止tab（避免切换点击区域）、 ctrl+z、 ctrl+y、ctrl+c、ctrl+v默认事件  重写了这几个行为
     if (
-      key === 'Tab' ||
-      (ctrolActiveStatus && ['z', 'y', 'c', 'v'].includes(key))
+      key === "Tab" ||
+      (ctrolActiveStatus && ["z", "y", "c", "v"].includes(key))
     ) {
       event.preventDefault();
     }
@@ -6941,9 +6983,9 @@ export default function useKeyEvent(key2Event, getEditStatus) {
     // 是否点击了ctrl 或common键
     ctrlArr.includes(key) && (ctrolActiveStatus = true);
 
-    key = `${ctrolActiveStatus ? 'ctrl-' : ''}${key}`;
+    key = `${ctrolActiveStatus ? "ctrl-" : ""}${key}`;
     const fn = key2Event[key];
-    typeof fn === 'function' && fn();
+    typeof fn === "function" && fn();
   }
 
   function handleKeyUp(event) {
@@ -6954,129 +6996,129 @@ export default function useKeyEvent(key2Event, getEditStatus) {
   return {
     ctrolActiveStatus,
     handlekeyDown,
-    handleKeyUp
+    handleKeyUp,
   };
-}       
+}
 ```
-7. 自定义dom-node如何自适应布局
+
+7. 自定义 dom-node 如何自适应布局
+
 ```js
 // 我们的业务场景是宽度固定 然后高度根据输入的文字自适应 我们每行高度是26 每行最多7个字 所以用7来分割算出来高度  渲染的时候拿不到dom高度 只能这样推算了
 // 思路就是 自定义node中的宽高与layout中的宽高保持一致
 // 之后布局就不会有遮挡了
 // 然后更新宽高调用graph.refreshItem(id); 这个方法
 
-
 // 定义一个自定义node
- G6.registerNode('dom-node', {
-      setState(name, value, item) {
-        const group = item.getContainer();
-        const shape = group.get('children')[0]; // 顺序根据 draw 时确定
-        shape.attrs[name] = value;
-      },
-      draw: (cfg, group) => {
-       
-        return group.addShape('dom', {
-          attrs: {
-            x: 0,
-            y: 0,
-	    // 核心 26是每行高度
-            height: Math.ceil(cfg.label.length / 7) * 26 || 26,
-            width: 120,
-           
-            html() {
-              return `<p 
+G6.registerNode("dom-node", {
+  setState(name, value, item) {
+    const group = item.getContainer();
+    const shape = group.get("children")[0]; // 顺序根据 draw 时确定
+    shape.attrs[name] = value;
+  },
+  draw: (cfg, group) => {
+    return group.addShape("dom", {
+      attrs: {
+        x: 0,
+        y: 0,
+        // 核心 26是每行高度
+        height: Math.ceil(cfg.label.length / 7) * 26 || 26,
+        width: 120,
+
+        html() {
+          return `<p 
 	      contenteditable
               data-id=${cfg.id} 
 	      title="${cfg.label}">
-	      ${
-                cfg.label
-              }
+	      ${cfg.label}
 	      </p>`;
-            },
-            name: 'p-shape'
-          }
-        });
-      }
+        },
+        name: "p-shape",
+      },
     });
+  },
+});
 
 // 实例化
 const { width, height } = refs.contain.getBoundingClientRect();
-      graph = new G6.TreeGraph({
-        container: 'mountNode', // String | HTMLElement，必须，在 Step 1 中创建的容器 id 或容器本身
-        width, // Number，必须，图的宽度
-        height, // Number，必须，图的高度
-	// 必须设置为svg  不然自定义node不出来
-        renderer: 'svg',
-        modes: {
-          default: [
-            {
-              type: 'collapse-expand',
-              onChange: function onChange(item, collapsed) {
-                const data = item.get('model').data;
-                data.collapsed = collapsed;
-                return true;
-              }
-            },
-            'drag-canvas',
-            'zoom-canvas'
-          ]
+graph = new G6.TreeGraph({
+  container: "mountNode", // String | HTMLElement，必须，在 Step 1 中创建的容器 id 或容器本身
+  width, // Number，必须，图的宽度
+  height, // Number，必须，图的高度
+  // 必须设置为svg  不然自定义node不出来
+  renderer: "svg",
+  modes: {
+    default: [
+      {
+        type: "collapse-expand",
+        onChange: function onChange(item, collapsed) {
+          const data = item.get("model").data;
+          data.collapsed = collapsed;
+          return true;
         },
-        // 定义布局
-        layout: {
-          type: 'compactBox',
-          direction: 'LR',
-	  // 核心
-          getHeight: node => {
-            return Math.ceil(node.label.length / 7) * 26 || 26;
-          },
-          getWidth: () => {
-            return 120; 
-          },
-          getHGap: () => {
-            return 40;
-          },
-          getVGap: () => {
-            return 20;
-          }
-        },
-        defaultNode: {
-          type: 'dom-node',
-          anchorPoints: [
-            [0, 0.5],
-            [1, 0.5]
-          ],
-          style: {
-            fill: '#cee3fc',
-            stroke: '#C6E5FF'
-          }
-        },
-        
-      });
-      
-//  之后改变p标签里的文字 就调用这个方法  id是p树的子节点
-      graph.refreshItem(id);
-```
-8. node的增删改查要注意动画时间
+      },
+      "drag-canvas",
+      "zoom-canvas",
+    ],
+  },
+  // 定义布局
+  layout: {
+    type: "compactBox",
+    direction: "LR",
+    // 核心
+    getHeight: node => {
+      return Math.ceil(node.label.length / 7) * 26 || 26;
+    },
+    getWidth: () => {
+      return 120;
+    },
+    getHGap: () => {
+      return 40;
+    },
+    getVGap: () => {
+      return 20;
+    },
+  },
+  defaultNode: {
+    type: "dom-node",
+    anchorPoints: [
+      [0, 0.5],
+      [1, 0.5],
+    ],
+    style: {
+      fill: "#cee3fc",
+      stroke: "#C6E5FF",
+    },
+  },
+});
 
+//  之后改变p标签里的文字 就调用这个方法  id是p树的子节点
+graph.refreshItem(id);
+```
+
+8. node 的增删改查要注意动画时间
 
 **391. 规范的环境名称**
+
 - dev:开发环境
 - qa:测试环境
 - online:生产环境
 - pl: 预上线
 - grey: 灰度
-      
-**392. axios create的使用场景是创建多个实例 然后根据不同的实例访问不同的服务配置**
+
+**392. axios create 的使用场景是创建多个实例 然后根据不同的实例访问不同的服务配置**
 
 **393. 没去过大公司一定要去体验下，工作流程、福利、小公司真的很难比**
 
-**394. 可选链能用就用避免多次数据判断 方便  还有?? 避免隐式转换 很nice**
+**394. 可选链能用就用避免多次数据判断 方便 还有?? 避免隐式转换 很 nice**
 
-**395. 记一次node和nginx配合**
-1. 首先服务端装好npm、 pm2、nrm
-2. 本地调试好expess代码 将代码上传到服务器
-3. pm2 启动express服务
-4. 修改nginx配置 可以include一个 
+**395. 记一次 node 和 nginx 配合**
+
+1. 首先服务端装好 npm、 pm2、nrm
+2. 本地调试好 expess 代码 将代码上传到服务器
+3. pm2 启动 express 服务
+4. 修改 nginx 配置 可以 include 一个
+
 ```conf
 server {
         listen       3333;
@@ -7094,59 +7136,64 @@ server {
 		#root /disk1/cdss/web/dist;
 		#index index.html;
 
-        location /imts/ {	
+        location /imts/ {
 		    proxy_pass http://localhost:2233/;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
-					
+
         }
 
         location / {
-			add_header 'Access-Control-Allow-Origin' '*';		
+			add_header 'Access-Control-Allow-Origin' '*';
 			include  uwsgi_params;
 			proxy_pass http://172.31.200.110:8701/;
-			proxy_set_header Host $http_host;   
+			proxy_set_header Host $http_host;
 			proxy_set_header Cookie $http_cookie;
-			
-			client_max_body_size 10m; 
+
+			client_max_body_size 10m;
         }
     }
 ```
-5. 然后重启nginx
-进入nginx 的 sbin 目录 `./nginx -s reload -c /disk1/jjlei/env/nginx/conf/nginx.conf` 输入这个
+
+5. 然后重启 nginx
+   进入 nginx 的 sbin 目录 `./nginx -s reload -c /disk1/jjlei/env/nginx/conf/nginx.conf` 输入这个
 6. 访问即可
 
-**396. 将vue页面打包成npm包思路**
+**396. 将 vue 页面打包成 npm 包思路**
+
 1. 搞个入口文件 比如`package/index.js`
+
 ```javascript
-import PaintedChart from '@/views/statistic/index.js';
+import PaintedChart from "@/views/statistic/index.js";
 
 const components = [PaintedChart];
 
-const install = function(Vue) {
+const install = function (Vue) {
   components.forEach(component => {
     Vue.component(component.name, component);
   });
 };
 
 /* istanbul ignore if */
-if (typeof window !== 'undefined' && window.Vue) {
+if (typeof window !== "undefined" && window.Vue) {
   install(window.Vue);
 }
 
 export default {
   install,
-  PaintedChart
+  PaintedChart,
 };
-
 ```
-2. `package.json`打包build命令改为 ` "build": "vue-cli-service build --target lib --name cdssChart ./package/index.js"`
-- cdssChart 是npm包名
+
+2. `package.json`打包 build 命令改为 ` "build": "vue-cli-service build --target lib --name cdssChart ./package/index.js"`
+
+- cdssChart 是 npm 包名
 - ./package/index.js 是打包入口
 
-3. 给vue页面添加一个index.js 让页面暴露出去 在`src/views/statistic/`目录下
+3. 给 vue 页面添加一个 index.js 让页面暴露出去 在`src/views/statistic/`目录下
+
 ```JavaScript
 import PaintedChart from '@/views/statistic/index.js';
 
@@ -7169,31 +7216,38 @@ export default {
 };
 
 ```
-4. 然后运行  npm run build 发布到私有npm上就行了
+
+4. 然后运行 npm run build 发布到私有 npm 上就行了
 
 **397. 对于高频繁的请求的优化**
+
 1. 如果有个同步文件的操作向服务器发送请求，用户每点击一次，需要发送一个，对服务器压力高，可以使用代理模式，缓存操作，等待一段时间之后集中发送
+
 ```js
-const proxyFile = (function(){
+const proxyFile = (function () {
   let cache = [];
   let timer = null;
-  return function(id){
+  return function (id) {
     cache.push(id);
-    if(timer){ return };
-    timer = setTimeout(function(){
+    if (timer) {
+      return;
+    }
+    timer = setTimeout(function () {
       // 传递。。。
       clearTimeout(timer);
       cache.length = 0;
       timer = null;
-    }, 200)
-  }
-})()
+    }, 200);
+  };
+})();
 ```
 
-**398. 多页面的时候可以使用环境变量控制run哪个项目，比较方便**
-1. devserve配置open  和 openPage  利用环境变量控制openPage即可拉
+**398. 多页面的时候可以使用环境变量控制 run 哪个项目，比较方便**
+
+1. devserve 配置 open 和 openPage 利用环境变量控制 openPage 即可拉
 
 **399. webpack5 上手**
+
 ```javascript
 const HtmlWebpackPlugin = require("html-webpack-plugin"); // 通过 npm 安装
 const webpack = require("webpack"); // 访问内置的插件
@@ -7253,5 +7307,6 @@ module.exports = (env, argv) => {
   }
   return config;
 };
-
 ```
+
+**400. 做人要善良，不要为难同行，该有的备注和项目流程都要有**
