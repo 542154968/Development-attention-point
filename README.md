@@ -7310,3 +7310,11 @@ module.exports = (env, argv) => {
 ```
 
 **400. 做人要善良，不要为难同行，该有的备注和项目流程都要有**
+
+**401. content-visibility**
+
+> [content-visibility——只需一行 CSS 代码，让长列表网页的渲染性能提升几倍以上](https://blog.csdn.net/lgdaren/article/details/111505497) > [content-visibility 新的 css 属性，可显著提升渲染性能](https://blog.csdn.net/u011497228/article/details/112320285)
+
+1. 解决长列表渲染性能瓶颈问题，原理就是只渲染可视区域
+2. 已知问题 如图片等异步撑开网页的会导致浏览器计算区域出现问题 可以使用 contain-intrinsic-size 来撑开高度
+3. 兼容性差 可以用 JS 计算可视区域实现
