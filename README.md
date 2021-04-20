@@ -7327,9 +7327,13 @@ module.exports = (env, argv) => {
 
 - HLS (HTTP Live Streaming)，Apple 的动态码率自适应技术。主要用于 PC 和 Apple 终端的音视频服务。包括一个 m3u(8)的索引文件，TS 媒体分片文件和 key 加密串文件
 - 就是说 H5 是一种 HTML 的新标准，这种新标准支持原生的 video 标签和 video 控件。因为 video 控件标签又支持 HLS 协议播放。 所以得以实现在手机移动端的网页播放。H5 是解决网页播放问题，HLS 解决的是移动端播放问题。 两者的结合使得手机移动端的网页播放得以完美的实现。 从而实现了所有观看直播和点播视频的大众无需再下载任何插件就可以欣赏视频内容。
-- [https://blog.csdn.net/weixin_40777510/article/details/106693408](浏览器不支持flash插件之后，h5播放rtmp直播流的解决方案)
+- [浏览器不支持 flash 插件之后，h5 播放 rtmp 直播流的解决方案](https://blog.csdn.net/weixin_40777510/article/details/106693408)
 - https://bbs.csdn.net/topics/396612447
 
 **404. 为什么网页最多只能播放 6 个视频**
 
 - 只能播放 6 个是 http1.1 的限制，nginx 配置 http2.0 就好了
+
+**405. options 请求常常出现在 cors 预检请求**
+
+1. [mdn-options](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/OPTIONS)
