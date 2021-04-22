@@ -7337,3 +7337,7 @@ module.exports = (env, argv) => {
 **405. options 请求常常出现在 cors 预检请求**
 
 1. [mdn-options](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/OPTIONS)
+
+**406. vue3 v-onclick 默认都是带上.native 的**
+
+- 事件在`emits`里面的才是自定义事件 这样不会触发两次
