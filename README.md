@@ -7341,3 +7341,35 @@ module.exports = (env, argv) => {
 **406. vue3 v-onclick 默认都是带上.native 的**
 
 - 事件在`emits`里面的才是自定义事件 这样不会触发两次
+
+**407. nginx 配置 443 一直没法访问遇到的一个小错误**
+
+```.conf
+server{
+  # 一开始没加443 所以不行
+	 listen       443 ssl;
+                server_name ncp.iflyhealth.com;
+                ssl_ciphers  HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers  on;
+        #ssl_certificate   /usr/local/nginx/ssl/iflyhealth.com.cer;
+        #ssl_certificate_key   /usr/local/nginx/ssl/iflyhealth.com.key;
+        ssl_certificate   /usr/local/nginx/ssl/server.cer;
+        ssl_certificate_key   /usr/local/nginx/ssl/server.key;
+
+        ssl_session_cache    shared:SSL:1m;
+        ssl_session_timeout  5m;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2; #按照这个协议配置
+
+        proxy_set_header Host $host;
+        proxy_set_header Cookie $http_cookie;
+
+				location / {
+					alias /home/avator-demo/;
+					try_files $uri $uri/ @router;
+					if ($request_filename ~* .*\.(?:htm|html)$)
+					{
+						add_header Cache-Control "no-cache, no-store";
+					}
+				}
+	}
+```
