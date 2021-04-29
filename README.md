@@ -7373,3 +7373,7 @@ server{
 				}
 	}
 ```
+
+**408. node_modules/node-sass/vendor 报错**
+
+- 执行`npm rebuild node-sass`就行了
