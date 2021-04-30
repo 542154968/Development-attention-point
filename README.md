@@ -7377,3 +7377,6 @@ server{
 **408. node_modules/node-sass/vendor 报错**
 
 - 执行`npm rebuild node-sass`就行了
+
+**409. 禁止chrome浏览器的翻译功能**
+- `<meta name="google" content="notranslate" />`
