@@ -5191,7 +5191,6 @@ el.setAttribute(key, value);
 ```javascript
 "\u202D3777308808";
 // "‭3777308808"
-
 ```
 
 **250. 一个按照顺序异步执行的解决方案引发的 event loop 的思考**
@@ -7378,5 +7377,8 @@ server{
 
 - 执行`npm rebuild node-sass`就行了
 
-**409. 禁止chrome浏览器的翻译功能**
+**409. 禁止 chrome 浏览器的翻译功能**
+
 - `<meta name="google" content="notranslate" />`
+
+**410. websocket 客户端断网服务端是收不到消息的，需要用心跳机制**
