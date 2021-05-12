@@ -7382,3 +7382,32 @@ server{
 - `<meta name="google" content="notranslate" />`
 
 **410. websocket 客户端断网服务端是收不到消息的，需要用心跳机制**
+
+**411. 细节，使用 ref 包装对象的时候，不要先在外面定义一个对象，而是直接 ref 声明**
+
+- proxy 实现响应式其实是将一个 raw 对象（原始对象）包装了一层，产生了一个新的对象，这个对象跟原始对象是不相等的，也就是说，可能会存在原始对象占用内存并且无法释放的问题，所以建议你们在将一个对象声明响应式时，尽量不要用任何的变量去引用原始对象，而是直接将该对象放在 reactive 中
+
+```js
+// 「不太推荐的做法」
+import { reactive } from "vue";
+export default {
+  setup() {
+    let obj = { name: "零一", age: 23 }; // 原始对象
+    const state = reactive(obj); // 将obj包装成响应式
+
+    return { state };
+  },
+};
+```
+
+```js
+import { reactive } from "vue";
+export default {
+  setup() {
+    // 不再先声明原始对象
+    const state = reactive({ name: "零一", age: 23 });
+
+    return { state };
+  },
+};
+```
