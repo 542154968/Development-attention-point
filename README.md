@@ -7411,3 +7411,22 @@ export default {
   },
 };
 ```
+
+
+**411. 最近在做uniapp小程序 忙的没更新 997**
+> 这是一些踩的坑和经验 UI框架是uview 还么开发完
+
+1. sass-loader 的版本 @10.1.1 sass-loader 请使用低于 @11.0.0 的版本
+2. 用 ref(null)的形式定义 ref 实例的时候会报错，虽然不影响使用。
+3. 自定义 tabbar 的方式是先从微信官网拉一个自定义 tabbar 的项目，然后从这个自定义项目中复制`custom-tab-bar`放到`src`目录下。注意 pages.json 中的 tabBar.custom 要设为 true，同时开启`usingComponents`，而且要使用原生小程序代码编写！
+4. 自定义 tabbar 切换的时候先不要设置图标，通过全局数据存储当前跳转的 index，在每个 tabbar 主页面的 onshow 再去切换
+5. 重置样式需要在页面级别去写 组件组别不行
+6. tabs 组件引入页面真机报错 不能用
+7. 由于没有当前组件的 this composition-api 在做 ui 的时候并不好用
+8. 使用 scroll-into-view 的时候需要给子设置:id="item.id"
+9. 底部横条的兼容方案 https://ask.dcloud.net.cn/article/35564
+10. 修改内容 热更新报错 必须重启 恶心至极 重启电脑解决
+11. uniapp 中的:key 极其重要 直接影响值的获取
+12. u-button 自带节流 延迟 500ms 绝了！
+13. Array size is not a small enough positive integer 部分手机（包括部分安卓机）不支持 n in Number 的写法，只支持 n in Array，所以会报数组错误 感觉像是日期序列化含有'-'的问题
+15. https://www.cnblogs.com/ljx20180807/p/9907922.html 地图定位
