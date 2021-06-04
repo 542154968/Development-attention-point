@@ -7412,9 +7412,9 @@ export default {
 };
 ```
 
+**411. 最近在做 uniapp 小程序 忙的没更新 997**
 
-**411. 最近在做uniapp小程序 忙的没更新 997**
-> 这是一些踩的坑和经验 UI框架是uview 还么开发完
+> 这是一些踩的坑和经验 UI 框架是 uview 还么开发完
 
 1. sass-loader 的版本 @10.1.1 sass-loader 请使用低于 @11.0.0 的版本
 2. 用 ref(null)的形式定义 ref 实例的时候会报错，虽然不影响使用。
@@ -7429,4 +7429,34 @@ export default {
 11. uniapp 中的:key 极其重要 直接影响值的获取
 12. u-button 自带节流 延迟 500ms 绝了！
 13. Array size is not a small enough positive integer 部分手机（包括部分安卓机）不支持 n in Number 的写法，只支持 n in Array，所以会报数组错误 感觉像是日期序列化含有'-'的问题
-15. https://www.cnblogs.com/ljx20180807/p/9907922.html 地图定位
+14. https://www.cnblogs.com/ljx20180807/p/9907922.html 地图定位
+
+**412. postcss-px-to-viewport npm 下载不支持 include exclude**
+
+1. 因为 npm 上面的 postcss-px-to-viewport 包并不支持 include 的用法，需要使用 github 上面的包
+2. https://blog.csdn.net/qq_35430000/article/details/116117367
+3. ```js
+   {
+     'postcss-px-to-viewport': {
+           viewportWidth: rootValue * 10,
+           viewportHeight: 1920,
+           unitPrecision: 5,
+           viewportUnit: 'vw',
+           // fontViewportUnit:'px',
+           // propList: ['!font*'],
+           selectorBlackList: [
+             '.usepixel',
+             '.ignore',
+             '.hairlines',
+             'van-circle__layer'
+           ],
+           minPixelValue: 1,
+           mediaQuery: false,
+           include: /mobile/
+         }
+   }
+   ```
+
+```
+
+```
