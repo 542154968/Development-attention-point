@@ -7428,8 +7428,11 @@ export default {
 10. 修改内容 热更新报错 必须重启 恶心至极 重启电脑解决
 11. uniapp 中的:key 极其重要 直接影响值的获取
 12. u-button 自带节流 延迟 500ms 绝了！
-13. Array size is not a small enough positive integer 部分手机（包括部分安卓机）不支持 n in Number 的写法，只支持 n in Array，所以会报数组错误 感觉像是日期序列化含有'-'的问题
+13. Array size is not a small enough positive integer 部分手机（包括部分安卓机）不支持 n in Number 的写法，只支持 n in Array，所以会报数组错误
 14. https://www.cnblogs.com/ljx20180807/p/9907922.html 地图定位
+15. setup 里的数据不需要响应式的时候，设置为引用类型就可以在 onload 等周期里更新数据了
+16. data(){这里的 this。xxx return {}} 会冲突
+17. 小程序 navigate 传参的时候 如果里面有链接 记得 encode 一下 不然传参会被截断
 
 **412. postcss-px-to-viewport npm 下载不支持 include exclude**
 
