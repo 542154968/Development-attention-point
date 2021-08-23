@@ -7465,3 +7465,36 @@ export default {
 > 骨折在家休息了一个多月，难得的暑假 很羡慕老师的职业
 
 1. 可以使用微信 js 的 sdk`ready`之后触发播放 部分手机支持
+
+```js
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>demo</title>
+  </head>
+  <body>
+    <video width="320" height="240" autoplay muted controls>
+      <source src="https://www.runoob.com/try/demo_source/movie.mp4" type="video/mp4" />
+      <source src="https://www.runoob.com/try/demo_source/movie.ogg" type="video/ogg" />
+      您的浏览器不支持 HTML5 video 标签。
+    </video>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script>
+        wx.config({
+                debug: false,
+                appId: '111',
+                timestamp: '111',
+                nonceStr: '111',
+                signature: '111',
+                jsApiList: []
+        })
+        wx.ready(()=> {
+            let video = document.querySelectorAll("video")[0];
+            video.play();
+        });
+    </script>
+  </body>
+</html>
+
+```
