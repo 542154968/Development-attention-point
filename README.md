@@ -7515,3 +7515,17 @@ export default {
 
 1. ECMA-262 对内置对象的定义是“任何由 ECMAScript 实现提供、与宿主环境无关，并在 ECMAScript
    程序开始执行时就存在的对象”。如 `Object`、`Array`、`String`、`Global`、`Math`等等
+
+**417. 定型数组**
+
+1. 定型数组（typed array）是 ECMAScript 新增的结构，目的是提升向原生库传输数据的效率。实际上，
+   JavaScript 并没有“TypedArray”类型，它所指的其实是一种特殊的包含数值类型的数组。
+2. ArrayBuffer ArrayBuffer()是一个普通的 JavaScript 构造函数，可用于在内存中分配特定数量的字节空间。
+3. 第一种允许你读写 ArrayBuffer 的视图是 DataView。这个视图专为文件 I/O 和网络 I/O 设计，其
+   API 支持对缓冲数据的高度控制，但相比于其他类型的视图性能也差一些。DataView 对缓冲内容没有
+   任何预设，也不能迭代。
+4. 定型数组是另一种形式的 ArrayBuffer 视图。虽然概念上与 DataView 接近，但定型数组的区别
+   在于，它特定于一种 ElementType 且遵循系统原生的字节序。相应地，定型数组提供了适用面更广的
+   API 和更高的性能。设计定型数组的目的就是提高与 WebGL 等原生库交换二进制数据的效率。由于定
+   型数组的二进制表示对操作系统而言是一种容易使用的格式，JavaScript 引擎可以重度优化算术运算、
+   按位运算和其他对定型数组的常见操作，因此使用它们速度极快。
