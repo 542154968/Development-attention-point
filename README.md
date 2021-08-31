@@ -7587,3 +7587,9 @@ export default {
    WeakMap 的键名所指向的对象不计入垃圾回收机制。它的键名所引用的对象都是弱引用，即垃圾回收机制不将该引用考虑在内。因此所有引用的对象的其他引用都被清除，垃圾回收站就会释放该对象所占用的内存。
    WeakMap 没有遍历操作(即没有 key()、values()和 entries()方法)，也没有 size 属性。
    WeakMap 无法清空，即不支持 delete()方法。
+
+**421. 前端通过 js 获取手机型号**
+
+1. https://www.cnblogs.com/alisleepy/p/11200325.html
+2. https://github.com/joyqi/mobile-device-js/blob/master/device.js
+3. https://github.com/hgoebl/mobile-detect.js
