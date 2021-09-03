@@ -7593,3 +7593,27 @@ export default {
 1. https://www.cnblogs.com/alisleepy/p/11200325.html
 2. https://github.com/joyqi/mobile-device-js/blob/master/device.js
 3. https://github.com/hgoebl/mobile-detect.js
+
+**422. jsdoc对象如何描述**
+```js
+/**
+   * @param {object} op 链接里携带的参数
+   * @param {number|string} op.patAge 就诊人年龄
+   * @param {string} op.patSex 就诊人性别
+   * @param {number} op.patId 就诊人id
+   * @param {string} op.patName 就诊人名称
+   * @returns {void} 无
+   */
+  function sendUserInfo(op) {
+    const { IFlyCollector } = useIFlyCollector();
+    IFlyCollector.onEvent(XINJIANG_GET_USER_INFO, {
+      mobile: model,
+      os,
+      wechatVersion: getWechatVersion(),
+      patAge: op.patAge,
+      patSex: op.patSex,
+      patId: op.patId,
+      patName: op.patName,
+    });
+  }
+```
