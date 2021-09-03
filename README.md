@@ -7596,12 +7596,35 @@ export default {
 
 **422. jsdoc对象如何描述**
 ```js
+import useIFlyCollector from "@hooks/useIFlyCollector";
+import { XINJIANG_GET_USER_INFO } from "@js/idataEventName";
+import useMobileDetect from "@hooks/useMobileDetect";
+import { getWechatVersion } from "@js/utils";
+
 /**
-   * @param {object} op 链接里携带的参数
-   * @param {number|string} op.patAge 就诊人年龄
-   * @param {string} op.patSex 就诊人性别
-   * @param {number} op.patId 就诊人id
-   * @param {string} op.patName 就诊人名称
+ * @typedef Options 链接里携带的参数
+ * @property {number|string} patAge 就诊人年龄
+ * @property {number|string} patAge 就诊人年龄
+ * @property {string} patSex 就诊人性别
+ * @property {number} patId 就诊人id
+ * @property {string} patName 就诊人名称
+ */
+
+/**
+ * @typedef Returns 函数返回的描述
+ * @property {function} sendUserInfo 向idata发送埋点数据
+ * @returns {undefined}
+ */
+
+/**
+ * 新疆埋点的逻辑
+ * @returns {Returns}
+ */
+export default function useIflyCollectorData() {
+  const { os, model } = useMobileDetect();
+
+  /**
+   * @param {Options} op 链接里携带的参数
    * @returns {void} 无
    */
   function sendUserInfo(op) {
@@ -7616,4 +7639,9 @@ export default {
       patName: op.patName,
     });
   }
+  return {
+    sendUserInfo,
+  };
+}
+
 ```
