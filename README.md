@@ -7594,7 +7594,8 @@ export default {
 2. https://github.com/joyqi/mobile-device-js/blob/master/device.js
 3. https://github.com/hgoebl/mobile-detect.js
 
-**422. jsdoc对象如何描述**
+**422. jsdoc 对象如何描述**
+
 ```js
 import useIFlyCollector from "@hooks/useIFlyCollector";
 import { XINJIANG_GET_USER_INFO } from "@js/idataEventName";
@@ -7643,5 +7644,11 @@ export default function useIflyCollectorData() {
     sendUserInfo,
   };
 }
-
 ```
+
+**423. 移动端测试可以使用阿里云等平台云测试，比较方便**
+使用步骤：
+1、 初次使用需要绑定支付宝实名认证，购买【移动企业服务功能（免费）】，登录阿里云移动研发平台 EMAS https://emas.console.aliyun.com/#/overview
+2、 创建并进入工作空间，选择【移动测试】二级页面，进入在选择菜单【远程真机】，搜索相关测试真机点击使用
+3、 点击使用后进入详情页面，选择对应系统浏览器访问 H5 即可测试功能
+使用时注意右上角计时(图片右上角)，如果测试完成或中断，需要手动点击退出停止计时
