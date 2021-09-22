@@ -7653,5 +7653,11 @@ export default function useIflyCollectorData() {
 3、 点击使用后进入详情页面，选择对应系统浏览器访问 H5 即可测试功能
 使用时注意右上角计时(图片右上角)，如果测试完成或中断，需要手动点击退出停止计时
 
-**424. uniapp生成h5的时候public里的其他html模板不会带走**
+**424. uniapp 生成 h5 的时候 public 里的其他 html 模板不会带走**
+
 1. 使用多入口可以带入
+
+**425. iNodeClinet 报 libCoreUtils.dylib 将对您的电脑造成伤害**
+
+1. 关闭 sip 电脑关机 然后 按着 commond + r 然后点开机 按 10s 左右 然后送掉 进入 recover 模式
+2. 然后打开终端 输入 csrutil disable 回车 重启 ok
