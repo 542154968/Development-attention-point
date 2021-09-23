@@ -7661,3 +7661,20 @@ export default function useIflyCollectorData() {
 
 1. 关闭 sip 电脑关机 然后 按着 commond + r 然后点开机 按 10s 左右 然后送掉 进入 recover 模式
 2. 然后打开终端 输入 csrutil disable 回车 重启 ok
+
+**426. uglify 压缩 js 的一个注意点**
+
+1. 如果你比较的是nodeenv的变量引用的话 那么压缩的时候会保留这段代码 如
+
+```js
+const isProd = process.env.NODE_ENV === "production";
+
+if (isProd) {
+  // xxx 压缩之后里的代码会保留
+}
+
+// 如果你直接比较
+if (process.env.NODE_ENV === "production") {
+  // 这里的代码压缩后会删除 如果结果是false
+}
+```
