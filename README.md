@@ -7678,3 +7678,5 @@ if (process.env.NODE_ENV === "production") {
   // 这里的代码压缩后会删除 如果结果是false
 }
 ```
+**427. iframe链接改变会在历史栈里记录**
+- 某些场景为了避免这种可以销毁iframe重新生成
