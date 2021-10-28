@@ -7664,7 +7664,7 @@ export default function useIflyCollectorData() {
 
 **426. uglify 压缩 js 的一个注意点**
 
-1. 如果你比较的是nodeenv的变量引用的话 那么压缩的时候会保留这段代码 如
+1. 如果你比较的是 nodeenv 的变量引用的话 那么压缩的时候会保留这段代码 如
 
 ```js
 const isProd = process.env.NODE_ENV === "production";
@@ -7678,5 +7678,27 @@ if (process.env.NODE_ENV === "production") {
   // 这里的代码压缩后会删除 如果结果是false
 }
 ```
-**427. iframe链接改变会在历史栈里记录**
-- 某些场景为了避免这种可以销毁iframe重新生成
+
+**427. iframe 链接改变会在历史栈里记录**
+
+- 某些场景为了避免这种可以销毁 iframe 重新生成
+
+**428. 大量数据 正则性能不一定有数组等原生方法好**
+
+```js
+const text = new Array(10000)
+  .fill(1)
+  .map(v => {
+    return "哈哈哈哈哈哈哈哈哈哈或;";
+  })
+  .join("");
+console.time("a");
+text.replace(/;/g, "<br>");
+console.timeEnd("a");
+// a: 2.648681640625 ms
+
+console.time("a");
+text.split(";").join(";<br>");
+console.timeEnd("a");
+// a: 1.241943359375 ms
+```
