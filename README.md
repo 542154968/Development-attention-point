@@ -7702,3 +7702,7 @@ text.split(";").join(";<br>");
 console.timeEnd("a");
 // a: 1.241943359375 ms
 ```
+
+**429. line-height 默认高度是根据用户端决定的**
+
+- 桌面浏览器一般默认 1.2
