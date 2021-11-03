@@ -7921,3 +7921,28 @@ console.timeEnd("a");
   </body>
 </html>
 ```
+
+**431. 如果用户没刷新页面而发版本了会遇到 chunk 加载不到的问题**
+
+1. router.error 增加提示
+
+```js
+/**
+ * 当chunk加载失败时的匹配
+ */
+export const chunkLoadErrorPattern = /^Loading chunk/gi;
+
+/**
+ * 当chunk发生改变时
+ */
+export const CHUNK_LOAD_ERROR_MSG = "页面资源发生改变，请刷新页面~";
+
+router.onError(function (error) {
+  const { message } = error;
+  // 当路由chunk加载失败时提示用户刷新页面
+  if (message.match(chunkLoadErrorPattern)) {
+    notifyInfo(CHUNK_LOAD_ERROR_MSG);
+  }
+  throw error;
+});
+```
