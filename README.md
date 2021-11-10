@@ -7433,32 +7433,38 @@ export default {
 15. setup 里的数据不需要响应式的时候，设置为引用类型就可以在 onload 等周期里更新数据了
 16. data(){这里的 this。xxx return {}} 会冲突
 17. 小程序 navigate 传参的时候 如果里面有链接 记得 encode 一下 不然传参会被截断
+18. https://www.jianshu.com/p/0853e36925e3 订阅消息的踩坑记录
+19. onshow 周期打包成网页的时候子组件并没有渲染，而在小程序时候子组件是渲染过得
+20. form 校验规则 rules 无法通过 props 传递， [参见](https://www.uviewui.com/components/form.html#form%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9Amodel%E5%8F%82%E6%95%B0)
+21. onLoad 和 uni.getLaunchOptionsSync 两个方法拿到的参数，不是一致的： 当从其他页面（小程序）跳转过来的时候，两次(本小程序在后台没有结束的话)传参不一致，则 onload 会被触发两次，且两次的参数正确，而 uni.getLaunchOptionsSync 方法拿到的是第一次的参数。
+22. u-avatar 里面传 url 的时候，打包 h5，相对路径（整个项目的 public 是相对的）会出错， 得到的路径会有页面的路径，不能正常使用
+23. modal 框在 ios 下会有个白边 是 u-mode-center-box 这个样式影响的
+24. h5 中 先 crate 再 load 再 show 视频全屏会频繁触发 show 周期 注意了
+    **412. postcss-px-to-viewport npm 下载不支持 include exclude**
 
-**412. postcss-px-to-viewport npm 下载不支持 include exclude**
-
-1. 因为 npm 上面的 postcss-px-to-viewport 包并不支持 include 的用法，需要使用 github 上面的包
-2. https://blog.csdn.net/qq_35430000/article/details/116117367
-3. ```js
-   {
-     'postcss-px-to-viewport': {
-           viewportWidth: rootValue * 10,
-           viewportHeight: 1920,
-           unitPrecision: 5,
-           viewportUnit: 'vw',
-           // fontViewportUnit:'px',
-           // propList: ['!font*'],
-           selectorBlackList: [
-             '.usepixel',
-             '.ignore',
-             '.hairlines',
-             'van-circle__layer'
-           ],
-           minPixelValue: 1,
-           mediaQuery: false,
-           include: /mobile/
-         }
-   }
-   ```
+25. 因为 npm 上面的 postcss-px-to-viewport 包并不支持 include 的用法，需要使用 github 上面的包
+26. https://blog.csdn.net/qq_35430000/article/details/116117367
+27. ```js
+    {
+      'postcss-px-to-viewport': {
+            viewportWidth: rootValue * 10,
+            viewportHeight: 1920,
+            unitPrecision: 5,
+            viewportUnit: 'vw',
+            // fontViewportUnit:'px',
+            // propList: ['!font*'],
+            selectorBlackList: [
+              '.usepixel',
+              '.ignore',
+              '.hairlines',
+              'van-circle__layer'
+            ],
+            minPixelValue: 1,
+            mediaQuery: false,
+            include: /mobile/
+          }
+    }
+    ```
 
 **413. 小程序的 webview 自动播放视频部分安卓手机不支持**
 
