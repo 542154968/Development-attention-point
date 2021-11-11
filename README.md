@@ -7952,3 +7952,7 @@ router.onError(function (error) {
   throw error;
 });
 ```
+
+**432. js动态插入link标签是不会生效的**
+1. 页面不会重绘
+2. 可以ajax请求到然后添加style进去
