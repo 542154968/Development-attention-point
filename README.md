@@ -7956,3 +7956,13 @@ router.onError(function (error) {
 **432. js 动态插入 link 标签是不会生效的要把 rel=stylesheet 加上**
 
 1. 可以 ajax 请求到然后添加 style 进去
+
+
+**433. svg转base64**
+```js
+function svgToImage(svg: string): string {
+  const base64 = btoa(svg)
+  return `data:image/svg+xml;base64,${base64}`
+}
+
+```
