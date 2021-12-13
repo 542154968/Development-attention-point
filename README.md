@@ -7957,12 +7957,17 @@ router.onError(function (error) {
 
 1. 可以 ajax 请求到然后添加 style 进去
 
+**433. svg 转 base64**
 
-**433. svg转base64**
 ```js
 function svgToImage(svg: string): string {
-  const base64 = btoa(svg)
-  return `data:image/svg+xml;base64,${base64}`
+  const base64 = btoa(svg);
+  return `data:image/svg+xml;base64,${base64}`;
 }
-
 ```
+
+**434. UUID NanoID 与浏览器生成 UUID**
+
+1. [为什么 NanoID 正在取代 UUID？](https://juejin.cn/post/7039960318897815565)
+2. `对于web应用而言使用原生URL.createObjectURL(new Blob()).substr(-36)获取UUID，相对与引入一整个库来说节约更多的资源。实际生产过程中，应该也不会有每秒需要生成上万次的场景，所以性能实际上在使用较少的时候几乎没有差别。 但是也许用在其他一些语言的应用上会就不错的表现。`
+3. URL.createObjectURL(new Blob()).substr(-36)
