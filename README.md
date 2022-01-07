@@ -7437,14 +7437,36 @@ export default {
 19. onshow 周期打包成网页的时候子组件并没有渲染，而在小程序时候子组件是渲染过得
 20. form 校验规则 rules 无法通过 props 传递， [参见](https://www.uviewui.com/components/form.html#form%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9Amodel%E5%8F%82%E6%95%B0)
 21. onLoad 和 uni.getLaunchOptionsSync 两个方法拿到的参数，不是一致的： 当从其他页面（小程序）跳转过来的时候，两次(本小程序在后台没有结束的话)传参不一致，则 onload 会被触发两次，且两次的参数正确，而 uni.getLaunchOptionsSync 方法拿到的是第一次的参数。
-22. u-avatar 里面传 url 的时候，打包 h5，相对路径（整个项目的 public 是相对的）会出错， 得到的路径会有页面的路径，不能正常使用
-23. modal 框在 ios 下会有个白边 是 u-mode-center-box 这个样式影响的
-24. h5 中 先 crate 再 load 再 show 视频全屏会频繁触发 show 周期 注意了
-    **412. postcss-px-to-viewport npm 下载不支持 include exclude**
+22. sass-loader 的版本 @10.1.1 sass-loader 请使用低于 @11.0.0 的版本
+23. 用 ref(null)的形式定义 ref 实例的时候会报错，虽然不影响使用。
+24. 自定义 tabbar 的方式是先从微信官网拉一个自定义 tabbar 的项目，然后从这个自定义项目中复制`custom-tab-bar`放到`src`目录下。注意 pages.json 中的 tabBar.custom 要设为 true，同时开启`usingComponents`，而且要使用原生小程序代码编写！
+25. 自定义 tabbar 切换的时候先不要设置图标，通过全局数据存储当前跳转的 index，在每个 tabbar 主页面的 onshow 再去切换
+26. 重置样式需要在页面级别去写 组件组别不行
+27. tabs 组件引入页面真机报错 不能用
+28. 由于没有当前组件的 this composition-api 在做 ui 的时候并不好用
+29. 使用 scroll-into-view 的时候需要给子设置:id="item.id"
+30. 底部横条的兼容方案 https://ask.dcloud.net.cn/article/35564
+31. 修改内容 热更新报错 必须重启 恶心至极 重启电脑解决
+32. uniapp 中的:key 极其重要 直接影响值的获取
+33. u-button 自带节流 延迟 500ms 绝了！
+34. Array size is not a small enough positive integer 部分手机（包括部分安卓机）不支持 n in Number 的写法，只支持 n in Array，所以会报数组错误
+35. https://www.cnblogs.com/ljx20180807/p/9907922.html 地图定位
+36. setup 里的数据不需要响应式的时候，设置为引用类型就可以在 onload 等周期里更新数据了
+37. data(){这里的 this。xxx return {}} 会冲突
+38. 小程序 navigate 传参的时候 如果里面有链接 记得 encode 一下 不然传参会被截断
+39. https://www.jianshu.com/p/0853e36925e3 订阅消息的踩坑记录
+40. onshow 周期打包成网页的时候子组件并没有渲染，而在小程序时候子组件是渲染过得
+41. form 校验规则 rules 无法通过 props 传递， [参见](https://www.uviewui.com/components/form.html#form%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9Amodel%E5%8F%82%E6%95%B0)
+42. onLoad 和 uni.getLaunchOptionsSync 两个方法拿到的参数，不是一致的： 当从其他页面（小程序）跳转过来的时候，两次(本小程序在后台没有结束的话)传参不一致，则 onload 会被触发两次，且两次的参数正确，而 uni.getLaunchOptionsSync 方法拿到的是第一次的参数。
+43. upload， 正式版调用需要单独设置域名，微信后台-》开发-》开发管理-》开发设置-》服务器域名下的 uploadFile 合法域名， 需要配置，否则体验版没问题，正式版上传会失败
+44. 如果是多环境的 某个代码只能某个环境使用 一定要考虑加上条件编译控制
+45. u-avatar 里面传 url 的时候，打包 h5，相对路径（整个项目的 public 是相对的）会出错， 得到的路径会有页面的路径，不能正常使用
+46. modal 框在 ios 下会有个白边 是 u-mode-center-box 这个样式影响的
+47. h5 中 先 crate 再 load 再 show 视频全屏会频繁触发 show 周期 注意了
 
-25. 因为 npm 上面的 postcss-px-to-viewport 包并不支持 include 的用法，需要使用 github 上面的包
-26. https://blog.csdn.net/qq_35430000/article/details/116117367
-27. ```js
+48. 因为 npm 上面的 postcss-px-to-viewport 包并不支持 include 的用法，需要使用 github 上面的包
+49. https://blog.csdn.net/qq_35430000/article/details/116117367
+50. ```js
     {
       'postcss-px-to-viewport': {
             viewportWidth: rootValue * 10,
@@ -7465,6 +7487,10 @@ export default {
           }
     }
     ```
+51. uniapp 的选择器如果要跨组件的话 要 `.class（选择器） >>> xxx` .class 要为当前组件能选到的选择器
+52. 如果组件循环引用了 h5 端 可能无法渲染 使用懒加载可以 但是懒加载在小程序端不能很好的渲染
+
+**412. postcss-px-to-viewport npm 下载不支持 include exclude**
 
 **413. 小程序的 webview 自动播放视频部分安卓手机不支持**
 
@@ -7976,3 +8002,5 @@ function svgToImage(svg: string): string {
 **435. uniapp 中 webview 在 h5 环境要考虑兼容性**
 
 1. webview 在 h5 是 iframe 有很多在 iframe 条件下不跳转
+
+**436. uniapp 的新蔡康**
