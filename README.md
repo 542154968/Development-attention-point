@@ -8003,4 +8003,23 @@ function svgToImage(svg: string): string {
 
 1. webview 在 h5 是 iframe 有很多在 iframe 条件下不跳转
 
-**436. uniapp 的新蔡康**
+**436. 利用 getboundingclientrect 和 window.scrollY 计算锚点**
+
+1. 小程序为例
+
+```js
+function scrollToLastItem(selector = "", getDomQuery) {
+  // hooks中没有this 所以从外部取
+  const query = getDomQuery();
+  query.selectViewport().scrollOffset();
+  query.select(selector).boundingClientRect();
+  query.exec(res => {
+    const lastIndex = res.length - 1;
+    const scrollData = res[lastIndex - 1];
+    const domData = res[lastIndex];
+    if (scrollData && domData) {
+      scrollTo(scrollData.scrollTop + domData.top - 150);
+    }
+  });
+}
+```
