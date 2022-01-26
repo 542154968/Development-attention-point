@@ -8023,3 +8023,8 @@ function scrollToLastItem(selector = "", getDomQuery) {
   });
 }
 ```
+
+**437. 内容安全策略(csp)可以限制访问策略很好用**
+
+- https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CSP
+- Content-Security-Policy
