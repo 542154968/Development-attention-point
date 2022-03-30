@@ -8028,3 +8028,14 @@ function scrollToLastItem(selector = "", getDomQuery) {
 
 - https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CSP
 - Content-Security-Policy
+
+**438. readonly 与 disabled 的区别**
+
+1. readonly 属性规定输入字段为只读。
+   只读字段是不能修改的。不过，用户仍然可以使用 tab 键切换到该字段，还可以选中或拷贝其文本。
+   readonly 属性可以防止用户对值进行修改，直到满足某些条件为止（比如选中了一个复选框）。然后，需要使用 JavaScript 消除 readonly 值，将输入字段切换到可编辑状态。
+   readonly 属性可与 <input type="text"> 或 <input type="password"> 配合使用。
+
+2. disabled 属性规定应该禁用 input 元素。
+   被禁用的 input 元素既不可用，也不可点击。可以设置 disabled 属性，直到满足某些其他的条件为止（比如选择了一个复选框等等）。然后，就需要通过 JavaScript 来删除 disabled 值，将 input 元素的值切换为可用。
+   注释：disabled 属性无法与 <input type="hidden"> 一起使用。
