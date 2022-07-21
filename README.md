@@ -8039,3 +8039,8 @@ function scrollToLastItem(selector = "", getDomQuery) {
 2. disabled 属性规定应该禁用 input 元素。
    被禁用的 input 元素既不可用，也不可点击。可以设置 disabled 属性，直到满足某些其他的条件为止（比如选择了一个复选框等等）。然后，就需要通过 JavaScript 来删除 disabled 值，将 input 元素的值切换为可用。
    注释：disabled 属性无法与 <input type="hidden"> 一起使用。
+     
+**439. react中wheel如果要阻止滚动,需要监听原生滚动**
+**440. react中如果想获取useState值改变 准确的方法 最好使用useEffect**
+**441. ract的memo useMemo useCallback 不是用的越多越好的**
+		  
