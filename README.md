@@ -8043,4 +8043,38 @@ function scrollToLastItem(selector = "", getDomQuery) {
 **439. react中wheel如果要阻止滚动,需要监听原生滚动**
 **440. react中如果想获取useState值改变 准确的方法 最好使用useEffect**
 **441. ract的memo useMemo useCallback 不是用的越多越好的**
-		  
+**442. canvas指定区域指定颜色更换**
+```js
+ /**
+   * 替换某个canvas的某个区域中的颜色a为颜色b
+   * @param ctx canvas的context对象
+   * @param left 起始x坐标
+   * @param top 起始y坐标
+   * @param width 从起始x坐标开始 多宽
+   * @param height 从起始坐标y开始 多高
+   * @param colorArr 颜色a 为像素点数组 如 [r,g,b,a] 注意a是255
+   * @param replaceColorArr 颜色b 如 [r,g,b,a] 注意a是255
+   */
+  replaceCanvasAreaColor(
+    ctx: CanvasRenderingContext2D,
+    left: number,
+    top: number,
+    width: number,
+    height: number,
+    colorArr: number[],
+    replaceColorArr: number[]
+  ) {
+    const imgData = ctx.getImageData(left, top, width, height);
+    const buff = imgData.data;
+    for (let i = 0, l = imgData.width * imgData.height * 4; i < l; i += 4) {
+      const item = [buff[i], buff[i + 1], buff[i + 2], buff[i + 3]];
+      if (item[0] === colorArr[0] && item[1] === colorArr[1] && item[2] === colorArr[2] && item[3] === colorArr[3]) {
+        buff[i] = replaceColorArr[0];
+        buff[i + 1] = replaceColorArr[1];
+        buff[i + 2] = replaceColorArr[2];
+        buff[i + 3] = replaceColorArr[3];
+      }
+    }
+    ctx.putImageData(imgData, left, top);
+  }
+```
