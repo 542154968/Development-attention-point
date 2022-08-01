@@ -8078,3 +8078,7 @@ function scrollToLastItem(selector = "", getDomQuery) {
     ctx.putImageData(imgData, left, top);
   }
 ```
+**443. 一些不在意的meta标签**
+ 1. <meta http-equiv="refresh" content="10"> 网站自动刷新
+ 2. <input type="text" spellcheck="true" lang="en">
+ 3. <p translate="no">Brand name</p> meta中也有
