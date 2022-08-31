@@ -8039,3 +8039,46 @@ function scrollToLastItem(selector = "", getDomQuery) {
 2. disabled 属性规定应该禁用 input 元素。
    被禁用的 input 元素既不可用，也不可点击。可以设置 disabled 属性，直到满足某些其他的条件为止（比如选择了一个复选框等等）。然后，就需要通过 JavaScript 来删除 disabled 值，将 input 元素的值切换为可用。
    注释：disabled 属性无法与 <input type="hidden"> 一起使用。
+     
+**439. react中wheel如果要阻止滚动,需要监听原生滚动**
+**440. react中如果想获取useState值改变 准确的方法 最好使用useEffect**
+**441. ract的memo useMemo useCallback 不是用的越多越好的**
+**442. canvas指定区域指定颜色更换**
+```js
+ /**
+   * 替换某个canvas的某个区域中的颜色a为颜色b
+   * @param ctx canvas的context对象
+   * @param left 起始x坐标
+   * @param top 起始y坐标
+   * @param width 从起始x坐标开始 多宽
+   * @param height 从起始坐标y开始 多高
+   * @param colorArr 颜色a 为像素点数组 如 [r,g,b,a] 注意a是255
+   * @param replaceColorArr 颜色b 如 [r,g,b,a] 注意a是255
+   */
+  replaceCanvasAreaColor(
+    ctx: CanvasRenderingContext2D,
+    left: number,
+    top: number,
+    width: number,
+    height: number,
+    colorArr: number[],
+    replaceColorArr: number[]
+  ) {
+    const imgData = ctx.getImageData(left, top, width, height);
+    const buff = imgData.data;
+    for (let i = 0, l = imgData.width * imgData.height * 4; i < l; i += 4) {
+      const item = [buff[i], buff[i + 1], buff[i + 2], buff[i + 3]];
+      if (item[0] === colorArr[0] && item[1] === colorArr[1] && item[2] === colorArr[2] && item[3] === colorArr[3]) {
+        buff[i] = replaceColorArr[0];
+        buff[i + 1] = replaceColorArr[1];
+        buff[i + 2] = replaceColorArr[2];
+        buff[i + 3] = replaceColorArr[3];
+      }
+    }
+    ctx.putImageData(imgData, left, top);
+  }
+```
+**443. 一些不在意的meta标签**
+ 1. <meta http-equiv="refresh" content="10"> 网站自动刷新
+ 2. <input type="text" spellcheck="true" lang="en">
+ 3. <p translate="no">Brand name</p> meta中也有
