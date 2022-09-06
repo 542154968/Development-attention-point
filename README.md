@@ -8082,3 +8082,6 @@ function scrollToLastItem(selector = "", getDomQuery) {
  1. <meta http-equiv="refresh" content="10"> 网站自动刷新
  2. <input type="text" spellcheck="true" lang="en">
  3. <p translate="no">Brand name</p> meta中也有
+
+**444. blocklyJS可以拖拽生成代码**
+1. 可以查阅他的google论坛获取帮助
