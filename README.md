@@ -8039,11 +8039,12 @@ function scrollToLastItem(selector = "", getDomQuery) {
 2. disabled 属性规定应该禁用 input 元素。
    被禁用的 input 元素既不可用，也不可点击。可以设置 disabled 属性，直到满足某些其他的条件为止（比如选择了一个复选框等等）。然后，就需要通过 JavaScript 来删除 disabled 值，将 input 元素的值切换为可用。
    注释：disabled 属性无法与 <input type="hidden"> 一起使用。
-     
-**439. react中wheel如果要阻止滚动,需要监听原生滚动**
-**440. react中如果想获取useState值改变 准确的方法 最好使用useEffect**
-**441. ract的memo useMemo useCallback 不是用的越多越好的**
-**442. canvas指定区域指定颜色更换**
+
+**439. react 中 wheel 如果要阻止滚动,需要监听原生滚动**
+**440. react 中如果想获取 useState 值改变 准确的方法 最好使用 useEffect**
+**441. ract 的 memo useMemo useCallback 不是用的越多越好的**
+**442. canvas 指定区域指定颜色更换**
+
 ```js
  /**
    * 替换某个canvas的某个区域中的颜色a为颜色b
@@ -8078,10 +8079,13 @@ function scrollToLastItem(selector = "", getDomQuery) {
     ctx.putImageData(imgData, left, top);
   }
 ```
-**443. 一些不在意的meta标签**
- 1. <meta http-equiv="refresh" content="10"> 网站自动刷新
- 2. <input type="text" spellcheck="true" lang="en">
- 3. <p translate="no">Brand name</p> meta中也有
 
-**444. blocklyJS可以拖拽生成代码**
-1. 可以查阅他的google论坛获取帮助
+**443. 一些不在意的 meta 标签**
+
+1.  <meta http-equiv="refresh" content="10"> 网站自动刷新
+2.  <input type="text" spellcheck="true" lang="en">
+3.  <p translate="no">Brand name</p> meta中也有
+
+**444. blocklyJS 可以拖拽生成代码**
+
+1. 可以查阅他的 google 论坛获取帮助
