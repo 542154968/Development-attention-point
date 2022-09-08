@@ -8089,3 +8089,5 @@ function scrollToLastItem(selector = "", getDomQuery) {
 **444. blocklyJS 可以拖拽生成代码**
 
 1. 可以查阅他的 google 论坛获取帮助
+
+**445. unplugin-vue-components可以自动引入 很方便**
