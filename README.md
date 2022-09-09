@@ -8091,3 +8091,24 @@ function scrollToLastItem(selector = "", getDomQuery) {
 1. 可以查阅他的 google 论坛获取帮助
 
 **445. unplugin-vue-components可以自动引入 很方便**
+
+**446. ts 索引签名**
+可以用于obj的key定义类型
+```ts
+type MenuData = { [path: string]: { id: string; name: string }[] };
+
+function deepGetMenuData(menuList: NavItem[], menuData: MenuData) {
+  if (Array.isArray(menuList)) {
+    menuList.forEach(item => {
+      const { path, name, children } = item;
+      menuData[path] = [
+        {
+          id: path,
+          name,
+        },
+      ];
+      deepGetMenuData(children, menuData);
+    });
+  }
+}
+```
