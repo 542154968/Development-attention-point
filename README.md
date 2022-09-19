@@ -8199,3 +8199,33 @@ export default defineConfig({
 });
 
 ```
+
+**449. vite import.met.env undefined**
+> http://events.jianshu.io/p/4973bd983e96
+
+There's a chicken-egg problem here: Vite expects to resolve .env files from project root, but project root can be made different by the config file.
+So if we resolve .env before resolving the config file, we can only resolve it from CWD, which would then break the case where the user puts .env files in a nested root specified via config.
+摘自Evan You的回复
+
+必须以VITE开头
+
+```js
+// dotenv 需要单独npm install
+export default ({ mode }) => {
+  require('dotenv').config({ path: `./.env.${mode}` });
+  // now you can access config with process.env.{configName}
+  return defineConfig({
+      plugins: [vue()],
+      base:process.env.VITE_APP_NAME
+  })
+}
+
+// 第二种方式
+import { loadEnv } from 'vite'
+export default ({ mode }) => {
+  return defineConfig({
+          plugins: [vue()],
+          base:loadEnv(mode, process.cwd()).VITE_APP_NAME
+      })
+}
+```
