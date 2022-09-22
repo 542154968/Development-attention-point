@@ -8147,6 +8147,7 @@ export { COLOR_TYPE, tagColorList };
 **448. element-plus 按需引入自定义主题遇到的问题**
 1. `@import` 被废弃了
 2. ElementPlusResolver 要使用importStyle: "sass", 如果自动引入里面也用了 要两个都用
+3. 有个坏处就是你全局加的如果有别的scss 改动别的scss element的也会编译一次。
 ```ts
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
@@ -8229,3 +8230,9 @@ export default ({ mode }) => {
       })
 }
 ```
+
+**450. auto-import插件**
+1. 这个插件还会引入你自己编写的插件作为类型 有时间查查如何配置的
+
+**451. ts当返回两种类型时，如何使用不报错？**
+1. 如 `type  Content = 类型1|类型2`，类型1 类型2返回的类型不同 代码里使用Content就会导致两种返回值没法确定。。
