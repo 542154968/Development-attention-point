@@ -8236,3 +8236,19 @@ export default ({ mode }) => {
 
 **451. ts当返回两种类型时，如何使用不报错？**
 1. 如 `type  Content = 类型1|类型2`，类型1 类型2返回的类型不同 代码里使用Content就会导致两种返回值没法确定。。
+
+**452. v-for使用v-model 要使用index的方式取值**
+
+**453. axios与application/x-www-form-urlencoded**
+1. 使用application/x-www-form-urlencoded类型时 要使用URLSearchParams()传参 
+2. 因为axios会默认序列化 JavaScript 对象为 JSON
+
+**454. element-plus按需引入Message相关没样式**
+> https://blog.csdn.net/Delete_89x/article/details/126430049
+
+```js
+import "element-plus/theme-chalk/el-loading.css";
+import "element-plus/theme-chalk/el-message.css";
+import "element-plus/theme-chalk/el-notification.css";
+import "element-plus/theme-chalk/el-message-box.css";
+```
