@@ -8252,3 +8252,5 @@ import "element-plus/theme-chalk/el-message.css";
 import "element-plus/theme-chalk/el-notification.css";
 import "element-plus/theme-chalk/el-message-box.css";
 ```
+
+**455. last-of-type可以设置同级含有不同元素的样式**
