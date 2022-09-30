@@ -8254,3 +8254,20 @@ import "element-plus/theme-chalk/el-message-box.css";
 ```
 
 **455. last-of-type可以设置同级含有不同元素的样式**
+
+**456. 当数据为固定数组时，利用ts生成枚举类型**
+```ts
+/**
+ * 分页的带大小设置
+ */
+export const pageSizes = [10, 20, 30, 40] as const;
+
+/**
+ * pagination作为搜索项的类型
+ */
+export interface PaginationSearchParams {
+  // 10 | 20 | 30 | 40
+  pageSize: typeof pageSizes[number];
+}
+
+```
