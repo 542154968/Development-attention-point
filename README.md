@@ -8286,3 +8286,38 @@ const obj = {
 type LabelList = ValueOf<typeof obj> // '111' | '222'
 type ValueList = keyof typeof obj // 1 | 2
 ```
+
+**457. vite使用monaco-editor如何汉化**
+> [How to localize in esm? #1514](https://github.com/microsoft/monaco-editor/issues/1514)
+
+```vue
+<template>
+  <div ref="divRef" style="height: 500px; width: 500px"></div>
+</template>
+
+<script lang="ts" setup>
+// 主要是这个loader的作用
+import loader from "@monaco-editor/loader";
+import * as monaco from "monaco-editor";
+
+const divRef = ref();
+
+loader.config({ monaco });
+loader.config({
+  "vs/nls": {
+    // availableLanguages: { "*": "de" },
+    availableLanguages: { "*": "zh-cn" },
+  },
+});
+
+loader.init().then(monacoInstance => {
+  // 初始化编辑器
+  monacoInstance.editor.create(divRef.value, {
+    value: "321313123",
+  });
+});
+</script>
+
+<style lang="scss"></style>
+
+```
