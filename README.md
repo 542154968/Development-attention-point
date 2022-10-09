@@ -8256,6 +8256,7 @@ import "element-plus/theme-chalk/el-message-box.css";
 **455. last-of-type可以设置同级含有不同元素的样式**
 
 **456. 当数据为固定数组时，利用ts生成枚举类型**
+1.
 ```ts
 /**
  * 分页的带大小设置
@@ -8270,4 +8271,18 @@ export interface PaginationSearchParams {
   pageSize: typeof pageSizes[number];
 }
 
+```
+
+2.
+```ts
+type ValueOf<T> = T[keyof T]
+
+const obj = {
+  1: '111',
+  2: '222'
+} as const;
+// 如果不加as const  labellist 是string
+
+type LabelList = ValueOf<typeof obj> // '111' | '222'
+type ValueList = keyof typeof obj // 1 | 2
 ```
