@@ -8090,10 +8090,11 @@ function scrollToLastItem(selector = "", getDomQuery) {
 
 1. 可以查阅他的 google 论坛获取帮助
 
-**445. unplugin-vue-components可以自动引入 很方便**
+**445. unplugin-vue-components 可以自动引入 很方便**
 
 **446. ts 索引签名**
-可以用于obj的key定义类型
+可以用于 obj 的 key 定义类型
+
 ```ts
 type MenuData = { [path: string]: { id: string; name: string }[] };
 
@@ -8113,9 +8114,11 @@ function deepGetMenuData(menuList: NavItem[], menuData: MenuData) {
 }
 ```
 
-**447. ts中循环enum**
-1. 不能用for in ，里面的变量会识别成i
+**447. ts 中循环 enum**
+
+1. 不能用 for in ，里面的变量会识别成 i
 2. 要使用
+
 ```ts
 /**
  * 配合饿了么的颜色类型和自己扩展的
@@ -8140,14 +8143,14 @@ Object.entries(COLOR_TYPE).forEach(([key, val]) => {
 });
 
 export { COLOR_TYPE, tagColorList };
-
 ```
 
-
 **448. element-plus 按需引入自定义主题遇到的问题**
+
 1. `@import` 被废弃了
-2. ElementPlusResolver 要使用importStyle: "sass", 如果自动引入里面也用了 要两个都用
-3. 有个坏处就是你全局加的如果有别的scss 改动别的scss element的也会编译一次。
+2. ElementPlusResolver 要使用 importStyle: "sass", 如果自动引入里面也用了 要两个都用
+3. 有个坏处就是你全局加的如果有别的 scss 改动别的 scss element 的也会编译一次。
+
 ```ts
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
@@ -8179,36 +8182,28 @@ export default defineConfig({
   },
   plugins: [
     Components({
-      resolvers: [
-        elementPlusResolverInstance,
-      ],
+      resolvers: [elementPlusResolverInstance],
       dts: "./src/components.d.ts",
     }),
-    
+
     AutoImport({
-      resolvers: [
-        elementPlusResolverInstance,
-        
-      ],
-      
+      resolvers: [elementPlusResolverInstance],
+
       dts: "./src/auto-imports.d.ts",
     }),
-
-    
   ],
-
 });
-
 ```
 
 **449. vite import.met.env undefined**
+
 > http://events.jianshu.io/p/4973bd983e96
 
 There's a chicken-egg problem here: Vite expects to resolve .env files from project root, but project root can be made different by the config file.
 So if we resolve .env before resolving the config file, we can only resolve it from CWD, which would then break the case where the user puts .env files in a nested root specified via config.
-摘自Evan You的回复
+摘自 Evan You 的回复
 
-必须以VITE开头
+必须以 VITE 开头
 
 ```js
 // dotenv 需要单独npm install
@@ -8231,19 +8226,23 @@ export default ({ mode }) => {
 }
 ```
 
-**450. auto-import插件**
+**450. auto-import 插件**
+
 1. 这个插件还会引入你自己编写的插件作为类型 有时间查查如何配置的
 
-**451. ts当返回两种类型时，如何使用不报错？**
-1. 如 `type  Content = 类型1|类型2`，类型1 类型2返回的类型不同 代码里使用Content就会导致两种返回值没法确定。。
+**451. ts 当返回两种类型时，如何使用不报错？**
 
-**452. v-for使用v-model 要使用index的方式取值**
+1. 如 `type Content = 类型1|类型2`，类型 1 类型 2 返回的类型不同 代码里使用 Content 就会导致两种返回值没法确定。。
 
-**453. axios与application/x-www-form-urlencoded**
-1. 使用application/x-www-form-urlencoded类型时 要使用URLSearchParams()传参 
-2. 因为axios会默认序列化 JavaScript 对象为 JSON
+**452. v-for 使用 v-model 要使用 index 的方式取值**
 
-**454. element-plus按需引入Message相关没样式**
+**453. axios 与 application/x-www-form-urlencoded**
+
+1. 使用 application/x-www-form-urlencoded 类型时 要使用 URLSearchParams()传参
+2. 因为 axios 会默认序列化 JavaScript 对象为 JSON
+
+**454. element-plus 按需引入 Message 相关没样式**
+
 > https://blog.csdn.net/Delete_89x/article/details/126430049
 
 ```js
@@ -8253,10 +8252,12 @@ import "element-plus/theme-chalk/el-notification.css";
 import "element-plus/theme-chalk/el-message-box.css";
 ```
 
-**455. last-of-type可以设置同级含有不同元素的样式**
+**455. last-of-type 可以设置同级含有不同元素的样式**
 
-**456. 当数据为固定数组时，利用ts生成枚举类型**
+**456. 当数据为固定数组时，利用 ts 生成枚举类型**
+
 1.
+
 ```ts
 /**
  * 分页的带大小设置
@@ -8270,24 +8271,25 @@ export interface PaginationSearchParams {
   // 10 | 20 | 30 | 40
   pageSize: typeof pageSizes[number];
 }
-
 ```
 
 2.
+
 ```ts
-type ValueOf<T> = T[keyof T]
+type ValueOf<T> = T[keyof T];
 
 const obj = {
-  1: '111',
-  2: '222'
+  1: "111",
+  2: "222",
 } as const;
 // 如果不加as const  labellist 是string
 
-type LabelList = ValueOf<typeof obj> // '111' | '222'
-type ValueList = keyof typeof obj // 1 | 2
+type LabelList = ValueOf<typeof obj>; // '111' | '222'
+type ValueList = keyof typeof obj; // 1 | 2
 ```
 
-**457. vite使用monaco-editor如何汉化**
+**457. vite 使用 monaco-editor 如何汉化**
+
 > [How to localize in esm? #1514](https://github.com/microsoft/monaco-editor/issues/1514)
 
 ```vue
@@ -8319,5 +8321,9 @@ loader.init().then(monacoInstance => {
 </script>
 
 <style lang="scss"></style>
-
 ```
+
+**458. flex 布局最后一个靠右或者靠左的时候可以用 margin-left:auto 来解决**
+
+1. flex 布局中经常有其他元素靠左排列，最后一个元素靠右排列的设计。简单的在最后一个元素中添加 margin-left:auto 的样式，就可以实现
+2. MDN 中给出了说明 flex、inline-flex 中，在水平方向上有空余空间的情况下，空余的空间会被平均分配给水平方向上写有 margin-left:auto 属性的元素的外边距
