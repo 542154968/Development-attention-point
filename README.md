@@ -8327,3 +8327,15 @@ loader.init().then(monacoInstance => {
 
 1. flex 布局中经常有其他元素靠左排列，最后一个元素靠右排列的设计。简单的在最后一个元素中添加 margin-left:auto 的样式，就可以实现
 2. MDN 中给出了说明 flex、inline-flex 中，在水平方向上有空余空间的情况下，空余的空间会被平均分配给水平方向上写有 margin-left:auto 属性的元素的外边距
+
+**459. vue compute定义类型**
+```ts
+const tag2Component: ComputedRef<{ [x: number]: typeof ComponentColumn }> =
+  computed(() => {
+    return {
+      [REFER_TYPE.COMPONENT]: ComponentColumn,
+      [REFER_TYPE.TASK]:
+        props.type === REFER_TYPE.SCRIPT ? ScriptColumn : TaskColumn,
+    };
+  });
+```
