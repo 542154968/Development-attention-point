@@ -8231,6 +8231,23 @@ export default ({ mode }) => {
 1. 这个插件还会引入你自己编写的插件作为类型 有时间查查如何配置的
 
 **451. ts 当返回两种类型时，如何使用不报错？**
+> 就是用户自定义的类型保护拉！
+
+```ts
+function isTableItemType(data: TreeItemType | TableItem): data is TableItem {
+  return typeof (data as TableItem).scriptName === "string";
+}
+
+/**
+ * 获取脚本或者分类名称
+ */
+function getTreeItemName(isLeaf: boolean, data: TreeItemType | TableItem) {
+  if (isTableItemType(data)) {
+    console.log("是tableItem类型");
+  }
+  return isLeaf ? (data as TableItem).scriptName : (data as TreeItemType).name;
+}
+```
 
 1. 如 `type Content = 类型1|类型2`，类型 1 类型 2 返回的类型不同 代码里使用 Content 就会导致两种返回值没法确定。。
 
@@ -8328,7 +8345,8 @@ loader.init().then(monacoInstance => {
 1. flex 布局中经常有其他元素靠左排列，最后一个元素靠右排列的设计。简单的在最后一个元素中添加 margin-left:auto 的样式，就可以实现
 2. MDN 中给出了说明 flex、inline-flex 中，在水平方向上有空余空间的情况下，空余的空间会被平均分配给水平方向上写有 margin-left:auto 属性的元素的外边距
 
-**459. vue compute定义类型**
+**459. vue compute 定义类型**
+
 ```ts
 const tag2Component: ComputedRef<{ [x: number]: typeof ComponentColumn }> =
   computed(() => {
