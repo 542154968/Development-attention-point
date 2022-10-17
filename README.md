@@ -8231,6 +8231,7 @@ export default ({ mode }) => {
 1. 这个插件还会引入你自己编写的插件作为类型 有时间查查如何配置的
 
 **451. ts 当返回两种类型时，如何使用不报错？**
+
 > 就是用户自定义的类型保护拉！
 
 ```ts
@@ -8357,3 +8358,13 @@ const tag2Component: ComputedRef<{ [x: number]: typeof ComponentColumn }> =
     };
   });
 ```
+
+**460. flex 布局为什么 flex:1 宽度不一致**
+
+> [【转载】flex:1 不等分的问题](https://www.jianshu.com/p/291b63908bdc)
+
+1. 因为 依照 flex 的自动调整计算规范是不包含 padding 的。w3 规范这里的部分提到 flexItem 的可用空间要减去 margin、border、padding。所以想要均分的话，需要套个 margin、border、padding 一样的 div。
+
+**461. flex 布局当宽度不固定时，文字如何溢出隐藏？**
+
+1. width:0 即可
