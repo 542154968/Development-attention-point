@@ -8367,4 +8367,14 @@ const tag2Component: ComputedRef<{ [x: number]: typeof ComponentColumn }> =
 
 **461. flex 布局当宽度不固定时，文字如何溢出隐藏？**
 
-1. width:0 即可
+> https://blog.csdn.net/qq_31150171/article/details/122461592
+
+1. 父元素 width:0 即可,要设置溢出...的元素不能再是 flex 布局了
+
+**452. ts 将对象里的类型变为|null**
+
+```ts
+type WithNull<T extends object> = {
+  [P in keyof T]: T[P] | null;
+};
+```
