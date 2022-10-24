@@ -8378,3 +8378,7 @@ type WithNull<T extends object> = {
   [P in keyof T]: T[P] | null;
 };
 ```
+
+**453. vue 的动画 xx-leave-active**
+
+1. 在这个 class 中添加 position:absolute 和具体的位置样式可以避免抖动
