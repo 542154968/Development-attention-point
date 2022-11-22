@@ -8395,14 +8395,16 @@ backdrop-filter: saturate(50%) blur(4px);
 
 **455. vue3 createApp 创建动态组件**
 
-```vue
+> 如果你的 createapp 用 template 方式渲染 打包后就不渲染了 要么 render 要么这种引入组件进来
+
+```ts
 import { App, createApp } from "vue";
 import { Dialog, Button } from "@components/index";
 import { MODAL_WIDTH } from "@/assets/ts/modal";
 
 export enum REJECT_TYPE {
   CANCEL = "cancel",
-  CLOSE = "close"
+  CLOSE = "close",
 }
 
 export default function useCancelYesNoMsgBox() {
@@ -8413,41 +8415,12 @@ export default function useCancelYesNoMsgBox() {
   function init(content: string) {
     return new Promise((resolve, reject) => {
       app = createApp({
-        template: ` <Dialog
-      :model-value="visible"
-      title="提示"
-      :width="MODAL_WIDTH.SMALL"
-      @closed="handleCloseDialog"
-      @cancel="handleCloseDialog"
-      class="editor-confirm-close-dialog"
-      destroy-on-close
-    >
-      <div class="el-message-box__content">
-        <div class="el-message-box__container">
-          <i class="el-icon el-message-box__status el-message-box-icon--warning">
-            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-              <path
-                fill="currentColor"
-                d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm0 192a58.432 58.432 0 0 0-58.24 63.744l23.36 256.384a35.072 35.072 0 0 0 69.76 0l23.296-256.384A58.432 58.432 0 0 0 512 256zm0 512a51.2 51.2 0 1 0 0-102.4 51.2 51.2 0 0 0 0 102.4z"
-              ></path>
-            </svg>
-          </i>
-          <div class="el-message-box__message">
-            <p>
-              {{content}}
-            </p>
-          </div>
-        </div>
-      </div>
-      <template #footer>
-        <Button type="" @click="handleCloseDialog">取消</Button>
-        <Button type="" @click="handleCancel">否</Button>
-        <Button type="primary" @click="handleConfirm">是</Button>
-      </template>
-    </Dialog>`,
+        // template: 'template不能用 开发环境好的 但是打包后就不渲染了',
+        // render函数可以渲染
+        // render(){}
         components: {
           Dialog,
-          Button
+          Button,
         },
         setup(props, ctx) {
           const visible = ref(true);
@@ -8470,9 +8443,26 @@ export default function useCancelYesNoMsgBox() {
               visible.value = false;
               reject(REJECT_TYPE.CLOSE);
               destory();
-            }
+            },
           };
-        }
+        },
+      });
+      // 推荐使用这种方式 CancelYesNoMsgDialog就是单文件vue组件
+      // 后面一个参数是传递给这个组件的props
+      app = createApp(CancelYesNoMsgDialog, {
+        content,
+        onClose() {
+          reject(REJECT_TYPE.CLOSE);
+          destory();
+        },
+        onConfirm() {
+          resolve("");
+          destory();
+        },
+        onCancel() {
+          reject(REJECT_TYPE.CANCEL);
+          destory();
+        },
       });
 
       const body = document.body || document.getElementsByTagName("body")[0];
@@ -8493,8 +8483,7 @@ export default function useCancelYesNoMsgBox() {
 
   return {
     init,
-    destory
+    destory,
   };
 }
-
 ```
