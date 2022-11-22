@@ -8392,3 +8392,109 @@ background-image: radial-gradient(transparent 1px, var(--bg-color) 1px);
 background-size: 4px 4px;
 backdrop-filter: saturate(50%) blur(4px);
 ```
+
+**455. vue3 createApp 创建动态组件**
+
+```vue
+import { App, createApp } from "vue";
+import { Dialog, Button } from "@components/index";
+import { MODAL_WIDTH } from "@/assets/ts/modal";
+
+export enum REJECT_TYPE {
+  CANCEL = "cancel",
+  CLOSE = "close"
+}
+
+export default function useCancelYesNoMsgBox() {
+  let instance: any;
+  let app: App<Element>;
+  const root = document.createElement("div");
+
+  function init(content: string) {
+    return new Promise((resolve, reject) => {
+      app = createApp({
+        template: ` <Dialog
+      :model-value="visible"
+      title="提示"
+      :width="MODAL_WIDTH.SMALL"
+      @closed="handleCloseDialog"
+      @cancel="handleCloseDialog"
+      class="editor-confirm-close-dialog"
+      destroy-on-close
+    >
+      <div class="el-message-box__content">
+        <div class="el-message-box__container">
+          <i class="el-icon el-message-box__status el-message-box-icon--warning">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+              <path
+                fill="currentColor"
+                d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm0 192a58.432 58.432 0 0 0-58.24 63.744l23.36 256.384a35.072 35.072 0 0 0 69.76 0l23.296-256.384A58.432 58.432 0 0 0 512 256zm0 512a51.2 51.2 0 1 0 0-102.4 51.2 51.2 0 0 0 0 102.4z"
+              ></path>
+            </svg>
+          </i>
+          <div class="el-message-box__message">
+            <p>
+              {{content}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <template #footer>
+        <Button type="" @click="handleCloseDialog">取消</Button>
+        <Button type="" @click="handleCancel">否</Button>
+        <Button type="primary" @click="handleConfirm">是</Button>
+      </template>
+    </Dialog>`,
+        components: {
+          Dialog,
+          Button
+        },
+        setup(props, ctx) {
+          const visible = ref(true);
+
+          return {
+            content,
+            visible,
+            MODAL_WIDTH,
+            handleConfirm() {
+              visible.value = false;
+              resolve("");
+              destory();
+            },
+            handleCancel() {
+              visible.value = false;
+              reject(REJECT_TYPE.CANCEL);
+              destory();
+            },
+            handleCloseDialog() {
+              visible.value = false;
+              reject(REJECT_TYPE.CLOSE);
+              destory();
+            }
+          };
+        }
+      });
+
+      const body = document.body || document.getElementsByTagName("body")[0];
+      instance = app.mount(root);
+      body.appendChild(instance.$el);
+    });
+  }
+
+  function destory() {
+    setTimeout(() => {
+      if (instance && app) {
+        // console.log(instance.$el, "--", root, app);
+        app.unmount();
+        instance = null;
+      }
+    }, 300);
+  }
+
+  return {
+    init,
+    destory
+  };
+}
+
+```
