@@ -8488,8 +8488,152 @@ export default function useCancelYesNoMsgBox() {
 }
 ```
 
-**456. 再踩正则g的坑**
+**456. 再踩正则 g 的坑**
+
 1. 如果你是`export`一个正则表达式，是全局匹配的，而不是每次初始化一个正则表达式，会有匹配出现反结果的可能
-2. 因为export之后import 相当于一直引用这个正则对象而一直引用同一个正则对象 然后g会有个lastindex 内置属性
-3. 初始为0 匹配后lastindex设置为匹配内容在字符串中的索引 如果找不到就会设置为0
-4. 如果这时候别的字符串开始匹配 索引在字符串中找不到 那么用g就会有问题了 可能会返回false
+2. 因为 export 之后 import 相当于一直引用这个正则对象而一直引用同一个正则对象 然后 g 会有个 lastindex 内置属性
+3. 初始为 0 匹配后 lastindex 设置为匹配内容在字符串中的索引 如果找不到就会设置为 0
+4. 如果这时候别的字符串开始匹配 索引在字符串中找不到 那么用 g 就会有问题了 可能会返回 false
+
+**457. vite 拆包，分配 hash**
+
+```ts
+import fs from "fs";
+import { BuildOptions } from "vite";
+
+/**
+ * 不加hash值的包
+ */
+const noHashChunkNames = [
+  "vue",
+  "axios",
+  "mavonEditor",
+  "monacoEditor",
+  "blockly",
+  "keyboardjs",
+  "mitt",
+  "cssMode",
+  "htmlMode",
+  "jsonMode",
+  "tsMode",
+  "cronParser",
+  "elementPlus",
+  "svgFiles",
+];
+
+/**
+ * 不加hash值的静态资源
+ */
+const noHashAssetsNames = ["mavonEditor.css", "monacoEditor.css", "axios.css"];
+
+/**
+ * monacoEditor打包后会将依赖语言打包进来
+ * 在这里控制拆到别的文件中去 有空研究下怎么去除这些的
+ * 目前虽然打包了但是实际没有加载这些 不影响
+ */
+const monacoLanguages = fs.readdirSync(
+  "node_modules/monaco-editor/min/vs/basic-languages"
+);
+
+/**
+ * 将svg文件打包到一起
+ */
+const svgVueFilePaths: string[] = [
+  /**
+   * 公共svg
+   */
+  ...fs.readdirSync("src/assets/svg").map(filename => {
+    return `src/assets/svg/${filename}`;
+  }),
+  /**
+   * editor中的svg
+   */
+  ...fs.readdirSync("src/views/editor/assets/svg").map(filename => {
+    return `src/views/editor/assets/svg/${filename}`;
+  }),
+];
+
+const build: BuildOptions = {
+  rollupOptions: {
+    // output: {
+    // entryFileNames: `assets/[name].js`,
+    // chunkFileNames: `assets/[name].js`
+    // assetFileNames: `assets/[name].[ext]`,
+    // },
+    // 拆包
+    // https://rollupjs.org/guide/en/#big-list-of-options
+    output: {
+      chunkFileNames(chunkInfo) {
+        const { name } = chunkInfo;
+        if (monacoLanguages.includes(name)) {
+          return "assets/monaco-languages/[name].js";
+        }
+
+        return noHashChunkNames.includes(name)
+          ? "assets/[name].js"
+          : "assets/[name]-[hash].js";
+      },
+      assetFileNames(chunkInfo) {
+        const { name } = chunkInfo;
+        return noHashAssetsNames.includes(name || "") ||
+          /\.(ttf|png|eot|svg|woff|woff2)$/.test(name || "")
+          ? "assets/[name].[ext]"
+          : "assets/[name]-[hash].[ext]";
+      },
+    },
+    manualChunks: {
+      vue: ["vue", "vue-router"],
+      axios: ["axios"],
+      mavonEditor: ["mavon-editor", "mavon-editor/dist/css/index.css"],
+      monacoEditor: ["monaco-editor"],
+      blockly: ["blockly"],
+      keyboardjs: ["keyboardjs"],
+      mitt: ["mitt"],
+      cronParser: ["cron-parser"],
+      elementPlus: ["element-plus", "@element-plus/icons-vue"],
+      echarts: ["echarts"],
+      vueJsonViewer: ["vue-json-viewer"],
+      svgFiles: svgVueFilePaths,
+    },
+  },
+};
+
+export default build;
+```
+
+**458. vite 因为 AutoImport 点击页面重新渲染问题解决**
+
+```ts
+import fs from "fs";
+import { DepOptimizationOptions } from "vite";
+
+/**
+ * 强制预构建 避免每次进路由时重新加载
+ * 首次加载会变慢
+ * 如果你进入路由发现页面重新加载了 看下控制台是因为什么加载的  new dependencies optimized: xxx
+ * 然后把xxx放到这里来就能强制预构建 避免这个问题了
+ */
+const optimizeDepKeys: string[] = ["keyboardjs", "vue-json-viewer"];
+/**
+ * 强制与构建element的组件
+ * 因为饿了么的组件按需加载 会导致进入某个路由页面重新加载
+ */
+fs.readdirSync("node_modules/element-plus/es/components").forEach(dirname => {
+  fs.access(
+    `node_modules/element-plus/es/components/${dirname}/style/css.mjs`,
+    err => {
+      if (!err) {
+        optimizeDepKeys.push(
+          `element-plus/es/components/${dirname}/style/index`
+        );
+      }
+    }
+  );
+});
+
+const optimizeDeps: DepOptimizationOptions = {
+  include: optimizeDepKeys,
+};
+
+export default optimizeDeps;
+```
