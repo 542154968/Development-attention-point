@@ -8637,3 +8637,16 @@ const optimizeDeps: DepOptimizationOptions = {
 
 export default optimizeDeps;
 ```
+
+**459. ts 泛型报不存在 xxx 属性时**
+
+```ts
+type TData = {
+  sysLevel: SYS_LEVEL;
+  appId?: number | string;
+  industryId?: number | string;
+  classifyCode: string;
+};
+
+export default function useTypeTreeSearchAll<T extends TData, K>({});
+```
