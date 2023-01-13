@@ -8650,3 +8650,11 @@ type TData = {
 
 export default function useTypeTreeSearchAll<T extends TData, K>({});
 ```
+
+**460. monacoEditor 打包后没有右键粘贴**
+
+> https://github.com/node-red/node-red-nodes/issues/946
+
+1. 由于浏览器安全限制，粘贴仅在使用 localhost 或 https URL 时可用。
+
+**461. vue 多根节点如果频繁 v-if 切换 要加一个实际的根节点 不然在生产会报 insertbefore null 的错误**
