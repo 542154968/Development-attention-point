@@ -8657,6 +8657,69 @@ export default function useTypeTreeSearchAll<T extends TData, K>({});
 
 1. 由于浏览器安全限制，粘贴仅在使用 localhost 或 https URL 时可用。
 
-**461. vue 多根节点如果频繁 v-if 切换  在生产会报 insertbefore null 的错误**
+**461. vue 多根节点如果频繁 v-if 切换 在生产会报 insertbefore null 的错误**
 
 1. 可以改成 v-show
+
+**460. macos pyenv 设置无效**
+
+1. 安装后进入`~ ./zshrc`设置环境变量即可
+
+```vim
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+```
+
+**461. unplugin-auto-import引入后eslint不识别问题解决**
+1. vue.config.js
+```js
+const AutoImport = require('unplugin-auto-import/webpack');
+module.exports = {
+    configureWebpack: {
+        plugins: [
+            AutoImport({
+                // 自动引入
+                imports: [
+                    {
+                        vue: [
+                            'ref',
+                            'reactive',
+                            'computed',
+                            'watch',
+                            'onMounted',
+                            'onUnmounted',
+                            'defineEmits',
+                            'defineProps',
+                            'withDefaults',
+                            'onBeforeUnmount',
+                        ],
+                    },
+                ],
+                dts: './src/auto-imports.d.ts',
+                eslintrc: {
+                    // 默认false, true启用。生成一次就可以，避免每次工程启动都生成，一旦生成配置文件之后，最好把enable关掉，即改成false
+                    enabled: true,
+                    //否则这个文件每次会在重新加载的时候重新生成，这会导致eslint有时会找不到这个文件。当需要更新配置文件的时候，再重新打开
+                    filepath: './.eslintrc-auto-import.json', // 生成json文件,可以不配置该项，默认就是将生成在根目录
+                    globalsPropValue: true,
+                },
+            }),
+        ],
+    },
+};
+
+```
+2. .eslintrc.js
+```js
+module.exports = {
+    // ...
+    extends: [
+       // ...
+        '.eslintrc-auto-import.json',
+    ],
+    // ...
+
+}
+```
