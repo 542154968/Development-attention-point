@@ -8672,54 +8672,62 @@ eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 ```
 
-**461. unplugin-auto-import引入后eslint不识别问题解决**
+**461. unplugin-auto-import 引入后 eslint 不识别问题解决**
+
 1. vue.config.js
+
 ```js
-const AutoImport = require('unplugin-auto-import/webpack');
+const AutoImport = require("unplugin-auto-import/webpack");
 module.exports = {
-    configureWebpack: {
-        plugins: [
-            AutoImport({
-                // 自动引入
-                imports: [
-                    {
-                        vue: [
-                            'ref',
-                            'reactive',
-                            'computed',
-                            'watch',
-                            'onMounted',
-                            'onUnmounted',
-                            'defineEmits',
-                            'defineProps',
-                            'withDefaults',
-                            'onBeforeUnmount',
-                        ],
-                    },
-                ],
-                dts: './src/auto-imports.d.ts',
-                eslintrc: {
-                    // 默认false, true启用。生成一次就可以，避免每次工程启动都生成，一旦生成配置文件之后，最好把enable关掉，即改成false
-                    enabled: true,
-                    //否则这个文件每次会在重新加载的时候重新生成，这会导致eslint有时会找不到这个文件。当需要更新配置文件的时候，再重新打开
-                    filepath: './.eslintrc-auto-import.json', // 生成json文件,可以不配置该项，默认就是将生成在根目录
-                    globalsPropValue: true,
-                },
-            }),
+  configureWebpack: {
+    plugins: [
+      AutoImport({
+        // 自动引入
+        imports: [
+          {
+            vue: [
+              "ref",
+              "reactive",
+              "computed",
+              "watch",
+              "onMounted",
+              "onUnmounted",
+              "defineEmits",
+              "defineProps",
+              "withDefaults",
+              "onBeforeUnmount",
+            ],
+          },
         ],
-    },
+        dts: "./src/auto-imports.d.ts",
+        eslintrc: {
+          // 默认false, true启用。生成一次就可以，避免每次工程启动都生成，一旦生成配置文件之后，最好把enable关掉，即改成false
+          enabled: true,
+          //否则这个文件每次会在重新加载的时候重新生成，这会导致eslint有时会找不到这个文件。当需要更新配置文件的时候，再重新打开
+          filepath: "./.eslintrc-auto-import.json", // 生成json文件,可以不配置该项，默认就是将生成在根目录
+          globalsPropValue: true,
+        },
+      }),
+    ],
+  },
 };
-
 ```
+
 2. .eslintrc.js
+
 ```js
 module.exports = {
+  // ...
+  extends: [
     // ...
-    extends: [
-       // ...
-        '.eslintrc-auto-import.json',
-    ],
-    // ...
-
-}
+    ".eslintrc-auto-import.json",
+  ],
+  // ...
+};
 ```
+
+**462. REMOTE HOST IDENTIFICATION HAS CHANGED!**
+
+1. 命令行`ssh-keygen -R github.com` 之后就行了
+2. 意思大概是.ssh/known_hosts 下的 Host key 不匹配造成的，事实上很多时候会出现这个问题，先来了解一下 known_hosts 记录的是什么？
+   每次使用 SSH 连接远端服务器，SSH 会把你每个你访问过计算机的公钥 public key 都记录在~/.ssh/known_hosts。当下次访问相同计算机时，OpenSSH 会核对公钥。如果公钥不同，OpenSSH 会发出警告， 避免你受到 DNS Hijack，man-in-the-middle attack 之类的攻击。
