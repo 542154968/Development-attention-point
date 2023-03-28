@@ -8731,3 +8731,34 @@ module.exports = {
 1. 命令行`ssh-keygen -R github.com` 之后就行了
 2. 意思大概是.ssh/known_hosts 下的 Host key 不匹配造成的，事实上很多时候会出现这个问题，先来了解一下 known_hosts 记录的是什么？
    每次使用 SSH 连接远端服务器，SSH 会把你每个你访问过计算机的公钥 public key 都记录在~/.ssh/known_hosts。当下次访问相同计算机时，OpenSSH 会核对公钥。如果公钥不同，OpenSSH 会发出警告， 避免你受到 DNS Hijack，man-in-the-middle attack 之类的攻击。
+
+**463. 从 excel 提取 json 数据的思路**
+
+1. excel 另存为 csv
+2. csv2json 转成 json
+3. 拿到 json 自己处理数据格式
+
+**464. 知道图片比例，图片宽度和高不固定图片加载后如何避免抖动**
+
+1. 父级盒子设置高度 0，然后设置 padding-bottom 达到图片宽高比即可
+
+```html
+<header class="page-header">
+  <h1 class="hidden">{{ PROGRAM_NAME }}</h1>
+  <img :src="require('@images/banner.png')" :title="PROGRAM_NAME" />
+</header>
+```
+
+```scss
+.page {
+  &-header {
+    height: 0;
+    padding-bottom: 38.7%;
+    background: $bgColorLargeDeep;
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
+}
+```
