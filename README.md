@@ -8764,6 +8764,7 @@ module.exports = {
 ```
 
 **465. 不同环境名称**
+
 1. dev（Development environment）：开发环境。用于开发者调试使用。
 2. test：测试环境。
 3. sit（System Integration Test）：系统集成测试。
@@ -8773,5 +8774,11 @@ module.exports = {
 7. prod（Production environment）：生产环境。正式线上环境。
 
 **466. 企业微信小程序扫码授权无限提示授权**
-1. 在当前设备登录自己的微信 然后授权跳到自己的微信上就行了 
+
+1. 在当前设备登录自己的微信 然后授权跳到自己的微信上就行了
 2. 不要使用扫码的方式
+
+**467. 利用 sourcetree 修改 commit 信息**
+
+1. 最好修改的 commit 没有推送到远程
+2. 修改 a 的 commit 需要右键 a 的上一次提交 交互式变基 编辑
