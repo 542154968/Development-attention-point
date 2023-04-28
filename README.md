@@ -8287,7 +8287,7 @@ export const pageSizes = [10, 20, 30, 40] as const;
  */
 export interface PaginationSearchParams {
   // 10 | 20 | 30 | 40
-  pageSize: typeof pageSizes[number];
+  pageSize: (typeof pageSizes)[number];
 }
 ```
 
@@ -8782,3 +8782,11 @@ module.exports = {
 
 1. 最好修改的 commit 没有推送到远程
 2. 修改 a 的 commit 需要右键 a 的上一次提交 交互式变基 编辑
+
+**468. 小程序点击关闭按钮只是隐藏**
+
+1. 是不会重置变量之类的的 如果你每次进入页面重置某个变量 全局属性 就要当心了
+
+**469. canvas clip 为什么要 store restore**
+
+1.  原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内 这也是我们要 save 上下文的原因
