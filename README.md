@@ -8790,3 +8790,9 @@ module.exports = {
 **469. canvas clip 为什么要 store restore**
 
 1.  原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内 这也是我们要 save 上下文的原因
+
+**470. 小程序 canvasToTempFilePath 部分 iphone 没生成图**
+
+1. 需要加加延迟
+2. 画布过大在 ios 上会显示空白
+3. 初始化画布大小必须同步，异步也会导致 ios 空白
