@@ -8796,3 +8796,12 @@ module.exports = {
 1. 需要加加延迟
 2. 画布过大在 ios 上会显示空白
 3. 初始化画布大小必须同步，异步也会导致 ios 空白
+
+**471. src 图片链接 403**
+
+> [如何解决访问外部图片返回 403 Forbidden 错误](https://zhuanlan.zhihu.com/p/113500478)
+
+1. 一般是防盗链设置，对应破解法
+2. 一是让后端或 oss 的跨域白名单里配上当前域名
+3. 二是使用图片中转缓存网站
+4. 三是加 `<meta name="referrer" content="no-referrer" />`
