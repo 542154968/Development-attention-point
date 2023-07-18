@@ -8815,3 +8815,68 @@ module.exports = {
 **474. 小程序订阅消息授权如何清除？**
 
 1. 通过微信开发者工具清除授权缓存就行了 前提是你能开发这个小程序
+
+**475. 小程序动态设置 page 元素的样式**
+
+```vue
+<template>
+  <page-meta :page-style="pageStyle"></page-meta>
+</template>
+
+<script setup>
+const pageStyle = ref("background: #00000; transition: all .3s");
+
+const { setup, handleChangeSetup } = useSetup(setupNum => {
+  pageStyle.value = `background:${
+    setupNum === 1 ? "#e22b27" : "#000"
+  };  transition: all .3s`;
+});
+</script>
+```
+
+
+**476. 绘制圆形头像**
+```js
+/**
+ * 绘制用户信息
+ */
+function drawUserInfo() {
+    return new Promise((resolve, reject) => {
+        const image = canvas.createImage();
+        image.src = ''; // 图片路径
+        image.onload = function () {
+            ctx.save();
+            // 绘制第一个圆
+            ctx.beginPath();
+            //圆心x、y的坐标，半径，起始角，结束角，顺时针画
+            ctx.arc(
+                getPxWithPixelRatio(45),
+                getPxWithPixelRatio(45),
+                getPxWithPixelRatio(21),
+                0,
+                Math.PI * 2,
+                false
+            );
+            //将圆形剪切
+            ctx.clip();
+            //再画一个不存在的圆，避免画出来的微信头像有个黑圆圈
+            ctx.beginPath();
+            ctx.arc(0, 0, 0, 0, Math.PI * 2, false);
+            ctx.drawImage(
+                image,
+                getPxWithPixelRatio(24),
+                getPxWithPixelRatio(24),
+                getPxWithPixelRatio(42),
+                getPxWithPixelRatio(42)
+            );
+            ctx.stroke();
+            ctx.restore();
+
+            resolve();
+        };
+        image.onError = function () {
+            reject();
+        };
+    });
+}
+```
