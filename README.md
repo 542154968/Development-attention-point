@@ -8884,3 +8884,7 @@ function drawUserInfo() {
 **477. safrai 浏览器 z-index 无效，失效**
 ios -webkit-overflow-scrolling:touch 是导致失效原因之一
 ios 端 z-index 失效，无效问题解决办法 transform: translateZ(1000px); /_这里是给 safari 用的_/
+
+**478. jsDoc 引入**
+
+- import('./use-scene').SceneItem.type
