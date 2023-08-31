@@ -8890,4 +8890,6 @@ ios 端 z-index 失效，无效问题解决办法 transform: translateZ(1000px);
 - import('./use-scene').SceneItem.type
 
 **479. 后端一次性返回大量数据需要渲染的一个处理方案**
+
 1. 生成一个灰度图，前端利用`getImageData`读图上的点 然后渲染
+2. 栅格数据灰度化并前端转换展示 https://blog.csdn.net/gisshixisheng/article/details/121688008
