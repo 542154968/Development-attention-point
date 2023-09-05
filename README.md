@@ -8893,3 +8893,10 @@ ios 端 z-index 失效，无效问题解决办法 transform: translateZ(1000px);
 
 1. 生成一个灰度图，前端利用`getImageData`读图上的点 然后渲染
 2. 栅格数据灰度化并前端转换展示 https://blog.csdn.net/gisshixisheng/article/details/121688008
+
+**480. APNG（Animated Portable Network Graphics）**
+APNG（Animated Portable Network Graphics）是一种支持动画的图像格式，它是 PNG（Portable Network Graphics）的扩展。与 GIF 动画相比，APNG 具有更好的图像质量和更高的色彩深度。
+APNG 使用 PNG 文件格式，并通过在文件中存储多个帧来创建动画。每个帧都是完整的 PNG 图像，可以包含透明度信息和其他 PNG 所支持的特性。
+在现代的 Web 开发中，APNG 通常用于在网页上显示动画效果。然而，需要注意的是，并非所有的浏览器都原生支持 APNG 格式。某些浏览器可能无法正确显示或播放 APNG 图像。为了兼容性，可以使用其他技术，如 CSS 动画或 JavaScript 库（如 APNG.js）来实现动画效果。
+总结起来，APNG 是一种用于创建动画的图像格式，它使用 PNG 文件格式并存储多个帧来创建动画效果。它在 Web 开发中被广泛使用，但需注意浏览器对其支持的情况。
+如有任何进一步的问题，请随时提问。
