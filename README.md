@@ -8907,4 +8907,61 @@ APNG 使用 PNG 文件格式，并通过在文件中存储多个帧来创建动�
 
 1. 由于后行断言部分解析器不支持，所以会导致分包在部分机型上崩溃，无法引入 慎用！
 
-**483. 小程序 async onShow 会阻塞页面渲染进程 慎用async！**
+**483. 小程序 async onShow 会阻塞页面渲染进程 慎用 async！**
+
+**484. 记一次 vite 项目改造成 qiankun 架构项目**
+
+1. 双方都是 hash 模式路由
+2. 使用`registerMicroApps`注册子应用一直报错，后改为`loadMicroApp`手动加载解决报错以及路由各种问题
+3. 子应用是 vite 的使用`vite-plugin-qiankun`插件配置环境
+
+```ts
+{
+  plugins: [
+		// ……
+		qiankun('genGenerator', {
+			// 微应用名字，与主应用注册的微应用名字保持一致
+			useDevMode: true
+		})
+	],
+}
+```
+
+4. 主应用内容区域嵌套子应用
+
+```vue
+<template>
+  <section id="gen-generator">
+    <section id="subApp"></section>
+  </section>
+</template>
+
+<script lang="ts" setup>
+import { loadMicroApp } from "qiankun";
+import { MicroApp } from "qiankun/es/interfaces";
+import { onMounted, onUnmounted, onUpdated } from "vue";
+import { useRoute } from "vue-router";
+
+let microApp: MicroApp | null = null;
+const route = useRoute();
+
+onMounted(() => {
+  microApp = loadMicroApp({
+    name: "genGenerator",
+    entry: `http://localhost:3000${route.path}`,
+    container: "#gen-generator",
+  });
+});
+
+onUpdated(() => {
+  microApp?.update && microApp?.update({});
+});
+
+onUnmounted(() => {
+  microApp?.unmount();
+  microApp = null;
+});
+</script>
+
+<style lang="scss"></style>
+```
