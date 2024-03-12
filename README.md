@@ -8965,3 +8965,269 @@ onUnmounted(() => {
 
 <style lang="scss"></style>
 ```
+
+**485. uniapp 的安卓录音转 pcm 调用讯飞语音转写**
+
+```js
+import CryptoJS from "crypto-es";
+import { ref } from "vue";
+const recorderManager = uni.getRecorderManager();
+const innerAudioContext = uni.createInnerAudioContext();
+let webSocketInstance = null;
+const SAMPLE_RATE = 16000;
+const API_KEY = "";
+const API_SECRET = "";
+const APP_ID = "";
+/**
+ * 获取公共配置
+ * @returns
+ */
+function getBaseSendData() {
+  return {
+    format: `audio/L16;rate=${SAMPLE_RATE}`,
+    // 录制的是mp3文件需要何种格式解析 lame  pcm使用raw
+    encoding: "raw",
+  };
+}
+
+/**
+ * 数据转化
+ * @param {*} buffer
+ * @returns
+ */
+function toString(buffer) {
+  var binary = "";
+  var bytes = new Uint8Array(buffer);
+  var len = bytes.byteLength;
+  for (var i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return binary;
+}
+
+/**
+ *
+ * @returns
+ */
+export default function useIflytekSpeech() {
+  const resultText = ref("");
+  // let resultText = "";
+  let resultTextTemp = "";
+  let voicePath = "";
+
+  function uploadMp3File(filePath) {
+    return new Promise((resolve, reject) => {
+      uni.uploadFile({
+        url: "..../recognition/getPcmUrl",
+        filePath,
+        name: "mp3",
+        header: { "Content-Type": "multipart/form-data" }, // 设置请求头
+        success: res => {
+          resolve(res);
+        },
+        fail: err => {
+          console.log(err);
+          reject(err);
+        },
+      });
+    });
+  }
+
+  function getPcmData(pcmPath) {
+    return new Promise((resolve, reject) => {
+      uni.downloadFile({
+        url: pcmPath,
+        success: res => {
+          resolve(res);
+        },
+        fail: err => {
+          console.log(err);
+          reject(err);
+        },
+      });
+    });
+  }
+
+  recorderManager.onStop(async function (res) {
+    console.log("recorder stop" + JSON.stringify(res));
+    voicePath = res.tempFilePath;
+    const fileData = await uploadMp3File(voicePath);
+    console.log("获取到了", fileData.data);
+    const pcmData = await getPcmData(fileData.data);
+    console.log("huoqule", pcmData);
+    plus.io.requestFileSystem(plus.io.PRIVATE_DOC, function (fs) {
+      // fs.root是根目录操作对象DirectoryEntry
+      fs.root.getFile(
+        pcmData.tempFilePath,
+        { create: true },
+        function (fileEntry) {
+          fileEntry.file(function (file) {
+            console.log("读取到了文件信息", file.fullPath);
+            const fileReader = new plus.io.FileReader();
+            fileReader.readAsDataURL(file); // 以URL格式读取文件
+            fileReader.onloadend = function (evt) {
+              let base64 = evt.target.result.split(",")[1]; // 获取base64字符串
+              const arrayBuffer = uni.base64ToArrayBuffer(base64); // 转换为arrayBuffer格式
+
+              console.log("读取的文件流", evt.target.result.length);
+              // const arrayBuffer = uni.base64ToArrayBuffer(evt.target.result);
+              console.log("读取的文件流， arrayBuffer", arrayBuffer.length);
+
+              const audioString = toString(arrayBuffer);
+              let offset = 0;
+              console.log("文件读取成功", audioString.length);
+              while (offset < audioString.length) {
+                const subString = audioString.substring(offset, offset + 1280);
+                offset += 1280;
+                const isEnd = offset >= audioString.length;
+                uni.sendSocketMessage({
+                  data: JSON.stringify({
+                    data: {
+                      status: isEnd ? 2 : 1,
+                      audio: btoa(subString),
+                      ...getBaseSendData(),
+                    },
+                  }),
+                });
+              }
+            };
+          });
+        }
+      );
+    });
+  });
+
+  function renderResult(resultData) {
+    // 识别结束
+    let jsonData = JSON.parse(resultData);
+    if (jsonData.data && jsonData.data.result) {
+      let data = jsonData.data.result;
+      let str = "";
+      let ws = data.ws;
+      for (let i = 0; i < ws.length; i++) {
+        str = str + ws[i].cw[0].w;
+      }
+      // 开启wpgs会有此字段(前提：在控制台开通动态修正功能)
+      // 取值为 "apd"时表示该片结果是追加到前面的最终结果；取值为"rpl" 时表示替换前面的部分结果，替换范围为rg字段
+      if (data.pgs) {
+        resultText.value = "";
+        if (data.pgs === "apd") {
+          // 将resultTextTemp同步给resultText
+          resultText.value = resultTextTemp;
+        }
+        // 将结果存储在resultTextTemp中
+        resultTextTemp = resultText.value + str;
+      } else {
+        // resultText.value = resultText.value + str;
+        resultText.value = str;
+      }
+      console.log("识别结果:", resultTextTemp || resultText.value || "");
+      // console.log('str',str);
+      // console.log('resultTextTemp',resultTextTemp);
+      //    console.log("resultText.value", resultText.value);
+    }
+    if (jsonData.code === 0 && jsonData.data.status === 2) {
+      uni.closeSocket();
+    }
+    if (jsonData.code !== 0) {
+      uni.closeSocket();
+      console.error(jsonData);
+    }
+  }
+
+  function getWebSocketUrl() {
+    // 请求地址根据语种不同变化
+    var url = "wss://iat-api.xfyun.cn/v2/iat";
+    var host = "iat-api.xfyun.cn";
+    var apiKey = API_KEY;
+    var apiSecret = API_SECRET;
+    var date = new Date().toGMTString();
+    var algorithm = "hmac-sha256";
+    var headers = "host date request-line";
+    var signatureOrigin = `host: ${host}\ndate: ${date}\nGET /v2/iat HTTP/1.1`;
+    var signatureSha = CryptoJS.HmacSHA256(signatureOrigin, apiSecret);
+    var signature = CryptoJS.enc.Base64.stringify(signatureSha);
+    var authorizationOrigin = `api_key="${apiKey}", algorithm="${algorithm}", headers="${headers}", signature="${signature}"`;
+    var authorization = btoa(authorizationOrigin);
+    url = `${url}?authorization=${authorization}&date=${date}&host=${host}`;
+    return url;
+  }
+
+  function connectWebSocket() {
+    const websocketUrl = getWebSocketUrl();
+
+    // 避免断开重连后多次监听
+    if (!webSocketInstance) {
+      uni.onSocketOpen(function (res) {
+        console.log("WebSocket连接已打开！");
+        const params = {
+          common: {
+            app_id: APP_ID,
+          },
+          business: {
+            language: "zh_cn",
+            domain: "iat",
+            accent: "mandarin",
+            vad_eos: 5000,
+            dwa: "wpgs",
+          },
+          data: {
+            status: 0,
+            ...getBaseSendData(),
+          },
+        };
+        uni.sendSocketMessage({
+          data: JSON.stringify(params),
+        });
+      });
+
+      uni.onSocketError(function (res) {
+        console.log("WebSocket连接打开失败，请检查！", res);
+      });
+
+      uni.onSocketClose(function (res) {
+        console.log("WebSocket 已关闭！");
+      });
+
+      uni.onSocketMessage(function (res) {
+        // console.log("收到服务器内容：" + res.data);
+        renderResult(res.data);
+      });
+    }
+
+    webSocketInstance = uni.connectSocket({
+      url: websocketUrl,
+      fail() {
+        console.log("websocket建立失败");
+      },
+    });
+  }
+
+  function startRecord() {
+    console.log("开始录音");
+    recorderManager.start({
+      sampleRate: SAMPLE_RATE,
+      format: "mp3",
+    });
+  }
+
+  function endRecord() {
+    console.log("录音结束");
+    recorderManager.stop();
+  }
+
+  function playVoice() {
+    console.log("播放录音");
+    innerAudioContext.src = voicePath;
+    innerAudioContext.play();
+  }
+
+  return {
+    connectWebSocket,
+    startRecord,
+    endRecord,
+    playVoice,
+    resultText,
+  };
+}
+```
