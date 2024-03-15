@@ -15,6 +15,7 @@
 1. 参考 [应用/服务运行](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/running-app-0000001495169810-V2)
 
 2. 这里我遇到个问题，当模拟器启动后，运行代码时无法选择到启动的模拟器，需要设置一下环境变量，之后就可以正常选择模拟器了。
+
    ```shell
    # HarmonyOS start
    export PATH=$PATH:/Users/你的电脑名字/Library/Huawei/Sdk/hmscore/3.1.0/toolchains
@@ -42,7 +43,7 @@ https://ost.51cto.com/posts/22609
 
 ### 多 HAP 构建
 
-[多 HAP 构建视图](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/multi-hap-build-view-0000001427744536-V2) ,基于官方的命名规范，`feature`目录可以理解为小程序的分包概念
+[多 HAP 构建视图](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/multi-hap-build-view-0000001427744536-V2) ,基于官方的命名规范，`feature`目录可以理解为小程序的分包概念， HAP 包可以单独上架发布
 
 ### Ablitity
 
@@ -110,7 +111,7 @@ https://ost.51cto.com/posts/22609
 
 ## Failure[INSTALL_FAILED_INTERNAL_ERROR]
 
-![cke_240.jpeg](https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtybbs/739/542/078/0030086000739542078.20231227111115.12034213155012882109106982861024:50001231000000:2800:10B69837F7F7B35E87AA57642111D6E5EDB2687076389DEB3B0B3279BFE18380.jpeg)在设备管理中点击 wipe user Data 清理数据 或者是代码出错了 检查下代码
+![cke_240.jpeg](https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtybbs/739/542/078/0030086000739542078.20231227111115.12034213155012882109106982861024:50001231000000:2800:10B69837F7F7B35E87AA57642111D6E5EDB2687076389DEB3B0B3279BFE18380.jpeg)在设备管理中点击 wipe user Data 清理数据 或者是代码出错了 检查下代码 重启万能解决
 
 ### preview
 
@@ -131,10 +132,16 @@ https://developer.harmonyos.com/cn/docs/documentation/doc-guides-V3/creating_har
 7. 上传包时，需要具体到.har 文件
    ![image-20240219153754311](/Users/liqiankun/Library/Application Support/typora-user-images/image-20240219153754311.png)
 
-8. name 中带组织名称引入的包就带组织了
+8. name 中带组织名称引入的包就带组织了，但是如果你的组织没有被审核是发不上去的
    ![image-20240219154050424](/Users/liqiankun/Library/Application Support/typora-user-images/image-20240219154050424.png)
 
+9. oh-package.json5 中'name'需要与安装命令中 ohpm install 'name' 的'name'完全一致；
+   版本号要从 1.0.0 起步
+
 ## 上传文件
+
+需要增加权限
+![image-20240219154502180](/Users/liqiankun/Library/Application Support/typora-user-images/image-20240219154502180.png)
 
 ```typescript
   uploadFile(realuri){
@@ -263,3 +270,32 @@ https://developer.harmonyos.com/cn/docs/documentation/doc-guides-V3/creating_har
 
   }
 ```
+
+## 踩坑
+
+1. Text() 组件只能接字符串 别的不显示
+
+2. throw 异常出去 软件会闪退 不能乱 throw
+
+3. 暂不支持 SSE（2024.03.15）
+
+4. websocket 断开后重连无响应 需要重新初始化 ws 对象
+
+5. 键盘弹起会将页面顶起（据说 api10 会有个属性解决问题），现在的方案是给最外层的盒子加个 paddingTop 等于键盘高度 （2024.03.15）
+
+   ```js
+   window.getLastWindow(getContext(this)).then(window => {
+     window.on("keyboardHeightChange", data => {
+       // 这里也有个坑 他监听的是键盘展开事件 如果当前页面的别的组件触发了键盘展开 也会触发这个事件
+       // 所以我们要规避这种场景 这里只做keyboard高度取值的更新 不去更新组件的paddingTop
+       // 这个数据的单位是px
+       if (data) {
+         this.keyboardHeight = data;
+       } else {
+         this.stackContainPaddingTop = 0;
+       }
+     });
+   });
+   ```
+
+6. @Styles 注解无法 export 导致组件样式无法复用（2024.03.15）
