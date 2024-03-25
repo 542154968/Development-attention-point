@@ -9010,9 +9010,7 @@ function toString(buffer) {
  * @returns
  */
 export default function useIflytekSpeech() {
-  const resultText = ref("");
-  // let resultText = "";
-  let resultTextTemp = "";
+  const renderText = ref("");
   let voicePath = "";
 
   function uploadMp3File(filePath) {
@@ -9098,6 +9096,8 @@ export default function useIflytekSpeech() {
   });
 
   function renderResult(resultData) {
+    let resultText = "";
+    let resultTextTemp = "";
     // 识别结束
     let jsonData = JSON.parse(resultData);
     if (jsonData.data && jsonData.data.result) {
@@ -9110,18 +9110,18 @@ export default function useIflytekSpeech() {
       // 开启wpgs会有此字段(前提：在控制台开通动态修正功能)
       // 取值为 "apd"时表示该片结果是追加到前面的最终结果；取值为"rpl" 时表示替换前面的部分结果，替换范围为rg字段
       if (data.pgs) {
-        resultText.value = "";
+        resultText = "";
         if (data.pgs === "apd") {
           // 将resultTextTemp同步给resultText
-          resultText.value = resultTextTemp;
+          resultText = resultTextTemp;
         }
         // 将结果存储在resultTextTemp中
-        resultTextTemp = resultText.value + str;
+        resultTextTemp = resultText + str;
       } else {
         // resultText.value = resultText.value + str;
-        resultText.value = str;
+        resultText = str;
       }
-      console.log("识别结果:", resultTextTemp || resultText.value || "");
+      console.log("识别结果:", resultTextTemp || resultText || "");
       // console.log('str',str);
       // console.log('resultTextTemp',resultTextTemp);
       //    console.log("resultText.value", resultText.value);
@@ -9227,7 +9227,96 @@ export default function useIflytekSpeech() {
     startRecord,
     endRecord,
     playVoice,
-    resultText,
+    renderText,
   };
 }
+```
+
+**486. js 判定 markdown 标签是否闭合了**
+
+````ts
+const States = {
+  text: 0, // 文本状态
+  codeStartSm: 1, // 小代码块状态 `xx`
+  codeStartBig: 2, // 大代码块状态 ```xxx```
+};
+
+/**
+ * 判断 markdown 文本中是否有未闭合的代码块
+ * @param text
+ * @returns {boolean}
+ */
+export function isInCode(text) {
+  let state = States.text;
+  let source = text;
+  let inStart = true; // 是否处于文本开始状态，即还没有消费过文本
+  while (source) {
+    // 当文本被解析消费完后，就是个空字符串了，就能跳出循环
+    let char = source.charAt(0); // 取第 0 个字
+    switch (state) {
+      case States.text:
+        if (/^\n?```/.test(source)) {
+          // 以 ``` 或者 \n``` 开头。表示大代码块开始。
+          // 一般情况下，代码块前面都需要换行。但是如果是在文本的开头，就不需要换行。
+          if (inStart || source.startsWith("\n")) {
+            state = States.codeStartBig;
+          }
+          source = source.replace(/^\n?```/, "");
+        } else if (char === "\\") {
+          // 遇到转义符，跳过下一个字符
+          source = source.slice(2);
+        } else if (char === "`") {
+          // 以 ` 开头。表示小代码块开始。
+          state = States.codeStartSm;
+          source = source.slice(1);
+        } else {
+          // 其他情况，直接消费当前字符
+          source = source.slice(1);
+        }
+        inStart = false;
+        break;
+      case States.codeStartSm:
+        if (char === "`") {
+          // 遇到第二个 `，表示代码块结束
+          state = States.text;
+          source = source.slice(1);
+        } else if (char === "\\") {
+          // 遇到转义符，跳过下一个字符
+          source = source.slice(2);
+        } else {
+          // 其他情况，直接消费当前字符
+          source = source.slice(1);
+        }
+        break;
+      case States.codeStartBig:
+        if (/^\n```/.test(source)) {
+          // 遇到第二个 ```，表示代码块结束
+          state = States.text;
+          source = source.replace(/^\n```/, "");
+        } else {
+          // 其他情况，直接消费当前字符
+          source = source.slice(1);
+        }
+        break;
+    }
+  }
+  return state !== States.text;
+}
+````
+
+**487. 对象解构赋值 null 会替代默认值**
+
+```js
+let obj = { data: null };
+// undefined
+const { data = [] } = obj;
+// undefined
+data;
+// null
+obj.data = undefined;
+// undefined
+const { data1 = [] } = obj;
+// undefined
+data1;
+// []
 ```
