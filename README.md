@@ -9320,3 +9320,9 @@ const { data1 = [] } = obj;
 data1;
 // []
 ```
+
+**488. unocss tailwindcss 的一些写法**
+
+1. `!important` 在你的 class 前面加个`！` 如 `!text-16`
+2. 媒体查询 `sm-max-lg:w-60` `lg:w-60`
+3. 背景渐变`bg-gradient-to-r from-[#c973ff] via-purple-500 to-[#f62ea4]`
