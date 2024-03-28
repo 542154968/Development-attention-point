@@ -9326,3 +9326,30 @@ data1;
 1. `!important` 在你的 class 前面加个`！` 如 `!text-16`
 2. 媒体查询 `sm-max-lg:w-60` `lg:w-60`
 3. 背景渐变`bg-gradient-to-r from-[#c973ff] via-purple-500 to-[#f62ea4]`
+
+
+**489. ts将数组的值作为类型**
+```ts
+export const promptTypeList = [
+  "写作",
+  "音乐",
+  "营销",
+  "健康",
+  "游戏",
+  "娱乐",
+  "教育",
+  "烹饪",
+  "编码",
+  "产品管理",
+  "商业",
+  "越狱",
+  "其他",
+] as const;
+
+export interface CollectItem {
+  id?: number;
+  title: string;
+  type: (typeof promptTypeList)[number];
+  content: string;
+}
+```
