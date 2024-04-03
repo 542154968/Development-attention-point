@@ -9384,3 +9384,15 @@ gitignore
 !.vscode/unocss.json
 !.vscode/settings.json
 ```
+
+
+**491. 枚举类型用字符串变量包着就变成值的类型了**
+> 触发了分布式条件分发
+
+```ts
+/**
+ * 颜色的类型
+ */
+export type ColorType = `${COLOR_TYPE}`
+// type ColorType = "primary" | "success" | "danger" | "warning" | "default"
+```
