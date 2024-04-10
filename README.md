@@ -9327,8 +9327,8 @@ data1;
 2. 媒体查询 `sm-max-lg:w-60` `lg:w-60`
 3. 背景渐变`bg-gradient-to-r from-[#c973ff] via-purple-500 to-[#f62ea4]`
 
+**489. ts 将数组的值作为类型**
 
-**489. ts将数组的值作为类型**
 ```ts
 export const promptTypeList = [
   "写作",
@@ -9354,17 +9354,21 @@ export interface CollectItem {
 }
 ```
 
-** 490. @apply vscode不识别 **
+** 490. @apply vscode 不识别 **
+
 > https://github.com/unocss/unocss/issues/2401
 
 Guys, the solution:
 .vscode/settings.json
+
 ```json
 {
   "css.customData": [".vscode/unocss.json"]
 }
 ```
+
 .vscode/unocss.json
+
 ```json
 {
   "version": 1.1,
@@ -9374,25 +9378,55 @@ Guys, the solution:
     },
     {
       "name": "@screen"
-    },
+    }
   ]
 }
 ```
 
 gitignore
+
 ```text
 !.vscode/unocss.json
 !.vscode/settings.json
 ```
 
-
 **491. 枚举类型用字符串变量包着就变成值的类型了**
+
 > 触发了分布式条件分发
 
 ```ts
 /**
  * 颜色的类型
  */
-export type ColorType = `${COLOR_TYPE}`
+export type ColorType = `${COLOR_TYPE}`;
 // type ColorType = "primary" | "success" | "danger" | "warning" | "default"
 ```
+
+**491. uniapp 微信小程序对接讯飞语音转写**
+
+> https://blog.csdn.net/qq_33525941/article/details/106257929?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-6.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-6.control&login=from_csdn
+
+1. 核心 pcm 转写
+
+```js
+const searchoptions = {
+  duration: 60000, //指定录音的时长，单位 ms
+  sampleRate: 8000, //采样率
+  numberOfChannels: 1, //录音通道数
+  encodeBitRate: 48000, //编码码率
+  format: "PCM", //音频格式
+  frameSize: 1, //指定帧大小，单位 KB
+};
+recorderManager.onFrameRecorded(res => {
+  //每帧触发
+  const { frameBuffer } = res;
+  const int16Arr = new Int8Array(res.frameBuffer);
+  const base64 = wx.arrayBufferToBase64(int16Arr);
+  const sendsty =
+    '{"data":{"status":1,"format":"audio/L16;rate=8000","encoding":"raw","audio":"' +
+    base64 +
+    '"}}';
+});
+```
+
+2. 坑点 电脑编辑器录制 pcm 无法转写 要用真机
