@@ -9402,7 +9402,7 @@ export type ColorType = `${COLOR_TYPE}`;
 // type ColorType = "primary" | "success" | "danger" | "warning" | "default"
 ```
 
-**491. uniapp 微信小程序对接讯飞语音转写**
+**492. uniapp 微信小程序对接讯飞语音转写**
 
 > https://blog.csdn.net/qq_33525941/article/details/106257929?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-6.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-6.control&login=from_csdn
 
@@ -9430,3 +9430,7 @@ recorderManager.onFrameRecorded(res => {
 ```
 
 2. 坑点 电脑编辑器录制 pcm 无法转写 要用真机
+
+**493. 网页上的复制不仅仅能复制文字啊**
+
+1. 看这篇内容https://juejin.cn/post/7348634049681293312 突然才想起来还能复制文件流
