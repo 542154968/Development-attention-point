@@ -9434,3 +9434,14 @@ recorderManager.onFrameRecorded(res => {
 **493. 网页上的复制不仅仅能复制文字啊**
 
 1. 看这篇内容https://juejin.cn/post/7348634049681293312 突然才想起来还能复制文件流
+
+
+**494. nuxt3一些坑**
+> 最近在写nuxt3的一个项目 好多坑啊
+
+1. pages和layouts目录中不要写与页面无关的.vue文件，会被解析成路由访问
+2. 鉴权是通过auth中间件进行的
+3. router.push 以及 nuxtlink 跳转时，不会触发服务端渲染，所以还要在只有客户端渲染时，手动调用客户端的fetch函数拉取数据
+4. 客户端渲染时，使用v-loading有时候设置false后，loading没有被清除，不知道什么bug
+5. fetch有两个方法，一个是在客户端请求的方法一个是在服务端渲染请求的方法
+6. 自定义404页面是通过error.vue页面控制的，但是这个页面不经过app.vue的逻辑，所以app.vue中拉取的数据在这里也要拉取
