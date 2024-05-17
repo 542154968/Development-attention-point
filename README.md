@@ -9445,3 +9445,6 @@ recorderManager.onFrameRecorded(res => {
 4. 客户端渲染时，使用v-loading有时候设置false后，loading没有被清除，不知道什么bug
 5. fetch有两个方法，一个是在客户端请求的方法一个是在服务端渲染请求的方法
 6. 自定义404页面是通过error.vue页面控制的，但是这个页面不经过app.vue的逻辑，所以app.vue中拉取的数据在这里也要拉取
+
+**495. download标签生效规则**
+1. download标签只有同源下或blob: file:协议下的资源才能更改文件名
