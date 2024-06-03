@@ -9435,16 +9435,47 @@ recorderManager.onFrameRecorded(res => {
 
 1. 看这篇内容https://juejin.cn/post/7348634049681293312 突然才想起来还能复制文件流
 
+**494. nuxt3 一些坑**
 
-**494. nuxt3一些坑**
-> 最近在写nuxt3的一个项目 好多坑啊
+> 最近在写 nuxt3 的一个项目 好多坑啊
 
-1. pages和layouts目录中不要写与页面无关的.vue文件，会被解析成路由访问
-2. 鉴权是通过auth中间件进行的
-3. router.push 以及 nuxtlink 跳转时，不会触发服务端渲染，所以还要在只有客户端渲染时，手动调用客户端的fetch函数拉取数据
-4. 客户端渲染时，使用v-loading有时候设置false后，loading没有被清除，不知道什么bug
-5. fetch有两个方法，一个是在客户端请求的方法一个是在服务端渲染请求的方法
-6. 自定义404页面是通过error.vue页面控制的，但是这个页面不经过app.vue的逻辑，所以app.vue中拉取的数据在这里也要拉取
+1. pages 和 layouts 目录中不要写与页面无关的.vue 文件，会被解析成路由访问
+2. 鉴权是通过 auth 中间件进行的
+3. router.push 以及 nuxtlink 跳转时，不会触发服务端渲染，所以还要在只有客户端渲染时，手动调用客户端的 fetch 函数拉取数据
+4. 客户端渲染时，使用 v-loading 有时候设置 false 后，loading 没有被清除，不知道什么 bug
+5. fetch 有两个方法，一个是在客户端请求的方法一个是在服务端渲染请求的方法
+6. 自定义 404 页面是通过 error.vue 页面控制的，但是这个页面不经过 app.vue 的逻辑，所以 app.vue 中拉取的数据在这里也要拉取
 
-**495. download标签生效规则**
-1. download标签只有同源下或blob: file:协议下的资源才能更改文件名
+**495. download 标签生效规则**
+
+1. download 标签只有同源下或 blob: file:协议下的资源才能更改文件名
+
+**496. git 改变已经提交的 commit 作者**
+
+- 要修改已经 commit 的提交信息，包括提交人的信息，你可以使用 git commit --amend 命令。如果你只想修改提交信息而不改变作者，可以使用-m 选项。如果需要修改作者，可以使用--author 选项。
+
+- 以下是修改最近一次提交的命令：
+
+`git commit --amend --author="New Author Name <email@address.com>"`
+
+- 如果你需要修改更早的提交，可以使用交互式 rebase：
+
+`git rebase -i HEAD~N  # N是你需要编辑的提交之前的提交数量`
+
+- 在打开的文本编辑器中，找到你想要修改的提交，将该行的 pick 改为 edit，然后保存退出。
+
+- 接下来，Git 会停在那个提交上，允许你修改它。当你做了你需要的任何修改后，运行以下命令来完成提交修改：
+
+```shell
+git commit --amend --author="New Author Name <email@address.com>"
+git rebase --continue
+```
+
+-如果在修改过程中遇到冲突，解决冲突后，运行：
+
+```shell
+git add .
+git rebase --continue
+```
+
+一旦完成，你可能需要使用`git push --force`来强制推送到远程仓库，因为你改变了历史。注意，这种操作应该在确保没有其他人正在基于你的分支工作的情况下进行，因为它会影响所有人的历史。
