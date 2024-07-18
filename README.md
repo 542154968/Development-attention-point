@@ -9479,3 +9479,21 @@ git rebase --continue
 ```
 
 一旦完成，你可能需要使用`git push --force`来强制推送到远程仓库，因为你改变了历史。注意，这种操作应该在确保没有其他人正在基于你的分支工作的情况下进行，因为它会影响所有人的历史。
+
+**497. flex 兄弟元素一个居中一个靠右**
+
+```css
+.container {
+  display: flex;
+  justify-content: flex-end; /* 使右边的元素靠右对齐 */
+}
+
+.centered {
+  flex-grow: 1; /* 使左边的元素占据剩余空间 */
+  text-align: center; /* 文字居中 */
+}
+
+.right {
+  /* 右边元素不需要额外样式，默认就是靠右 */
+}
+```
