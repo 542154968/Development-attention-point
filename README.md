@@ -9497,3 +9497,28 @@ git rebase --continue
   /* 右边元素不需要额外样式，默认就是靠右 */
 }
 ```
+
+**498. bpmnjs 禁用**
+
+```js
+this.bpmnViewer = new Viewer({
+  container: this.canvas,
+  additionalModules: [
+    MoveModule, // 可以调整元素
+    ModelingModule, // 基础工具 MoveModule、SetColor 等依赖于此
+    MoveCanvasModule, // 移动整个画布
+    {
+      paletteProvider: ["value", ""], //禁用/清空左侧工具栏
+      labelEditingProvider: ["value", ""], //禁用节点编辑
+      contextPadProvider: ["value", ""], //禁用图形菜单
+      bendpoints: ["value", {}], //禁用连线拖动
+      zoomScroll: ["value", ""], //禁用滚动
+      moveCanvas: ["value", ""], //禁用拖动整个流程图
+      move: ["value", ""], //禁用单个图形拖动
+    },
+  ],
+});
+let url = "/static/name_gu5yee5o.bpmn20.xml";
+let xmlDoc = this.checkXMLDocObj(url);
+this.createNewDiagram(xmlDoc);
+```
