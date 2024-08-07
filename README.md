@@ -9522,3 +9522,65 @@ let url = "/static/name_gu5yee5o.bpmn20.xml";
 let xmlDoc = this.checkXMLDocObj(url);
 this.createNewDiagram(xmlDoc);
 ```
+
+**499. 百度平台**
+
+1. 统计分析 用来看访问量自定义埋点之类的
+2. [资源管理](https://ziyuan.baidu.com/) 用来提交网站抓取
+
+
+**500. 写拖拽生成代码的收货**
+1. 给当前组件命名即可循环引用当前组件
+2. 插槽动态设置可以用`#[slotName]`
+```vue
+<template>
+  <template v-if="element.componentType === COMPONENT_TYPE.TEXT">
+    {{ element.props.value }}
+  </template>
+  <component
+    v-else
+    :is="getComponent(element.componentType)"
+    v-bind="element.props || {}"
+    :class="element.className ?? ''"
+    :style="element.style || {}"
+  >
+    <template #[slot.slotName] v-for="slot in element.slots || []" :key="slot.id">
+      <RenderNode
+        v-for="childComponent in slot.children || []"
+        :element="childComponent"
+        :key="childComponent.id"
+      />
+    </template>
+  </component>
+</template>
+
+<script lang="ts" setup>
+  import { ComponetItem, COMPONENT_TYPE } from '/@/views/program/create/type.ts';
+  import { componentType2Component } from './data';
+
+  defineOptions({
+    name: 'RenderNode',
+  });
+
+  defineProps({
+    element: {
+      type: Object as () => ComponetItem,
+      default() {
+        return null;
+      },
+    },
+  });
+
+  function getComponent(componentType: COMPONENT_TYPE) {
+    const currentComponent = componentType2Component[componentType] || null;
+    if (typeof currentComponent === 'function') {
+      return currentComponent();
+    } else {
+      return currentComponent;
+    }
+  }
+</script>
+
+<style lang="scss"></style>
+
+```
