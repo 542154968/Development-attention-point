@@ -9598,3 +9598,6 @@ function getComponent(componentType: COMPONENT_TYPE) {
 
 <style lang="scss"></style>
 ```
+
+
+**501. transform在行内元素中不生效的哦**
