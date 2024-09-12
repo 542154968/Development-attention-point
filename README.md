@@ -9599,5 +9599,199 @@ function getComponent(componentType: COMPONENT_TYPE) {
 <style lang="scss"></style>
 ```
 
+**501. transform 在行内元素中不生效的哦**
 
-**501. transform在行内元素中不生效的哦**
+**502. clearTimeout/clearInterval 之后你的 timeId 仍是有值的**
+
+**503. 画一个长方体**
+
+```vue
+<template>
+  <div :class="['cube-wrapper', type]" :style="{ height }">
+    <div class="cube-box">
+      <!-- <div class="cube1 cube"></div> -->
+      <div class="cube2 cube"></div>
+      <!-- <div class="cube3 cube"></div> -->
+      <div class="cube4 cube"></div>
+      <div class="cube5 cube"></div>
+      <!-- <div class="cube6 cube"></div> -->
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    height: {
+      type: String,
+      default: "60px",
+    },
+    width: {
+      type: String,
+      default: "21px",
+    },
+    // 传空或者green
+    type: {
+      type: String,
+      default: "",
+    },
+  },
+};
+</script>
+
+<style lang="less" scoped>
+/* 外层容器 */
+.cube-wrapper {
+  position: relative;
+  width: 21px; /* 可以根据实际需求调整 */
+  height: 100px; /* 同上 */
+  perspective: 1000px; /* 透视距离，影响3D效果 */
+
+  &.green {
+    .cube2 {
+      background: linear-gradient(#99e2cb, #b2ecb2);
+    }
+    .cube4 {
+      background: linear-gradient(#42d1ca, #aeebb3);
+    }
+    .cube5 {
+      background: #d2fdc0;
+    }
+  }
+}
+
+/* 内层容器 */
+.cube-box {
+  position: absolute;
+  width: 21px;
+  height: 100%;
+  transform: rotateX(-30deg) rotateY(45deg);
+  transform-style: preserve-3d;
+}
+
+/* 基础样式 */
+.cube {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 第一个面 */
+// .cube1 {
+//   background: red;
+// }
+
+/* 第二个面 */
+.cube2 {
+  transform: rotateY(-90deg);
+  transform-origin: left top;
+  background: linear-gradient(#18b2ff, #38cdff);
+}
+
+/* 第三个面 */
+// .cube3 {
+//   transform: rotateY(90deg);
+//   transform-origin: right top;
+//   background: blue;
+// }
+
+/* 第四个面 */
+.cube4 {
+  transform: translateZ(21px); /* 假设宽度为100px，则一半为50px */
+  transform-origin: center;
+  background: linear-gradient(#3f6ef9, #4c9dff);
+}
+
+/* 第五个面 */
+.cube5 {
+  height: 21px;
+  padding-top: 100%;
+  transform: rotateX(90deg) translateZ(0);
+  transform-origin: left top;
+  background: #46cfff;
+}
+
+/* 第六个面 */
+// .cube6 {
+//   top: auto;
+//   bottom: 0;
+//   height: 21px;
+//   padding-top: 100%;
+//   transform: rotateX(-90deg) translateZ(0);
+//   transform-origin: left bottom;
+//   background: black;
+// }
+</style>
+```
+
+**504. 利用 svg 的 clip 做一个从四角逐渐向内显示图片的效果**
+
+1. svg-clip.vue
+
+```vue
+<template>
+  <svg>
+    <defs>
+      <clipPath :id="id">
+        <circle cx="0" cy="0" :r="radius" />
+        <circle cx="0" :cy="width" :r="radius" />
+        <circle cx="0" :cy="height" :r="radius" />
+        <circle :cx="width" :cy="height" :r="radius" />
+      </clipPath>
+    </defs>
+  </svg>
+</template>
+
+<script>
+export default {
+  props: {
+    width: {
+      type: Number,
+      default: 150,
+    },
+    height: {
+      type: Number,
+      default: 150,
+    },
+    radius: {
+      type: Number,
+      default: 0,
+    },
+    id: {
+      type: String,
+      default: "circle-clip-path",
+    },
+  },
+};
+</script>
+
+<style lang="less" scoped>
+svg {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+</style>
+```
+
+2. index.vue
+
+```vue
+<template>
+  <!-- 宽高保持跟区域的宽高一致 -->
+  <SvgClip
+    id="first-clip-path"
+    :width="213"
+    :height="163"
+    :radius="radius"
+  ></SvgClip>
+
+  <img
+    style="clip-path: url(#first-clip-path)"
+    src="../../../images/area1/red2.png"
+    alt=""
+  />
+</template>
+```
