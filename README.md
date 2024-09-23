@@ -9798,11 +9798,16 @@ svg {
 
 **505. 一个比较通用的 docker 部署文件**
 
+1. 如果爆内存不够 在docker桌面端中调内存 linux系统不用调智能的
+
+
 ```shell
 # node 构建阶段 as相当于命名
 FROM node:18.20.2 as build-stage
 # 署名
 MAINTAINER qkli4 'qkli4@iflytek.com'
+# 设置--max-old-space-size 避免打包时内存溢出
+ENV NODE_OPTIONS=--max-old-space-size=16384
 # 设置当前工作目录
 WORKDIR /app
 # COPY 复制文件
