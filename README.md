@@ -9843,7 +9843,7 @@ RUN echo "🎉 服务 🎉 编译 🎉 成 🎉 功 "
 
 ```
 
-**506. git merge --no-ff在sourcetree中对应的操作**
+**506. git merge --no-ff 在 sourcetree 中对应的操作**
 
 1. 使用--no-ff 选项会创建一个新的合并提交，包含来自两个分支的更改。这样，当查看提交历史时，你可以看到分支的合并点，以及在合并过程中引入的更改。
 2. 对应的 sourcetree 的合并操作就是勾选**合并分支时包括被合并提交的信息内容**
@@ -9855,7 +9855,7 @@ RUN echo "🎉 服务 🎉 编译 🎉 成 🎉 功 "
 4. 在代码发生冲突的时候，git 会为我们创建一个节点，也就是平时看到的“Merge”信息的节点。但如果被合并的代码超前于目标分支，git 就会将所有的节点都合并到目标分支中，而不是生成一个新的节点再合并。这对于 master 分支简直就是灾难，因为 release 分支或者 hotfix 分支必然是超前于 master 分支的。
 ```
 
-**507. 开发nodebb插件的一点个人经验**
+**507. 开发 nodebb 插件的一点个人经验**
 
 1. 首先从 https://github.com/NodeBB/nodebb-plugin-quickstart/tree/master 这里拉一个模板出来
 
@@ -9875,20 +9875,63 @@ RUN echo "🎉 服务 🎉 编译 🎉 成 🎉 功 "
      },
      "scss": ["scss/quickstart.scss"], // 应该是scss覆盖编写的 这次需求没用到
      "scripts": ["public/lib/main.js"], // 这个就是在客户端全局执行的js文件 里面也能用钩子 演示demo中有
-     "acpScripts": ["public/lib/acp-main.js"], // 这个是在后台管理全局中的js文件 
+     "acpScripts": ["public/lib/acp-main.js"], // 这个是在后台管理全局中的js文件
      "modules": { // 这个就是在客户端特定路由中用得js文件 具体绑定逻辑可以看demo中的注释
        "../client/quickstart.js": "./public/lib/quickstart.js",  // 域名/quickstart
-   		"../admin/plugins/quickstart.js": "./public/lib/admin.js" // 域名/后管/quickstart 
+   		"../admin/plugins/quickstart.js": "./public/lib/admin.js" // 域名/后管/quickstart
      },
      "templates": "templates" // 模板列表
    }
-   
+
    ```
 
-3. 本地开发时，或者私有化部署插件时可以使用npm link或yarn link
+3. 本地开发时，或者私有化部署插件时可以使用 npm link 或 yarn link
 
-4. 如果你想做客户端不登录就强制跳转到登录页，需要在客户端全局script中加逻辑而不是在library.js中，library.js中的钩子拿不到客户端的请求url 只能拿到静态资源
+4. 如果你想做客户端不登录就强制跳转到登录页，需要在客户端全局 script 中加逻辑而不是在 library.js 中，library.js 中的钩子拿不到客户端的请求 url 只能拿到静态资源
+   在`public/main.js`中
 
-5. 开发中，如果更新的是library服务端相关的插件代码，要重启下nodebb查看效果，如果更新的是client客户端相关的代码，要重新构建下静态资源 `nodebb build`，,再启动nodebb
+```js
+"use strict";
 
-6. 我用的nodebb的镜像`ghcr.io/nodebb`， 通过 `docker exec -u 0 -it 容器名称或id /bin/bash` 进入镜像容器，这个镜像中没有git，所以我将我开发的插件压缩成`.gz`的包，通过`docker cp nodebb-plugin.tar.gz 容器名称或id:/usr/src/app`拷贝到了容器中 在容器中进行解压，在通过`npm link` 集成到了nodebb服务中，集成后在nodebb后台管理的插件列表中能看到已安装该插件
+/**
+ * This file shows how client-side javascript can be included via a plugin.
+ * If you check `plugin.json`, you'll see that this file is listed under "scripts".
+ * That array tells NodeBB which files to bundle into the minified javascript
+ * that is served to the end user.
+ *
+ * There are two (standard) ways to wait for when NodeBB is ready.
+ * This one below executes when NodeBB reports it is ready...
+ */
+
+(async () => {
+  const hooks = await app.require("hooks");
+
+  hooks.on("action:app.load", () => {
+    console.log("NodeBB is ready!", app.user);
+
+    // called once when nbb has loaded
+  });
+
+  hooks.on("action:ajaxify.end", (/* data */) => {
+    // called everytime user navigates between pages including first load
+    // 用户未登录 跳转到登录页面
+    console.log("监听路由变化和启动");
+    if (app.user.uid <= 0 && window.location.pathname !== "/login") {
+      window.location.href = "/login";
+    }
+  });
+})();
+
+/**
+ * ... and this one reports when the DOM is loaded (but NodeBB might not be fully ready yet).
+ * For most cases, you'll want the one above.
+ */
+
+$(document).ready(function () {
+  // ...
+});
+```
+
+5. 开发中，如果更新的是 library 服务端相关的插件代码，要重启下 nodebb 查看效果，如果更新的是 client 客户端相关的代码，要重新构建下静态资源 `nodebb build`，,再启动 nodebb
+
+6. 我用的 nodebb 的镜像`ghcr.io/nodebb`， 通过 `docker exec -u 0 -it 容器名称或id /bin/bash` 进入镜像容器，这个镜像中没有 git，所以我将我开发的插件压缩成`.gz`的包，通过`docker cp nodebb-plugin.tar.gz 容器名称或id:/usr/src/app`拷贝到了容器中 在容器中进行解压，在通过`npm link` 集成到了 nodebb 服务中，集成后在 nodebb 后台管理的插件列表中能看到已安装该插件
