@@ -10255,3 +10255,142 @@ onBeforeUnmount(() => {
 
 <style lang="scss"></style>
 ```
+
+**509. mockjs 如果在生产环境会劫持 xml 对象，一定要关闭！**
+在生产环境，mockjs 会劫持 xml 对象，导致 axios 请求获取上传进度时出现报错，所以要关闭 mockjs
+
+````md
+好问题！让我检查一下为什么开发环境不会报错：
+
+[3 tools called]
+
+找到关键差异了！让我详细解释：
+
+[1 tool called]
+
+现在我明白了！让我给你详细解释为什么开发环境不会报错：
+
+## 开发环境 vs 生产环境的 Mock 机制差异
+
+### 1. **开发环境（Development）**
+
+```typescript
+localEnabled: !isBuild,  // 开发环境时为 true
+```
+````
+
+**工作原理**：
+
+- 使用 `vite-plugin-mock` 的**开发服务器中间件模式**
+- 通过 **Vite Dev Server 的中间件拦截 HTTP 请求**
+- 在**服务器端**返回模拟数据
+- **不会劫持浏览器的 XMLHttpRequest**
+- 请求流程：浏览器 → Vite Dev Server → Mock 中间件 → 返回数据
+
+```
+浏览器发起请求
+    ↓
+Vite Dev Server 拦截
+    ↓
+vite-plugin-mock 中间件处理
+    ↓
+返回 mock 数据
+```
+
+✅ **XMLHttpRequest 保持原生状态，不受影响**
+✅ **upload 事件正常工作**
+
+### 2. **生产环境（Production）**
+
+```typescript
+prodEnabled: true,  // 之前的配置，现在改为 false
+injectCode: `
+  import { setupProdMockServer } from '../mock/_createProductionServer';
+  setupProdMockServer();
+`,
+```
+
+**工作原理**：
+
+- 使用 `mockjs` 的**客户端劫持模式**
+- 在打包后的代码中**注入 mock 服务器代码**
+- `createProdMockServer` 会调用 `mockjs`
+- **mockjs 重写浏览器的 XMLHttpRequest 构造函数**
+- 在客户端拦截所有请求
+
+```
+浏览器发起请求
+    ↓
+mockjs 劫持 XMLHttpRequest
+    ↓
+返回 mock 数据（不发送真实请求）
+```
+
+❌ **XMLHttpRequest 被重写**
+❌ **upload 对象被破坏或缺失**
+❌ **addEventListener 失效**
+
+### 3. **mockjs 的劫持问题**
+
+查看 mockjs 源码，它会这样重写 XMLHttpRequest：
+
+```javascript
+// mockjs 内部实现（简化版）
+const _XMLHttpRequest = window.XMLHttpRequest;
+
+window.XMLHttpRequest = function () {
+  const xhr = new _XMLHttpRequest();
+  // mockjs 重写了很多方法和属性
+  // 但是 upload 对象的处理不完善
+  // 导致 xhr.upload 是 undefined 或者不是标准的 XMLHttpRequestUpload 对象
+  return xhr;
+};
+```
+
+**问题根源**：mockjs 在劫持时，**没有正确模拟 `XMLHttpRequest.upload` 属性**，导致：
+
+- `xhr.upload` 可能是 `undefined`
+- 或者是一个不完整的对象，没有 `addEventListener` 方法
+
+### 4. **为什么添加 onUploadProgress 后才出问题？**
+
+```javascript
+// 没有 onUploadProgress 时
+axios({
+  url: '/api/upload',
+  data: formData,
+  // 没有监听上传进度，axios 不会访问 xhr.upload
+});
+
+// 有 onUploadProgress 时
+axios({
+  url: '/api/upload',
+  data: formData,
+  onUploadProgress: (e) => { ... },  // axios 会尝试 xhr.upload.addEventListener
+});
+```
+
+当你添加 `onUploadProgress` 后：
+
+1. axios 内部会执行：`xhr.upload.addEventListener('progress', callback)`
+2. 但 mockjs 劫持后的 `xhr.upload` 不完整
+3. 导致 `xhr.upload.addEventListener is not a function` 错误
+
+## 总结
+
+| 环境     | Mock 方式                 | XMLHttpRequest | upload 事件 | 结果    |
+| -------- | ------------------------- | -------------- | ----------- | ------- |
+| **开发** | Vite 中间件拦截（服务端） | ✅ 原生对象    | ✅ 正常工作 | ✅ 正常 |
+| **生产** | mockjs 劫持（客户端）     | ❌ 被重写      | ❌ 对象异常 | ❌ 报错 |
+
+**解决方案**：
+
+- ✅ 已禁用生产环境的 mock（`.env.production` 和 `mock.ts`）
+- ✅ 生产环境使用真实 API，不劫持 XMLHttpRequest
+- ✅ 开发环境继续使用 Vite 中间件模式的 mock
+
+现在重新构建就完全正常了！
+
+```
+
+```
